@@ -62,7 +62,7 @@ public class FirstFragment extends Fragment {
                         }
 
                     } else {
-                        binding.textviewFirst.setText("Please enter a valid URL");
+                        binding.textViewError.setText("Please enter a valid URL");
                     }
 
                 } catch (IOException | NullPointerException e) {
