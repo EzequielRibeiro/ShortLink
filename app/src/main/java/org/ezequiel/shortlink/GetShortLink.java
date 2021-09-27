@@ -1,6 +1,9 @@
 package org.ezequiel.shortlink;
 
-import java.io.BufferedReader;
+import android.util.JsonReader;
+import android.util.Log;
+
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -11,35 +14,38 @@ public class GetShortLink {
    //https://shrtco.de/docs/
     //https://api.shrtco.de/v2/shorten?url=www.ig.com.br
     //https://api.shrtco.de/v2/info?code=ZjPQyL
-    public GetShortLink(String longLinkURL,String api_key) {
+
+
+    private ShortLink shortlink = new ShortLink();
+
+    public GetShortLink(String longLinkURL) throws IOException {
+
+        JsonReader reader = null;
+        HttpURLConnection conn = null;
 
         try {
 
-           // URL url = new URL("https://cutt.ly/api/api.php?key="+api_key+"&short="+longLinkURL+"&name=GLink");
-            URL url = new URL("https://api.shrtco.de/v2/shorten?url=www.ig.com.br");
-            url = new URL("https://api.shrtco.de/v2/info?code=ZdlWIz");
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            URL url = new URL("https://api.shrtco.de/v2/shorten?url=" + longLinkURL);
+            // url = new URL("https://api.shrtco.de/v2/info?code=ZdlWIz");
+            conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
 
-          //  System.out.println(url.toString());
-
             if (conn.getResponseCode() != 200 && conn.getResponseCode() != 201) {
-                throw new RuntimeException("Failed : HTTP error code : "
-                        + conn.getResponseCode());
+
+                reader = new JsonReader(new InputStreamReader(conn.getErrorStream(), "UTF-8"));
+
+            }else{
+
+                reader = new JsonReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+
             }
 
-            BufferedReader br = new BufferedReader(new InputStreamReader(
-                    (conn.getInputStream())));
+            readshortlink(reader);
 
-            String output;
-            System.out.println(" Code response:  "+conn.getResponseCode());
-            System.out.println("Output from Server .... \n");
-            while ((output = br.readLine()) != null) {
-                System.out.println(output);
-            }
 
-            conn.disconnect();
+        }catch(FileNotFoundException e){
+            e.printStackTrace();
 
         } catch (MalformedURLException e) {
 
@@ -50,7 +56,57 @@ public class GetShortLink {
             e.printStackTrace();
 
         }
+        finally {
+
+              reader.close();
+              conn.disconnect();
+        }
 
     }
+
+    public ShortLink readshortlink(JsonReader reader) throws IOException {
+
+        reader.beginObject();
+        while (reader.hasNext()) {
+            String name = reader.nextName();
+            if (name.equals("ok")) {
+                shortlink.setOk(reader.nextBoolean());
+            }else if (name.equals("error_code")){
+                shortlink.setError_code(reader.nextString());
+            } else if (name.equals("result")) {
+                shortLink(reader,shortlink);
+            } else {
+                reader.skipValue();
+            }
+        }
+        reader.endObject();
+        return shortlink;
+    }
+
+    private void shortLink(JsonReader reader, ShortLink shortlink) throws IOException {
+
+        reader.beginObject();
+        while (reader.hasNext()) {
+            String name = reader.nextName();
+            if (name.equals("code")) {
+                shortlink.setCode(reader.nextString());
+            } else if (name.equals("original_link")) {
+                shortlink.setOriginal_link(reader.nextString());
+            } else {
+                reader.skipValue();
+            }
+        }
+        reader.endObject();
+     }
+
+    public ShortLink getShortlink() {
+        return shortlink;
+    }
+
+    /*shrtco.de/
+    9qr.de/
+    shiny.link/*/
+
+
 
 }

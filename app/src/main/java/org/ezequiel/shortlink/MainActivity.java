@@ -7,6 +7,7 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.StrictMode;
+import android.util.Log;
 import android.view.View;
 
 import androidx.navigation.NavController;
@@ -19,6 +20,8 @@ import org.ping.shortlink.databinding.ActivityMainBinding;
 
 import android.view.Menu;
 import android.view.MenuItem;
+
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,7 +49,12 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                new GetShortLink("http://www.google.com",getString(R.string.api_key));
+                try {
+                    GetShortLink shortLink = new GetShortLink("http://www.bol.com.br");
+                    Log.i("Result",shortLink.getShortlink().toString());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
