@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="org.ezequiel.shortlink.FirstFragment">
+
+    <ImageView
+        android:id="@+id/imageViewQrCode"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/ic_launcher_foreground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider2" />
+
+    <Button
+        android:id="@+id/buttonShareQrCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="Share Qr Code"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewQrCode"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewQrCode"
+        app:layout_constraintTop_toTopOf="@+id/imageViewQrCode" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Qr Code"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/buttonShareQrCode"
+        app:layout_constraintEnd_toEndOf="@+id/buttonShareQrCode"
+        app:layout_constraintStart_toStartOf="@+id/buttonShareQrCode" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="1dp"
+        android:layout_marginEnd="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInputUrl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="auto"
+            android:hint="Enter a Url to shorten" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/buttonGeneraterShort"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Short link"
+        app:layout_constraintEnd_toStartOf="@+id/button_first"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+
+    <Button
+        android:id="@+id/button_first"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text=" historic "
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/buttonGeneraterShort"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+
+    <TextView
+        android:id="@+id/textViewError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textColor="@color/design_default_color_primary"
+        android:textSize="16sp"
+        android:textStyle="bold|italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonGeneraterShort" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginEnd="1dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewError" />
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="1dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linearLayout" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/divider2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider">
+
+        <TextView
+            android:id="@+id/textview_first"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:text="Short link 1"
+            android:textColor="@android:color/holo_purple"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider" />
+
+        <Button
+            android:id="@+id/buttonCopy1"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="?attr/actionModeCopyDrawable"
+            app:backgroundTint="@color/purple_700"
+            app:layout_constraintBottom_toBottomOf="@+id/textview_first"
+            app:layout_constraintEnd_toStartOf="@+id/buttonShare1"
+            app:layout_constraintStart_toEndOf="@+id/textview_first"
+            app:layout_constraintTop_toTopOf="@+id/textview_first"
+            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+        <Button
+            android:id="@+id/buttonShare1"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="?attr/actionModeShareDrawable"
+            android:text="Button"
+            app:layout_constraintBottom_toBottomOf="@+id/buttonCopy1"
+            app:layout_constraintStart_toEndOf="@+id/buttonCopy1"
+            app:layout_constraintTop_toTopOf="@+id/buttonCopy1"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <TextView
+            android:id="@+id/textView_second"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:gravity="left"
+            android:text="Short link 2"
+            android:textColor="@android:color/holo_purple"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/buttonShare1"
+            app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+        <Button
+            android:id="@+id/buttonCopy2"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="?attr/actionModeCopyDrawable"
+            android:text="Button"
+            app:backgroundTint="@color/purple_500"
+            app:layout_constraintBottom_toBottomOf="@+id/textView_second"
+            app:layout_constraintEnd_toStartOf="@+id/buttonShare2"
+            app:layout_constraintStart_toEndOf="@+id/textView_second"
+            app:layout_constraintTop_toTopOf="@+id/textView_second"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <Button
+            android:id="@+id/buttonShare2"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="?attr/actionModeShareDrawable"
+            android:text="Button"
+            app:layout_constraintBottom_toBottomOf="@+id/buttonCopy2"
+            app:layout_constraintStart_toEndOf="@+id/buttonCopy2"
+            app:layout_constraintTop_toTopOf="@+id/buttonCopy2"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <TextView
+            android:id="@+id/textView_three"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:gravity="left"
+            android:text="Short link 3"
+            android:textColor="@android:color/holo_purple"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/buttonShare2"
+            app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+        <Button
+            android:id="@+id/buttonCopy3"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="?attr/actionModeCopyDrawable"
+            android:text="Button"
+            app:backgroundTint="@color/purple_500"
+            app:layout_constraintBottom_toBottomOf="@+id/textView_three"
+            app:layout_constraintEnd_toStartOf="@+id/buttonShare3"
+            app:layout_constraintStart_toEndOf="@+id/textView_three"
+            app:layout_constraintTop_toTopOf="@+id/textView_three"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <Button
+            android:id="@+id/buttonShare3"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="?attr/actionModeShareDrawable"
+            android:text="Button"
+            app:layout_constraintBottom_toBottomOf="@+id/buttonCopy3"
+            app:layout_constraintStart_toEndOf="@+id/buttonCopy3"
+            app:layout_constraintTop_toTopOf="@+id/buttonCopy3"
+            tools:ignore="TouchTargetSizeCheck" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
