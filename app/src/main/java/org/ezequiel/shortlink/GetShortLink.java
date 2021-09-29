@@ -10,9 +10,10 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.net.UnknownHostException;
 
 public class GetShortLink {
-   //https://shrtco.de/docs/
+    //https://shrtco.de/docs/
     //https://api.shrtco.de/v2/shorten?url=www.ig.com.br
     //https://api.shrtco.de/v2/info?code=ZjPQyL
 
@@ -37,7 +38,7 @@ public class GetShortLink {
 
                 reader = new JsonReader(new InputStreamReader(conn.getErrorStream(), "UTF-8"));
 
-            }else{
+            } else {
 
                 reader = new JsonReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
 
@@ -46,25 +47,30 @@ public class GetShortLink {
             readshortlink(reader);
 
         } catch (SocketTimeoutException e) {
-
+            shortlink.setErrorMensagem("Error: SocketTimeoutException");
             e.printStackTrace();
 
-        }catch(FileNotFoundException e){
+        } catch (FileNotFoundException e) {
+            shortlink.setErrorMensagem("Error: FileNotFoundException");
             e.printStackTrace();
 
         } catch (MalformedURLException e) {
+            shortlink.setErrorMensagem("Error: MalformedURLException");
+            e.printStackTrace();
 
+        } catch (UnknownHostException e) {
+            shortlink.setErrorMensagem("Error: UnknownHostException");
             e.printStackTrace();
 
         } catch (IOException | RuntimeException e) {
-
+            shortlink.setErrorMensagem("Error: IOException | RuntimeException");
             e.printStackTrace();
 
-        }
-        finally {
-
-              reader.close();
-              conn.disconnect();
+        } finally {
+            if (reader != null)
+                reader.close();
+            if (conn != null)
+                conn.disconnect();
         }
 
     }
@@ -76,10 +82,10 @@ public class GetShortLink {
             String name = reader.nextName();
             if (name.equals("ok")) {
                 shortlink.setOk(reader.nextBoolean());
-            }else if (name.equals("error_code")){
+            } else if (name.equals("error_code")) {
                 shortlink.setError_code(reader.nextString());
             } else if (name.equals("result")) {
-                shortLink(reader,shortlink);
+                shortLink(reader, shortlink);
             } else {
                 reader.skipValue();
             }
@@ -102,7 +108,7 @@ public class GetShortLink {
             }
         }
         reader.endObject();
-     }
+    }
 
     public ShortLink getShortlink() {
         return shortlink;
@@ -111,7 +117,6 @@ public class GetShortLink {
     /*shrtco.de/
     9qr.de/
     shiny.link/*/
-
 
 
 }

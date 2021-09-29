@@ -2,7 +2,7 @@ package org.ezequiel.shortlink;
 
 public class ShortLink {
     private  boolean isOk = false;
-    private  String errorMensagem;
+    private  String errorMensagem = "";
     private  String error_code = "-1";
     private  String code = "KCveN";
     private  String original_link = "http://example.org/very/long/link.html";
@@ -91,7 +91,7 @@ public class ShortLink {
         return errorMensagem;
     }
 
-    private void setErrorMensagem(String errorMensagem) {
+    public void setErrorMensagem(String errorMensagem) {
         this.errorMensagem = errorMensagem;
     }
 

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "138866061388",
+    "project_id": "short-link-76d06",
+    "storage_bucket": "short-link-76d06.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:138866061388:android:8c8082df2670b5b66344e9",
+        "android_client_info": {
+          "package_name": "org.ezequiel.shortlink"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "138866061388-akhaship9bootqhi9rvsdfm7n8vptohk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_XsObZoHxz9cRo37IboxtqgjQQmXIXR0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "138866061388-akhaship9bootqhi9rvsdfm7n8vptohk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

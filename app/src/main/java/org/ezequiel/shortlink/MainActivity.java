@@ -1,51 +1,45 @@
 package org.ezequiel.shortlink;
 //d:\android-sdk\platform-tools\adb.exe connect 192.168.0.36
-import static androidx.core.content.ContextCompat.getSystemService;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
-
-import com.google.android.gms.ads.AdError;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.FullScreenContentCallback;
-import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.RequestConfiguration;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
-import com.google.android.gms.ads.interstitial.InterstitialAd;
-import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.material.snackbar.Snackbar;
-import com.startapp.sdk.adsbase.AutoInterstitialPreferences;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.startapp.sdk.adsbase.StartAppAd;
 import com.startapp.sdk.adsbase.StartAppSDK;
-
-import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.StrictMode;
+import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.View;
-
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
-
+import android.widget.TextView;
 import org.ezequiel.shortlink.databinding.ActivityMainBinding;
-
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
+    private StartAppAd startAppAd ;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
 
     @Override
@@ -54,7 +48,8 @@ public class MainActivity extends AppCompatActivity {
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-
+        // Obtain the FirebaseAnalytics instance.
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
@@ -68,16 +63,16 @@ public class MainActivity extends AppCompatActivity {
         MobileAds.setRequestConfiguration(configuration);*/
 
         StartAppSDK.init(this, getString(R.string.startapp_app_id), false);
-        StartAppAd.setAutoInterstitialPreferences(
-                new AutoInterstitialPreferences()
-                        .setSecondsBetweenAds(60*5)
-        );
+
         StartAppAd.disableSplash();
+
+        startAppAd = new StartAppAd(this);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.toolbar);
+        getSupportActionBar().setLogo(R.drawable.icon_title);
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
@@ -119,7 +114,13 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_privacy) {
+            Intent intent = new Intent(getBaseContext(), PrivacyPolicyHelp.class);
+            startActivity(intent);
+            return true;
+        }
+        if (id == R.id.action_about) {
+            about();
             return true;
         }
 
@@ -133,7 +134,46 @@ public class MainActivity extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 
+    @Override
+    public void onBackPressed() {
+        startAppAd.onBackPressed();
+        super.onBackPressed();
+    }
 
+
+    private void about() {
+
+        TextView message = new TextView(MainActivity.this);
+        message.setPadding(10, 0, 0, 0);
+        String version = "v";
+        try {
+            PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            version += pInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        String msg = getString(R.string.app_name) + " " + version + "\nDeveloper: Ezequiel A. Ribeiro" + "\nContact: https://ezequielportfolio.wordpress.com/contato/";
+        final SpannableString s = new SpannableString(msg);
+        Linkify.addLinks(s, Linkify.ALL);
+
+        message.setText(s);
+        message.setMovementMethod(LinkMovementMethod.getInstance());
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setView(message)
+                .setTitle("About");
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
 
 
 
