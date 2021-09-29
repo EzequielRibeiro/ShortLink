@@ -205,9 +205,11 @@ public class FirstFragment extends Fragment {
         binding.buttonGoHistoric.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showInterstitial();
+                
                 NavHostFragment.findNavController(FirstFragment.this)
                         .navigate(R.id.action_FirstFragment_to_SecondFragment);
+                 
+                         showInterstitial();
             }
         });
     }
