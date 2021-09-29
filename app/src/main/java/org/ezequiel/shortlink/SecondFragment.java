@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.startapp.sdk.ads.banner.Banner;
+
 import org.ezequiel.shortlink.databinding.FragmentSecondBinding;
 
 
@@ -35,13 +37,17 @@ public class SecondFragment extends Fragment {
         binding.listViewHistoric.setAdapter(adapter);
 
 
-        binding.buttonSecond.setOnClickListener(new View.OnClickListener() {
+        Banner startAppBanner = new Banner(getActivity());
+        binding.linearLayoutAdSecond.addView(startAppBanner);
+
+
+       /* binding.buttonSecond.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 NavHostFragment.findNavController(SecondFragment.this)
                         .navigate(R.id.action_SecondFragment_to_FirstFragment);
             }
-        });
+        });*/
     }
 
     @Override

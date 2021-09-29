@@ -34,14 +34,21 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.zxing.WriterException;
+import com.startapp.sdk.ads.banner.Banner;
+import com.startapp.sdk.adsbase.StartAppAd;
+import com.startapp.sdk.adsbase.StartAppSDK;
 
 import org.ezequiel.shortlink.databinding.FragmentFirstBinding;
 
@@ -55,6 +62,7 @@ import androidmads.library.qrgenearator.QRGEncoder;
 public class FirstFragment extends Fragment {
 
     private FragmentFirstBinding binding;
+    private InterstitialAd mInterstitialAd;
 
 
     @Override
@@ -64,7 +72,6 @@ public class FirstFragment extends Fragment {
     ) {
 
         binding = FragmentFirstBinding.inflate(inflater, container, false);
-
         return binding.getRoot();
 
     }
@@ -72,11 +79,7 @@ public class FirstFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        MobileAds.initialize(getContext(), new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-            }
-        });
+        intersticiaisAdLoad();
 
         AdRequest adRequest = new AdRequest.Builder().build();
         binding.adView.loadAd(adRequest);
@@ -90,6 +93,10 @@ public class FirstFragment extends Fragment {
             @Override
             public void onAdFailedToLoad(LoadAdError adError) {
                 // Code to be executed when an ad request fails.
+                binding.linearLayoutAd.removeView(binding.adView);
+                Banner startAppBanner = new Banner(getActivity());
+                binding.linearLayoutAd.addView(startAppBanner);
+
             }
 
             @Override
@@ -115,6 +122,7 @@ public class FirstFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+                showInterstitial();
 
                 try {
 
@@ -126,29 +134,7 @@ public class FirstFragment extends Fragment {
 
                         if (Patterns.WEB_URL.matcher(url).matches()) {
 
-                            // GetShortLink shortLink = new GetShortLink(url);
                             new Async(v).execute(url);
-                            /*if(false)
-                            if (shortLink.getShortlink().isOk()) {
-                                DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, getResources().getConfiguration().locale);
-                                String date = df.format(Calendar.getInstance().getTime());
-
-                                binding.textviewFirst.setText("shrtco.de/" + shortLink.getShortlink().getCode());
-                                binding.textViewSecond.setText("9qr.de/" + shortLink.getShortlink().getCode());
-                                binding.textViewThree.setText("shiny.link/" + shortLink.getShortlink().getCode());
-                                saveSharedPreferences(getActivity().getSharedPreferences(
-                                        "savedUrl", Context.MODE_PRIVATE));
-                                DataBase dataBase = new DataBase(getActivity());
-                                dataBase.insert(shortLink.getShortlink().getCode(), date,
-                                        url);
-
-                                generateQrCode(url, getActivity(),binding.imageViewQrCode,binding.buttonShareQrCode);
-
-                                Snackbar.make(getActivity(), v, "Short url created", Snackbar.LENGTH_LONG).show();
-
-                            } else {
-                                Snackbar.make(getActivity(), v, shortLink.getShortlink().getErrorMensagem(), Snackbar.LENGTH_LONG).show();
-                            }*/
 
                         } else {
                             Snackbar.make(getActivity(), v, "url is invalid", Snackbar.LENGTH_LONG).show();
@@ -216,9 +202,10 @@ public class FirstFragment extends Fragment {
         });
 
 
-        binding.buttonFirst.setOnClickListener(new View.OnClickListener() {
+        binding.buttonGoHistoric.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                showInterstitial();
                 NavHostFragment.findNavController(FirstFragment.this)
                         .navigate(R.id.action_FirstFragment_to_SecondFragment);
             }
@@ -322,6 +309,40 @@ public class FirstFragment extends Fragment {
 
     }
 
+    private void showInterstitial(){
+        if (mInterstitialAd != null) {
+            mInterstitialAd.show(getActivity());
+        } else {
+            Log.d("TAG", "The interstitial ad wasn't ready yet.");
+            StartAppAd.showAd(getActivity());
+        }
+    }
+
+    private void intersticiaisAdLoad(){
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        InterstitialAd.load(getContext(),getString(R.string.intersticiais_ad_unit_id), adRequest,
+                new InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                        // The mInterstitialAd reference will be null until
+                        // an ad is loaded.
+                        mInterstitialAd = interstitialAd;
+                        Log.i("InterstitialAd", "onAdLoaded");
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        // Handle the error
+                        Log.i("InterstitialAd", loadAdError.getMessage());
+                        mInterstitialAd = null;
+
+                    }
+                });
+
+
+    }
 
     @Override
     public void onDestroyView() {

@@ -72,12 +72,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Short link"
-        app:layout_constraintEnd_toStartOf="@+id/button_first"
+        app:layout_constraintEnd_toStartOf="@+id/buttonGoHistoric"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
 
     <Button
-        android:id="@+id/button_first"
+        android:id="@+id/buttonGoHistoric"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=" historic "

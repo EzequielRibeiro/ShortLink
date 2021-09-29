@@ -96,18 +96,19 @@
         android:id="@+id/textViewShortDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
         android:gravity="left"
         android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textViewOriginal_link"
-        app:layout_constraintTop_toTopOf="@+id/textViewOriginal_link" />
+        app:layout_constraintBottom_toTopOf="@+id/textViewOriginal_link"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textViewShort1"
         android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp"
         android:gravity="left"
         android:text="TextView"
@@ -121,10 +122,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
         android:gravity="left"
         android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/textViewShort3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewShort1" />
 
@@ -136,7 +135,6 @@
         android:layout_marginTop="8dp"
         android:gravity="left"
         android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/textViewOriginal_link"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textViewShort2" />
 
@@ -144,15 +142,13 @@
         android:id="@+id/textViewOriginal_link"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
         android:editable="true"
         android:gravity="left"
+        android:lines="1"
         android:maxLines="1"
         android:text="TextView"
         android:textIsSelectable="true"
-        app:layout_constraintEnd_toStartOf="@+id/textViewShortDate"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonShareQrCodeHistoric"
         tools:ignore="TouchTargetSizeCheck" />
@@ -162,7 +158,6 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toTopOf="@+id/buttonShareQrCodeHistoric"
         app:layout_constraintStart_toEndOf="@+id/buttonShareHistoric2"
         app:layout_constraintTop_toTopOf="parent"

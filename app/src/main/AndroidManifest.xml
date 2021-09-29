@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.ezequiel.shortlink">
 
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:allowBackup="true"
@@ -39,6 +40,8 @@
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-0822808376839371~5131702988"/>
+
+        <meta-data android:name="com.startapp.sdk.APPLICATION_ID" android:value="@string/startapp_app_id" />
 
 
     </application>
