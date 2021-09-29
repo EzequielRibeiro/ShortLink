@@ -1,8 +1,13 @@
 package org.ezequiel.shortlink;
 
+import static android.content.Context.INPUT_METHOD_SERVICE;
 import static android.content.Context.WINDOW_SERVICE;
+import static android.widget.Toast.LENGTH_LONG;
 import static androidx.core.content.ContextCompat.getSystemService;
 
+import static org.ezequiel.shortlink.MainActivity.hideKeybaord;
+
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -10,24 +15,35 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Point;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.zxing.WriterException;
 
-import org.ping.shortlink.R;
-import org.ping.shortlink.databinding.FragmentFirstBinding;
+import org.ezequiel.shortlink.databinding.FragmentFirstBinding;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -39,8 +55,6 @@ import androidmads.library.qrgenearator.QRGEncoder;
 public class FirstFragment extends Fragment {
 
     private FragmentFirstBinding binding;
-    private Bitmap bitmap;
-    private QRGEncoder qrgEncoder;
 
 
     @Override
@@ -58,44 +72,95 @@ public class FirstFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        MobileAds.initialize(getContext(), new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        binding.adView.loadAd(adRequest);
+
+        binding.adView.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+            }
+
+            @Override
+            public void onAdFailedToLoad(LoadAdError adError) {
+                // Code to be executed when an ad request fails.
+            }
+
+            @Override
+            public void onAdOpened() {
+                // Code to be executed when an ad opens an overlay that
+                // covers the screen.
+            }
+
+            @Override
+            public void onAdClicked() {
+                // Code to be executed when the user clicks on an ad.
+            }
+
+            @Override
+            public void onAdClosed() {
+                // Code to be executed when the user is about to return
+                // to the app after tapping on an ad.
+            }
+        });
+
 
         binding.buttonGeneraterShort.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 try {
 
+                    hideKeybaord(v, getActivity());
+
                     if (!binding.textInputUrl.getText().toString().isEmpty()) {
+
                         String url = binding.textInputUrl.getText().toString();
-                        url = url.replace(" ", "");
-                        GetShortLink shortLink = new GetShortLink(url);
 
-                        if (shortLink.getShortlink().isOk()) {
+                        if (Patterns.WEB_URL.matcher(url).matches()) {
 
-                            DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, getResources().getConfiguration().locale);
-                            String date = df.format(Calendar.getInstance().getTime());
+                            // GetShortLink shortLink = new GetShortLink(url);
+                            new Async(v).execute(url);
+                            /*if(false)
+                            if (shortLink.getShortlink().isOk()) {
+                                DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, getResources().getConfiguration().locale);
+                                String date = df.format(Calendar.getInstance().getTime());
 
-                            binding.textviewFirst.setText("shrtco.de/" + shortLink.getShortlink().getCode());
-                            binding.textViewSecond.setText("9qr.de/" + shortLink.getShortlink().getCode());
-                            binding.textViewThree.setText("shiny.link/" + shortLink.getShortlink().getCode());
-                            binding.textViewError.setText("");
-                            saveSharedPreferences(getActivity().getSharedPreferences(
-                                    "savedUrl", Context.MODE_PRIVATE));
-                            DataBase dataBase = new DataBase(getActivity());
-                            dataBase.insert(shortLink.getShortlink().getCode(), date,
-                                    url);
+                                binding.textviewFirst.setText("shrtco.de/" + shortLink.getShortlink().getCode());
+                                binding.textViewSecond.setText("9qr.de/" + shortLink.getShortlink().getCode());
+                                binding.textViewThree.setText("shiny.link/" + shortLink.getShortlink().getCode());
+                                saveSharedPreferences(getActivity().getSharedPreferences(
+                                        "savedUrl", Context.MODE_PRIVATE));
+                                DataBase dataBase = new DataBase(getActivity());
+                                dataBase.insert(shortLink.getShortlink().getCode(), date,
+                                        url);
 
-                            generateQrCode(binding.textviewFirst.getText().toString());
+                                generateQrCode(url, getActivity(),binding.imageViewQrCode,binding.buttonShareQrCode);
+
+                                Snackbar.make(getActivity(), v, "Short url created", Snackbar.LENGTH_LONG).show();
+
+                            } else {
+                                Snackbar.make(getActivity(), v, shortLink.getShortlink().getErrorMensagem(), Snackbar.LENGTH_LONG).show();
+                            }*/
 
                         } else {
-                            binding.textViewError.setText(shortLink.getShortlink().getErrorMensagem());
+                            Snackbar.make(getActivity(), v, "url is invalid", Snackbar.LENGTH_LONG).show();
 
                         }
-
                     } else {
-                        binding.textViewError.setText("Please enter a valid URL");
+
+                        Snackbar.make(getActivity(), v, "Please enter a valid URL", Snackbar.LENGTH_LONG).show();
+
                     }
 
-                } catch (IOException | NullPointerException e) {
+                } catch (NullPointerException e) {
                     e.printStackTrace();
                 }
             }
@@ -105,44 +170,50 @@ public class FirstFragment extends Fragment {
         binding.buttonCopy1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                copyUrl(binding.textviewFirst.getText().toString());
+                copyUrl(binding.textviewFirst.getText().toString(), v, getActivity());
             }
         });
 
         binding.buttonCopy2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                copyUrl(binding.textViewSecond.getText().toString());
+                copyUrl(binding.textViewSecond.getText().toString(), v, getActivity());
             }
         });
 
         binding.buttonCopy3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                copyUrl(binding.textViewThree.getText().toString());
+                copyUrl(binding.textViewThree.getText().toString(), v, getActivity());
             }
         });
 
         binding.buttonShare1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                shareUrl(binding.textviewFirst.getText().toString());
+                shareUrl(binding.textviewFirst.getText().toString(), getActivity());
             }
         });
         binding.buttonShare2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                shareUrl(binding.textViewSecond.getText().toString());
+                shareUrl(binding.textViewSecond.getText().toString(), getActivity());
             }
         });
         binding.buttonShare3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                shareUrl(binding.textViewThree.getText().toString());
+                shareUrl(binding.textViewThree.getText().toString(), getActivity());
             }
         });
 
 
+        binding.buttonShareQrCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new ShareQrCode(binding.imageViewQrCode, getActivity());
+            }
+        });
 
 
         binding.buttonFirst.setOnClickListener(new View.OnClickListener() {
@@ -155,55 +226,65 @@ public class FirstFragment extends Fragment {
     }
 
     @Override
-    public void onStart(){
+    public void onStart() {
         super.onStart();
         getSharedPreferences(getActivity().getSharedPreferences(
                 "savedUrl", Context.MODE_PRIVATE));
 
-    }
-
-    private void saveSharedPreferences(SharedPreferences preferences){
-        if(!binding.textInputUrl.getText().toString().isEmpty())
-            preferences.edit().putString("longUrl",binding.textInputUrl.getText().toString()).apply();
-        if(!binding.textviewFirst.getText().toString().isEmpty())
-            preferences.edit().putString("shortUrl1",binding.textviewFirst.getText().toString()).apply();
-        if(!binding.textViewSecond.getText().toString().isEmpty())
-            preferences.edit().putString("shortUrl2",binding.textViewSecond.getText().toString()).apply();
-        if(!binding.textViewThree.getText().toString().isEmpty())
-            preferences.edit().putString("shortUrl3",binding.textViewThree.getText().toString()).apply();
-    }
-
-    private void getSharedPreferences(SharedPreferences preferences){
-        binding.textInputUrl.setText(preferences.getString("longUrl",""));
-        binding.textviewFirst.setText(preferences.getString("shortUrl1","Short link 1"));
-        binding.textViewSecond.setText(preferences.getString("shortUrl2","Short link 2"));
-        binding.textViewThree.setText(preferences.getString("shortUrl3","Short link 3"));
 
     }
 
-    private void shareUrl(String url){
+    private void saveSharedPreferences(SharedPreferences preferences) {
+        if (!binding.textInputUrl.getText().toString().isEmpty())
+            preferences.edit().putString("longUrl", binding.textInputUrl.getText().toString()).apply();
+        if (!binding.textviewFirst.getText().toString().isEmpty())
+            preferences.edit().putString("shortUrl1", binding.textviewFirst.getText().toString()).apply();
+        if (!binding.textViewSecond.getText().toString().isEmpty())
+            preferences.edit().putString("shortUrl2", binding.textViewSecond.getText().toString()).apply();
+        if (!binding.textViewThree.getText().toString().isEmpty())
+            preferences.edit().putString("shortUrl3", binding.textViewThree.getText().toString()).apply();
+        generateQrCode(binding.textInputUrl.getText().toString(), getActivity(), binding.imageViewQrCode, binding.buttonShareQrCode);
+    }
+
+    private void getSharedPreferences(SharedPreferences preferences) {
+        binding.textInputUrl.setText(preferences.getString("longUrl", ""));
+        binding.textviewFirst.setText(preferences.getString("shortUrl1", "Short link 1"));
+        binding.textViewSecond.setText(preferences.getString("shortUrl2", "Short link 2"));
+        binding.textViewThree.setText(preferences.getString("shortUrl3", "Short link 3"));
+
+        String url = preferences.getString("longUrl", "");
+
+        if (!url.isEmpty()) {
+            generateQrCode(url, getActivity(), binding.imageViewQrCode, binding.buttonShareQrCode);
+        }
+
+    }
+
+    public static void shareUrl(String url, Context context) {
         Intent sharingIntent = new Intent(Intent.ACTION_SEND);
         sharingIntent.setType("text/html");
-        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml("<p>"+url+"</p>"));
-        startActivity(Intent.createChooser(sharingIntent, "Share using"));
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml("<p>" + url + "</p>"));
+        context.startActivity(Intent.createChooser(sharingIntent, url));
 
     }
 
-    private void copyUrl(String shortUrl) {
+    public static void copyUrl(String shortUrl, View v, Context context) {
 
-        if(shortUrl.contains("Short link"))
+        if (shortUrl.contains("Short link"))
             return;
 
         ClipboardManager clipboard = (ClipboardManager)
-                getParentFragment().getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                context.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("Short url", shortUrl);
         clipboard.setPrimaryClip(clip);
-        Toast.makeText(getActivity(), "url was copied", Toast.LENGTH_LONG).show();
+        Snackbar.make(context, v, "url was copied", Snackbar.LENGTH_LONG).show();
     }
 
-    public void generateQrCode(String text){
+    public static void generateQrCode(String text, Context context, ImageView imageViewQrCode, Button buttonShareQrCode) {
 
-        WindowManager manager = (WindowManager) getActivity().getSystemService(WINDOW_SERVICE);
+        WindowManager manager = (WindowManager) context.getSystemService(WINDOW_SERVICE);
+        QRGEncoder qrgEncoder;
+        Bitmap bitmap;
 
         // initializing a variable for default display.
         Display display = manager.getDefaultDisplay();
@@ -230,7 +311,8 @@ public class FirstFragment extends Fragment {
             bitmap = qrgEncoder.encodeAsBitmap();
             // the bitmap is set inside our image
             // view using .setimagebitmap method.
-             binding.imageViewQrCode.setImageBitmap(bitmap);
+            imageViewQrCode.setImageBitmap(bitmap);
+            buttonShareQrCode.setVisibility(View.VISIBLE);
         } catch (WriterException e) {
             // this method is called for
             // exception handling.
@@ -238,8 +320,8 @@ public class FirstFragment extends Fragment {
         }
 
 
-
     }
+
 
     @Override
     public void onDestroyView() {
@@ -249,6 +331,66 @@ public class FirstFragment extends Fragment {
                 "savedUrl", Context.MODE_PRIVATE));
 
         binding = null;
+
+    }
+
+    private class Async extends AsyncTask<String, String, String> {
+
+        private GetShortLink shortLink;
+        private View view;
+        private String url;
+
+        public Async(View view) {
+            this.view = view;
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            url = params[0];
+
+            try {
+                shortLink = new GetShortLink(url);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        protected void onPostExecute(String result) {
+
+            try {
+
+                if (shortLink != null)
+                    if (shortLink.getShortlink().isOk()) {
+                        DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, getResources().getConfiguration().locale);
+                        String date = df.format(Calendar.getInstance().getTime());
+
+                        binding.textviewFirst.setText("shrtco.de/" + shortLink.getShortlink().getCode());
+                        binding.textViewSecond.setText("9qr.de/" + shortLink.getShortlink().getCode());
+                        binding.textViewThree.setText("shiny.link/" + shortLink.getShortlink().getCode());
+                        saveSharedPreferences(getActivity().getSharedPreferences(
+                                "savedUrl", Context.MODE_PRIVATE));
+                        DataBase dataBase = new DataBase(getActivity());
+                        dataBase.insert(shortLink.getShortlink().getCode(), date,
+                                url);
+
+                        generateQrCode(url, getActivity(), binding.imageViewQrCode, binding.buttonShareQrCode);
+
+                        Snackbar.make(getActivity(), view, "Short url created", Snackbar.LENGTH_LONG).show();
+
+                    } else {
+                        Snackbar.make(getActivity(), view, shortLink.getShortlink().getErrorMensagem(), Snackbar.LENGTH_LONG).show();
+                    }
+
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            }catch (NullPointerException e){
+                e.printStackTrace();
+            }
+        }
 
     }
 

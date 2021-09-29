@@ -10,8 +10,8 @@
         android:id="@+id/textview_first"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="8dp"
         android:gravity="left"
         android:text="Short link 1"
         android:textColor="@android:color/holo_purple"
@@ -19,14 +19,16 @@
         app:layout_constraintBottom_toTopOf="@+id/textView_second"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewError" />
+        app:layout_constraintTop_toBottomOf="@+id/divider" />
 
     <Button
         android:id="@+id/button_first"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:text=" historic "
+        app:layout_constraintBottom_toTopOf="@+id/divider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/buttonGeneraterShort"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
@@ -46,15 +48,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:focusable="auto"
-            android:hint="Enter a Url to shorten" />
+            android:hint="Enter a Url to shorten"
+            android:maxLines="2" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/buttonGeneraterShort"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:text="Short link"
+        app:layout_constraintBottom_toTopOf="@+id/divider"
         app:layout_constraintEnd_toStartOf="@+id/button_first"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
@@ -63,6 +68,7 @@
         android:id="@+id/textView_second"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
         android:gravity="left"
         android:text="Short link 2"
@@ -92,9 +98,10 @@
         android:id="@+id/buttonCopy1"
         android:layout_width="25dp"
         android:layout_height="25dp"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:background="?attr/actionModeCopyDrawable"
-        app:backgroundTint="@color/purple_700"
+        app:backgroundTint="@color/purple_500"
         app:layout_constraintBottom_toBottomOf="@+id/textview_first"
         app:layout_constraintEnd_toStartOf="@+id/buttonShare1"
         app:layout_constraintStart_toEndOf="@+id/textview_first"
@@ -105,6 +112,7 @@
         android:id="@+id/buttonCopy2"
         android:layout_width="25dp"
         android:layout_height="25dp"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:background="?attr/actionModeCopyDrawable"
         android:text="Button"
@@ -119,6 +127,7 @@
         android:id="@+id/buttonCopy3"
         android:layout_width="25dp"
         android:layout_height="25dp"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:background="?attr/actionModeCopyDrawable"
         android:text="Button"
@@ -129,31 +138,18 @@
         app:layout_constraintTop_toTopOf="@+id/textView_three"
         tools:ignore="TouchTargetSizeCheck" />
 
-    <TextView
-        android:id="@+id/textViewError"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textColor="@color/design_default_color_primary"
-        android:textSize="16sp"
-        android:textStyle="bold|italic"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonGeneraterShort" />
-
     <View
         android:id="@+id/divider"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginStart="1dp"
         android:layout_marginEnd="1dp"
-        android:layout_marginBottom="8dp"
         android:background="?android:attr/listDivider"
-        app:layout_constraintBottom_toTopOf="@+id/textview_first"
+        app:layout_constraintBottom_toTopOf="@+id/buttonCopy1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewError" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonGeneraterShort" />
 
     <View
         android:id="@+id/divider2"
@@ -162,9 +158,8 @@
         android:layout_marginStart="1dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="1dp"
-        android:layout_marginBottom="8dp"
         android:background="?android:attr/listDivider"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintBottom_toTopOf="@+id/buttonShareQrCode"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_three" />
@@ -207,32 +202,48 @@
 
     <ImageView
         android:id="@+id/imageViewQrCode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_launcher_foreground"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonShareQrCode" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
         android:layout_marginTop="8dp"
-        android:text="Qr Code"
-        android:textSize="16sp"
-        android:textStyle="bold"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayoutAd"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider2" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonShareQrCode"
+        app:srcCompat="@drawable/icon256" />
 
     <Button
         android:id="@+id/buttonShareQrCode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="Share Qr Code"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@id/imageViewQrCode"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/divider2" />
+
+    <LinearLayout
+        android:id="@+id/linearLayoutAd"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/adView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/banner_ad_unit_id"></com.google.android.gms.ads.AdView>
+
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

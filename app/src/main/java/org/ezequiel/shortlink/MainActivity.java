@@ -1,7 +1,12 @@
 package org.ezequiel.shortlink;
 //d:\android-sdk\platform-tools\adb.exe connect 192.168.0.36
+import static androidx.core.content.ContextCompat.getSystemService;
+
+import android.content.Context;
 import android.os.Bundle;
 
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.RequestConfiguration;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,13 +20,15 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import org.ping.shortlink.R;
-import org.ping.shortlink.databinding.ActivityMainBinding;
-
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.InputMethodManager;
+
+import org.ezequiel.shortlink.databinding.ActivityMainBinding;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +41,12 @@ public class MainActivity extends AppCompatActivity {
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
+
+        List<String> testDeviceIds = Arrays.asList("DB530A1BBBDBFE8567328113528A19EF");
+        RequestConfiguration configuration =
+                new RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build();
+        MobileAds.setRequestConfiguration(configuration);
+
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -57,6 +70,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+
+    public static void hideKeybaord(View v, Context context) {
+        InputMethodManager inputMethodManager = (InputMethodManager)  context.getSystemService(INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(v.getApplicationWindowToken(),0);
     }
 
     @Override

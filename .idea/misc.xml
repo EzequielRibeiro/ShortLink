@@ -3,12 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Projeto-Android/ShortLink/app/src/main/res/layout-land/fragment_first.xml" value="0.33" />
+        <entry key="..\:/Projeto-Android/ShortLink/app/src/main/res/layout-land/fragment_first.xml" value="0.48589341692789967" />
         <entry key="..\:/Projeto-Android/ShortLink/app/src/main/res/layout-land/fragment_second.xml" value="0.25" />
         <entry key="..\:/Projeto-Android/ShortLink/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
         <entry key="..\:/Projeto-Android/ShortLink/app/src/main/res/layout/fragment_first.xml" value="0.33" />
         <entry key="..\:/Projeto-Android/ShortLink/app/src/main/res/layout/fragment_second.xml" value="0.20416666666666666" />
-        <entry key="..\:/Projeto-Android/ShortLink/app/src/main/res/layout/list_short_url.xml" value="0.33" />
+        <entry key="..\:/Projeto-Android/ShortLink/app/src/main/res/layout/list_short_url.xml" value="0.5" />
+        <entry key="..\:/Projeto-Android/ShortLink/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1125" />
       </map>
     </option>
   </component>

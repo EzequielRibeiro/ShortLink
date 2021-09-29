@@ -4,14 +4,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import org.ping.shortlink.R;
-import org.ping.shortlink.databinding.FragmentSecondBinding;
+import org.ezequiel.shortlink.databinding.FragmentSecondBinding;
+
 
 public class SecondFragment extends Fragment {
 
