@@ -28,6 +28,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -45,6 +46,7 @@ import com.google.android.gms.ads.initialization.OnInitializationCompleteListene
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.zxing.WriterException;
 import com.startapp.sdk.ads.banner.Banner;
 import com.startapp.sdk.ads.banner.BannerListener;
@@ -66,6 +68,7 @@ public class FirstFragment extends Fragment {
     private InterstitialAd mInterstitialAd;
     private Banner startAppBanner;
     private Async async;
+    private View viewRoot;
 
 
     @Override
@@ -75,6 +78,7 @@ public class FirstFragment extends Fragment {
     ) {
 
         binding = FragmentFirstBinding.inflate(inflater, container, false);
+        viewRoot = inflater.inflate(R.layout.fragment_first, container, false);
         return binding.getRoot();
 
     }
@@ -98,7 +102,7 @@ public class FirstFragment extends Fragment {
                 // Code to be executed when an ad request fails.
                 binding.linearLayoutAd.removeView(binding.adView);
 
-               startAppBanner = new Banner(getActivity(), new BannerListener() {
+                startAppBanner = new Banner(getActivity(), new BannerListener() {
                     @Override
                     public void onReceiveAd(View view) {
 
@@ -120,8 +124,8 @@ public class FirstFragment extends Fragment {
                     }
                 });
 
-              if(startAppBanner != null)
-                   binding.linearLayoutAd.addView(startAppBanner);
+                if (startAppBanner != null)
+                    binding.linearLayoutAd.addView(startAppBanner);
 
             }
 
@@ -160,10 +164,10 @@ public class FirstFragment extends Fragment {
 
                         if (Patterns.WEB_URL.matcher(url).matches()) {
 
-                          cancelAsync();
-                          async =  new Async(v);
-                          async.execute(url);
-                          startProgress();
+                            cancelAsync();
+                            async = new Async(v);
+                            async.execute(url);
+                            startProgress();
 
                         } else {
                             Snackbar.make(getActivity(), v, "url is invalid", Snackbar.LENGTH_LONG).show();
@@ -237,22 +241,63 @@ public class FirstFragment extends Fragment {
                 cancelAsync();
                 NavHostFragment.findNavController(FirstFragment.this)
                         .navigate(R.id.action_FirstFragment_to_SecondFragment);
-                         showInterstitial();
+                showInterstitial();
             }
         });
+
+        receivedFromShare();
+
     }
 
-    private void cancelAsync(){
-        if(async != null){
-            if(async.getStatus() == AsyncTask.Status.RUNNING){
+    private void cancelAsync() {
+        if (async != null) {
+            if (async.getStatus() == AsyncTask.Status.RUNNING) {
                 async.cancel(true);
-                Log.i("AsyncTask","canceled");
+                Log.i("AsyncTask", "canceled");
             }
         }
     }
 
+    private void receivedFromShare(){
+        Intent intent = getActivity().getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
+
+        if (Intent.ACTION_SEND.equals(action) && type != null) {
+            if ("text/plain".equals(type)) {
+
+                String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+                if (sharedText != null) {
+
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            binding.textInputUrl.setText(sharedText);
+                        }
+                    });
+
+                    cancelAsync();
+                    async = new Async(getActivity().getWindow().getDecorView().getRootView());
+                    async.execute(sharedText);
+                    startProgress();
+
+                    Snackbar.make(getActivity().getWindow().getDecorView().getRootView(), "URL received", Snackbar.LENGTH_LONG).show();
+                }
+
+            }
+
+        }
+    }
+
     @Override
-    public void onStop(){
+    public void onResume() {
+        super.onResume();
+
+
+    }
+
+    @Override
+    public void onStop() {
         super.onStop();
         cancelAsync();
     }
@@ -268,17 +313,17 @@ public class FirstFragment extends Fragment {
 
     private void saveSharedPreferences(SharedPreferences preferences) {
 
-   if(!binding.textviewFirst.getText().equals("wait...") && !binding.textviewFirst.getText().equals("error")) {
-       if (!binding.textInputUrl.getText().toString().isEmpty())
-           preferences.edit().putString("longUrl", binding.textInputUrl.getText().toString()).apply();
-       if (!binding.textviewFirst.getText().toString().isEmpty())
-           preferences.edit().putString("shortUrl1", binding.textviewFirst.getText().toString()).apply();
-       if (!binding.textViewSecond.getText().toString().isEmpty())
-           preferences.edit().putString("shortUrl2", binding.textViewSecond.getText().toString()).apply();
-       if (!binding.textViewThree.getText().toString().isEmpty())
-           preferences.edit().putString("shortUrl3", binding.textViewThree.getText().toString()).apply();
-       generateQrCode(binding.textInputUrl.getText().toString(), getActivity(), binding.imageViewQrCode, binding.buttonShareQrCode);
-   }
+        if (!binding.textviewFirst.getText().equals("wait...") && !binding.textviewFirst.getText().equals("error")) {
+            if (!binding.textInputUrl.getText().toString().isEmpty())
+                preferences.edit().putString("longUrl", binding.textInputUrl.getText().toString()).apply();
+            if (!binding.textviewFirst.getText().toString().isEmpty())
+                preferences.edit().putString("shortUrl1", binding.textviewFirst.getText().toString()).apply();
+            if (!binding.textViewSecond.getText().toString().isEmpty())
+                preferences.edit().putString("shortUrl2", binding.textViewSecond.getText().toString()).apply();
+            if (!binding.textViewThree.getText().toString().isEmpty())
+                preferences.edit().putString("shortUrl3", binding.textViewThree.getText().toString()).apply();
+            generateQrCode(binding.textInputUrl.getText().toString(), getActivity(), binding.imageViewQrCode, binding.buttonShareQrCode);
+        }
     }
 
     private void getSharedPreferences(SharedPreferences preferences) {
@@ -300,13 +345,13 @@ public class FirstFragment extends Fragment {
         if (url.contains("Short link"))
             return;
 
-        if(url.equals("wait...") || url.equals("error"))
+        if (url.equals("wait...") || url.equals("error"))
             return;
 
-            Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-            sharingIntent.setType("text/html");
-            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml("<p>" + url + "</p>"));
-            context.startActivity(Intent.createChooser(sharingIntent, url));
+        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+        sharingIntent.setType("text/html");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml("<p>" + url + "</p>"));
+        context.startActivity(Intent.createChooser(sharingIntent, url));
 
 
     }
@@ -315,15 +360,15 @@ public class FirstFragment extends Fragment {
 
         if (shortUrl.contains("Short link"))
             return;
-        if(shortUrl.equals("wait...") || shortUrl.equals("error"))
+        if (shortUrl.equals("wait...") || shortUrl.equals("error"))
             return;
 
 
-            ClipboardManager clipboard = (ClipboardManager)
-                    context.getSystemService(Context.CLIPBOARD_SERVICE);
-            ClipData clip = ClipData.newPlainText("Short url", shortUrl);
-            clipboard.setPrimaryClip(clip);
-            Snackbar.make(context, v, "url was copied", Snackbar.LENGTH_LONG).show();
+        ClipboardManager clipboard = (ClipboardManager)
+                context.getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("Short url", shortUrl);
+        clipboard.setPrimaryClip(clip);
+        Snackbar.make(context, v, "url was copied", Snackbar.LENGTH_LONG).show();
 
     }
 
@@ -369,7 +414,7 @@ public class FirstFragment extends Fragment {
 
     }
 
-    private void showInterstitial(){
+    private void showInterstitial() {
         if (mInterstitialAd != null) {
             mInterstitialAd.show(getActivity());
         } else {
@@ -378,11 +423,11 @@ public class FirstFragment extends Fragment {
         }
     }
 
-    private void intersticiaisAdLoad(){
+    private void intersticiaisAdLoad() {
 
         AdRequest adRequest = new AdRequest.Builder().build();
 
-        InterstitialAd.load(getContext(),getString(R.string.intersticiais_ad_unit_id), adRequest,
+        InterstitialAd.load(getContext(), getString(R.string.intersticiais_ad_unit_id), adRequest,
                 new InterstitialAdLoadCallback() {
                     @Override
                     public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
@@ -406,16 +451,14 @@ public class FirstFragment extends Fragment {
 
     private void startProgress() {
 
-                binding.textviewFirst.setText("wait...");
-                binding.textViewSecond.setText("wait...");
-                binding.textViewThree.setText("wait...");
-                binding.progressBar1.setVisibility(View.VISIBLE);
-                binding.progressBar2.setVisibility(View.VISIBLE);
-                binding.progressBar3.setVisibility(View.VISIBLE);
+        binding.textviewFirst.setText("wait...");
+        binding.textViewSecond.setText("wait...");
+        binding.textViewThree.setText("wait...");
+        binding.progressBar1.setVisibility(View.VISIBLE);
+        binding.progressBar2.setVisibility(View.VISIBLE);
+        binding.progressBar3.setVisibility(View.VISIBLE);
 
     }
-
-
 
 
     @Override
@@ -461,7 +504,7 @@ public class FirstFragment extends Fragment {
 
                 if (shortLink != null)
                     if (shortLink.getShortlink().isOk()) {
-                        DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT,getActivity().getResources().getConfiguration().locale);
+                        DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, getActivity().getResources().getConfiguration().locale);
                         String date = df.format(Calendar.getInstance().getTime());
 
                         binding.textviewFirst.setText("shrtco.de/" + shortLink.getShortlink().getCode());
@@ -475,7 +518,7 @@ public class FirstFragment extends Fragment {
 
                         generateQrCode(url, getActivity(), binding.imageViewQrCode, binding.buttonShareQrCode);
 
-                        Snackbar.make(getActivity(), view, "Short url created", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(getActivity(), view, "Success! ", Snackbar.LENGTH_LONG).show();
 
                     } else {
 
@@ -494,16 +537,16 @@ public class FirstFragment extends Fragment {
 
             } catch (IllegalArgumentException e) {
                 e.printStackTrace();
-            }catch (NullPointerException e){
+            } catch (NullPointerException e) {
                 e.printStackTrace();
             }
 
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    binding.progressBar1.setVisibility(View.INVISIBLE);
-                    binding.progressBar2.setVisibility(View.INVISIBLE);
-                    binding.progressBar3.setVisibility(View.INVISIBLE);
+                    binding.progressBar1.setVisibility(View.GONE);
+                    binding.progressBar2.setVisibility(View.GONE);
+                    binding.progressBar3.setVisibility(View.GONE);
                 }
             });
 

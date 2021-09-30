@@ -11,7 +11,7 @@ android {
         applicationId "org.ezequiel.shortlink"
         minSdk 20
         targetSdk 30
-        versionCode 2
+        versionCode 3
         versionName "1.0"
         multiDexEnabled true
 
