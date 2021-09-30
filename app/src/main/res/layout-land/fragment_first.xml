@@ -111,7 +111,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal"
@@ -119,14 +119,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/divider">
 
+        <ProgressBar
+            android:id="@+id/progressBar1"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:visibility="invisible" />
+
         <TextView
             android:id="@+id/textview_first"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="left"
+            android:minWidth="90dp"
             android:text="Short link 1"
             android:textColor="@android:color/holo_purple"
-            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/divider" />
 
@@ -134,8 +141,7 @@
             android:id="@+id/buttonCopy1"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="2dp"
             android:background="?attr/actionModeCopyDrawable"
             app:backgroundTint="@color/purple_700"
             app:layout_constraintBottom_toBottomOf="@+id/textview_first"
@@ -155,15 +161,22 @@
             app:layout_constraintTop_toTopOf="@+id/buttonCopy1"
             tools:ignore="TouchTargetSizeCheck" />
 
+        <ProgressBar
+            android:id="@+id/progressBar2"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="10dp"
+            android:visibility="invisible" />
+
         <TextView
             android:id="@+id/textView_second"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
             android:gravity="left"
+            android:minWidth="90dp"
             android:text="Short link 2"
             android:textColor="@android:color/holo_purple"
-            android:textSize="16sp"
             app:layout_constraintStart_toEndOf="@+id/buttonShare1"
             app:layout_constraintTop_toBottomOf="@+id/divider" />
 
@@ -171,8 +184,7 @@
             android:id="@+id/buttonCopy2"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="2dp"
             android:background="?attr/actionModeCopyDrawable"
             android:text="Button"
             app:backgroundTint="@color/purple_500"
@@ -193,15 +205,22 @@
             app:layout_constraintTop_toTopOf="@+id/buttonCopy2"
             tools:ignore="TouchTargetSizeCheck" />
 
+        <ProgressBar
+            android:id="@+id/progressBar3"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="10dp"
+            android:visibility="invisible" />
+
         <TextView
             android:id="@+id/textView_three"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
             android:gravity="left"
+            android:minWidth="90dp"
             android:text="Short link 3"
             android:textColor="@android:color/holo_purple"
-            android:textSize="16sp"
             app:layout_constraintStart_toEndOf="@+id/buttonShare2"
             app:layout_constraintTop_toBottomOf="@+id/divider" />
 
@@ -209,8 +228,7 @@
             android:id="@+id/buttonCopy3"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="2dp"
             android:background="?attr/actionModeCopyDrawable"
             android:text="Button"
             app:backgroundTint="@color/purple_500"

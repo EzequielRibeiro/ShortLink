@@ -253,7 +253,7 @@
         android:layout_height="25dp"
         android:layout_marginEnd="8dp"
         android:indeterminate="true"
-        android:visibility="gone"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/textview_first"
         app:layout_constraintEnd_toStartOf="@+id/textview_first"
         app:layout_constraintTop_toTopOf="@+id/textview_first" />
@@ -265,7 +265,7 @@
         android:layout_height="25dp"
         android:layout_marginEnd="8dp"
         android:indeterminate="true"
-        android:visibility="gone"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/textView_second"
         app:layout_constraintEnd_toStartOf="@+id/textView_second"
         app:layout_constraintTop_toTopOf="@+id/textView_second" />
@@ -276,7 +276,7 @@
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_marginEnd="8dp"
-        android:visibility="gone"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/textView_three"
         app:layout_constraintEnd_toStartOf="@+id/textView_three"
         app:layout_constraintTop_toTopOf="@+id/textView_three" />

@@ -65,6 +65,7 @@ public class FirstFragment extends Fragment {
     private FragmentFirstBinding binding;
     private InterstitialAd mInterstitialAd;
     private Banner startAppBanner;
+    private Async async;
 
 
     @Override
@@ -159,7 +160,10 @@ public class FirstFragment extends Fragment {
 
                         if (Patterns.WEB_URL.matcher(url).matches()) {
 
-                            new Async(v).execute(url);
+                          cancelAsync();
+                          async =  new Async(v);
+                          async.execute(url);
+                          startProgress();
 
                         } else {
                             Snackbar.make(getActivity(), v, "url is invalid", Snackbar.LENGTH_LONG).show();
@@ -230,12 +234,27 @@ public class FirstFragment extends Fragment {
         binding.buttonGoHistoric.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                
+                cancelAsync();
                 NavHostFragment.findNavController(FirstFragment.this)
                         .navigate(R.id.action_FirstFragment_to_SecondFragment);
                          showInterstitial();
             }
         });
+    }
+
+    private void cancelAsync(){
+        if(async != null){
+            if(async.getStatus() == AsyncTask.Status.RUNNING){
+                async.cancel(true);
+                Log.i("AsyncTask","canceled");
+            }
+        }
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        cancelAsync();
     }
 
     @Override
@@ -277,10 +296,18 @@ public class FirstFragment extends Fragment {
     }
 
     public static void shareUrl(String url, Context context) {
-        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-        sharingIntent.setType("text/html");
-        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml("<p>" + url + "</p>"));
-        context.startActivity(Intent.createChooser(sharingIntent, url));
+
+        if (url.contains("Short link"))
+            return;
+
+        if(url.equals("wait...") || url.equals("error"))
+            return;
+
+            Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+            sharingIntent.setType("text/html");
+            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml("<p>" + url + "</p>"));
+            context.startActivity(Intent.createChooser(sharingIntent, url));
+
 
     }
 
@@ -288,12 +315,16 @@ public class FirstFragment extends Fragment {
 
         if (shortUrl.contains("Short link"))
             return;
+        if(shortUrl.equals("wait...") || shortUrl.equals("error"))
+            return;
 
-        ClipboardManager clipboard = (ClipboardManager)
-                context.getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData clip = ClipData.newPlainText("Short url", shortUrl);
-        clipboard.setPrimaryClip(clip);
-        Snackbar.make(context, v, "url was copied", Snackbar.LENGTH_LONG).show();
+
+            ClipboardManager clipboard = (ClipboardManager)
+                    context.getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clip = ClipData.newPlainText("Short url", shortUrl);
+            clipboard.setPrimaryClip(clip);
+            Snackbar.make(context, v, "url was copied", Snackbar.LENGTH_LONG).show();
+
     }
 
     public static void generateQrCode(String text, Context context, ImageView imageViewQrCode, Button buttonShareQrCode) {
@@ -373,6 +404,20 @@ public class FirstFragment extends Fragment {
 
     }
 
+    private void startProgress() {
+
+                binding.textviewFirst.setText("wait...");
+                binding.textViewSecond.setText("wait...");
+                binding.textViewThree.setText("wait...");
+                binding.progressBar1.setVisibility(View.VISIBLE);
+                binding.progressBar2.setVisibility(View.VISIBLE);
+                binding.progressBar3.setVisibility(View.VISIBLE);
+
+    }
+
+
+
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -397,18 +442,6 @@ public class FirstFragment extends Fragment {
         @Override
         protected String doInBackground(String... params) {
 
-          getActivity().runOnUiThread(new Runnable() {
-              @Override
-              public void run() {
-                  binding.textviewFirst.setText("wait...");
-                  binding.textViewSecond.setText("wait...");
-                  binding.textViewThree.setText("wait...");
-                  binding.progressBar1.setVisibility(View.VISIBLE);
-                  binding.progressBar2.setVisibility(View.VISIBLE);
-                  binding.progressBar3.setVisibility(View.VISIBLE);
-
-              }
-          });
 
             url = params[0];
 
@@ -468,9 +501,9 @@ public class FirstFragment extends Fragment {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    binding.progressBar1.setVisibility(View.GONE);
-                    binding.progressBar2.setVisibility(View.GONE);
-                    binding.progressBar3.setVisibility(View.GONE);
+                    binding.progressBar1.setVisibility(View.INVISIBLE);
+                    binding.progressBar2.setVisibility(View.INVISIBLE);
+                    binding.progressBar3.setVisibility(View.INVISIBLE);
                 }
             });
 
