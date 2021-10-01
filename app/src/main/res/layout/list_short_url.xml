@@ -8,10 +8,47 @@
     android:gravity="left">
 
     <Button
-        android:id="@+id/buttonCopyHistoric3"
+        android:id="@+id/buttonShareHistoric4"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="?attr/actionModeShareDrawable"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="@id/buttonCopyHistoric4"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewQrCodeHistoric"
+        app:layout_constraintStart_toEndOf="@id/buttonCopyHistoric4"
+        app:layout_constraintTop_toTopOf="@id/buttonCopyHistoric4"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <Button
+        android:id="@+id/buttonCopyHistoric4"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:background="?attr/actionModeCopyDrawable"
+        app:backgroundTint="@color/purple_500"
+        app:layout_constraintBottom_toBottomOf="@id/textViewShort4"
+        app:layout_constraintStart_toEndOf="@id/textViewShort4"
+        app:layout_constraintTop_toTopOf="@id/textViewShort4"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+    <TextView
+        android:id="@+id/textViewShort4"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:gravity="left"
+        android:maxLines="2"
+        android:text="https://is.gd.de/testView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewShort3"
+        app:layout_constraintWidth_max="160dp" />
+
+    <Button
+        android:id="@+id/buttonCopyHistoric3"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:background="?attr/actionModeCopyDrawable"
         app:backgroundTint="@color/purple_500"
         app:layout_constraintBottom_toBottomOf="@+id/textViewShort3"
@@ -24,9 +61,11 @@
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:background="?attr/actionModeShareDrawable"
         android:text="Button"
         app:layout_constraintBottom_toBottomOf="@+id/buttonCopyHistoric3"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewQrCodeHistoric"
         app:layout_constraintStart_toEndOf="@+id/buttonCopyHistoric3"
         app:layout_constraintTop_toTopOf="@+id/buttonCopyHistoric3"
         tools:ignore="TouchTargetSizeCheck" />
@@ -35,8 +74,6 @@
         android:id="@+id/buttonCopyHistoric2"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
         android:background="?attr/actionModeCopyDrawable"
         app:backgroundTint="@color/purple_500"
         app:layout_constraintBottom_toBottomOf="@+id/textViewShort2"
@@ -49,9 +86,11 @@
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:background="?attr/actionModeShareDrawable"
         android:text="Button"
         app:layout_constraintBottom_toBottomOf="@+id/buttonCopyHistoric2"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewQrCodeHistoric"
         app:layout_constraintStart_toEndOf="@+id/buttonCopyHistoric2"
         app:layout_constraintTop_toTopOf="@+id/buttonCopyHistoric2"
         tools:ignore="TouchTargetSizeCheck" />
@@ -60,7 +99,6 @@
         android:id="@+id/buttonCopyHistoric1"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:layout_marginStart="8dp"
         android:background="?attr/actionModeCopyDrawable"
         app:backgroundTint="@color/purple_500"
         app:layout_constraintBottom_toBottomOf="@+id/textViewShort1"
@@ -73,9 +111,11 @@
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:background="?attr/actionModeShareDrawable"
         android:text="Button"
         app:layout_constraintBottom_toBottomOf="@+id/buttonCopyHistoric1"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewQrCodeHistoric"
         app:layout_constraintStart_toEndOf="@+id/buttonCopyHistoric1"
         app:layout_constraintTop_toTopOf="@+id/buttonCopyHistoric1"
         tools:ignore="TouchTargetSizeCheck" />
@@ -96,56 +136,62 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="5dp"
         android:gravity="left"
         android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/textViewOriginal_link"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/textViewShort1"
-        android:layout_width="130dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="left"
-        android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/textViewShort2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/textViewShort1"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="left"
+        android:singleLine="true"
+        android:text="https://shrtco.de"
+        app:layout_constraintBottom_toTopOf="@+id/textViewShort2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewShortDate"
+        app:layout_constraintWidth_max="160dp" />
+
+    <TextView
         android:id="@+id/textViewShort2"
-        android:layout_width="130dp"
+        android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:gravity="left"
-        android:text="TextView"
+        android:singleLine="true"
+        android:text="https://shrtco.de"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewShort1" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewShort1"
+        app:layout_constraintWidth_max="160dp" />
 
     <TextView
         android:id="@+id/textViewShort3"
-        android:layout_width="130dp"
+        android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:gravity="left"
-        android:text="TextView"
+        android:singleLine="true"
+        android:text="https://shrtco.de"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewShort2" />
+        app:layout_constraintTop_toBottomOf="@id/textViewShort2"
+        app:layout_constraintWidth_max="160dp" />
 
     <TextView
         android:id="@+id/textViewOriginal_link"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:gravity="left"
         android:maxLines="2"
         android:text="TextView"
         android:textIsSelectable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonShareQrCodeHistoric"
@@ -155,7 +201,8 @@
         android:id="@+id/imageViewQrCodeHistoric"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="5dp"
         app:layout_constraintBottom_toTopOf="@+id/buttonShareQrCodeHistoric"
         app:layout_constraintStart_toEndOf="@+id/buttonShareHistoric2"
         app:layout_constraintTop_toTopOf="parent"
@@ -174,6 +221,7 @@
         android:id="@+id/imageButtonDeleteHistoric"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:layout_marginTop="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_menu_delete"

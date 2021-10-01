@@ -10,6 +10,7 @@ import android.os.Bundle;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.startapp.sdk.adsbase.StartAppAd;
@@ -22,8 +23,12 @@ import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.util.Log;
 import android.view.View;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import android.view.Menu;
@@ -78,16 +83,7 @@ public class MainActivity extends AppCompatActivity {
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
-        binding.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-
-            }
-        });
     }
-
 
     public static void hideKeybaord(View v, Context context) {
         InputMethodManager inputMethodManager = (InputMethodManager)  context.getSystemService(INPUT_METHOD_SERVICE);
@@ -114,6 +110,12 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             return true;
         }
+
+        if (id == R.id.action_help) {
+            showHelp();
+            return true;
+        }
+
         if (id == R.id.action_about) {
             about();
             return true;
@@ -135,6 +137,18 @@ public class MainActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
+    private void showHelp(){
+        FragmentManager fragmentManager = MainActivity.this.getSupportFragmentManager();
+        Fragment fragment = fragmentManager.getPrimaryNavigationFragment();
+
+        try {
+            NavHostFragment.findNavController(fragment)
+                    .navigate(R.id.action_FirstFragment_to_HelpFragment3);
+        }catch(IllegalArgumentException e){
+            e.printStackTrace();
+        }
+
+    }
 
     private void about() {
 

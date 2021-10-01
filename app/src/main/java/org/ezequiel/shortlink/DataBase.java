@@ -18,7 +18,8 @@ public class DataBase extends SQLiteOpenHelper {
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + TABLE_NAME + " (" +
                     "id" + " INTEGER PRIMARY KEY," +
-                    "code" + " TEXT NOT NULL UNIQUE," +
+                    "codeShort1" + " TEXT DEFAULT '...'," +
+                    "codeShort2" + " TEXT DEFAULT '...'," +
                     "long_url" + " TEXT NOT NULL UNIQUE," +
                     "date" + " TEXT)";
 
@@ -32,10 +33,10 @@ public class DataBase extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_ENTRIES);
     }
 
-    public long insert(String code, String date,String long_url){
+    public long insertShortUrl1(String codeShort1, String date,String long_url){
         long newRowId = -1;
         ContentValues values = new ContentValues();
-        values.put("code", code);
+        values.put("codeShort1", codeShort1);
         values.put("date", date);
         values.put("long_url",long_url);
 
@@ -50,7 +51,64 @@ public class DataBase extends SQLiteOpenHelper {
 
     }
 
-    public ArrayList<ShortAddress>  readData(){
+    public long insertShortUrl2(String codeShort2, String date,String long_url){
+        long newRowId = -1;
+        ContentValues values = new ContentValues();
+        values.put("codeShort2", codeShort2);
+        values.put("date", date);
+        values.put("long_url",long_url);
+
+        SQLiteDatabase db = getReadableDatabase();
+        try {
+            newRowId = db.insert(TABLE_NAME, null, values);
+            db.close();
+        }catch(SQLiteConstraintException e){
+            e.printStackTrace();
+        }
+        return newRowId;
+
+    }
+
+    public long updateShortUrl1(String codeShort1, String date,String longUrl){
+
+        SQLiteDatabase db = getReadableDatabase();
+
+        ContentValues cv = new ContentValues();
+        cv.put("codeShort1",codeShort1);
+        cv.put("date", date);
+
+        long i =  db.update(TABLE_NAME,cv,"long_url = ?",new String[]{longUrl});
+        db.close();
+
+
+     return i;
+    }
+    public long updateShortUrl2(String codeShort2, String date,String longUrl){
+
+        SQLiteDatabase db = getReadableDatabase();
+
+        ContentValues cv = new ContentValues();
+        cv.put("codeShort2",codeShort2);
+        cv.put("date", date);
+
+        long i =  db.update(TABLE_NAME,cv,"long_url = ?",new String[]{longUrl});
+        db.close();
+        return i;
+    }
+
+
+    public int selectUrlExists(String url){
+
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM "+TABLE_NAME+" WHERE long_url = '"+url.trim()+"'", null);
+        c.moveToFirst();
+        int count = c.getCount();
+        c.close();
+        db.close();
+        return count;
+    }
+
+    public ArrayList<ShortLink>  readData(){
 
         SQLiteDatabase db = getReadableDatabase();
 
@@ -58,7 +116,8 @@ public class DataBase extends SQLiteOpenHelper {
 // you will actually use after this query.
         String[] projection = {
                 "id",
-                "code",
+                "codeShort1",
+                "codeShort2",
                 "date",
                 "long_url"
         };
@@ -81,14 +140,16 @@ public class DataBase extends SQLiteOpenHelper {
                 sortOrder               // The sort order
         );
 
-        ArrayList<ShortAddress> itemIds = new ArrayList<>();
-        ShortAddress shortAddress;
+        ArrayList<ShortLink> itemIds = new ArrayList<>();
+        ShortLink shortAddress;
         while(cursor.moveToNext()) {
-            shortAddress = new ShortAddress();
-            shortAddress.setId(cursor.getLong(
+            shortAddress = new ShortLink();
+            shortAddress.setId(cursor.getString(
                     cursor.getColumnIndexOrThrow("id")));
-            shortAddress.setCode(cursor.getString(
-                    cursor.getColumnIndexOrThrow("code")));
+            shortAddress.setCode1(cursor.getString(
+                    cursor.getColumnIndexOrThrow("codeShort1")));
+            shortAddress.setCode2(cursor.getString(
+                    cursor.getColumnIndexOrThrow("codeShort2")));
             shortAddress.setDate(cursor.getString(
                     cursor.getColumnIndexOrThrow("date")));
             shortAddress.setOriginal_link(cursor.getString(

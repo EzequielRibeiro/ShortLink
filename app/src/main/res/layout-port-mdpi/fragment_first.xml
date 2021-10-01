@@ -7,14 +7,12 @@
     tools:context="org.ezequiel.shortlink.FirstFragment">
 
 
-
     <Button
         android:id="@+id/buttonGoHistoric"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginEnd="16dp"
         android:text=" historic "
         app:layout_constraintBottom_toTopOf="@+id/divider"
         app:layout_constraintEnd_toEndOf="parent"
@@ -61,8 +59,7 @@
         android:id="@+id/buttonGeneraterShort"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
         android:text="Short link"
         app:layout_constraintBottom_toTopOf="@+id/divider"
         app:layout_constraintEnd_toStartOf="@+id/buttonGoHistoric"
@@ -87,7 +84,6 @@
         android:layout_width="0dp"
         android:layout_height="2dp"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="1dp"
         android:background="?android:attr/listDivider"
         app:layout_constraintEnd_toEndOf="parent"
@@ -96,12 +92,12 @@
 
     <ImageView
         android:id="@+id/imageViewQrCode"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
         android:adjustViewBounds="false"
         android:paddingBottom="8dp"
         android:scaleType="centerInside"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayoutAd"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/buttonShareQrCode"
@@ -110,8 +106,7 @@
     <Button
         android:id="@+id/buttonShareQrCode"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_height="40dp"
         android:text="Share Qr Code"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/imageViewQrCode"
@@ -147,7 +142,6 @@
         android:id="@+id/linearLayout2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -200,7 +194,6 @@
         android:id="@+id/linearLayout3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -253,7 +246,6 @@
         android:id="@+id/linearLayout4"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -305,7 +297,6 @@
         android:id="@+id/linearLayout5"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -349,8 +340,6 @@
             android:background="?attr/actionModeShareDrawable"
             android:text="Button"
             tools:ignore="TouchTargetSizeCheck" />
-
-
 
 
     </LinearLayout>

@@ -4,6 +4,7 @@
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">Short Link</string>
     <string name="second_fragment_label">Short Link Historic</string>
+    <string name="help_fragment">Short Link Help</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
@@ -13,5 +14,7 @@
     <string name="banner_ad_unit_id">ca-app-pub-0822808376839371/7738163951</string>
     <string name="intersticiais_ad_unit_id">ca-app-pub-0822808376839371/3791519393</string>
     <string name="startapp_app_id">208110783</string>
+    <!-- TODO: Remove or change this placeholder text -->
+
 
 </resources>

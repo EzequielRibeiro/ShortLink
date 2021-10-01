@@ -22,11 +22,11 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
-public class AdapterListView extends ArrayAdapter<ShortAddress> {
+public class AdapterListView extends ArrayAdapter<ShortLink> {
 
-    private ArrayList<ShortAddress> urlsList;
+    private ArrayList<ShortLink> urlsList;
 
-    public AdapterListView(Context context, ArrayList<ShortAddress> urls) {
+    public AdapterListView(Context context, ArrayList<ShortLink> urls) {
         super(context, 0, urls);
         urlsList = urls;
     }
@@ -34,7 +34,7 @@ public class AdapterListView extends ArrayAdapter<ShortAddress> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
-        ShortAddress urls = getItem(position);
+        ShortLink urls = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_short_url, parent, false);
@@ -45,6 +45,7 @@ public class AdapterListView extends ArrayAdapter<ShortAddress> {
         TextView link1 = (TextView) convertView.findViewById(R.id.textViewShort1);
         TextView link2 = (TextView) convertView.findViewById(R.id.textViewShort2);
         TextView link3 = (TextView) convertView.findViewById(R.id.textViewShort3);
+        TextView link4 = (TextView) convertView.findViewById(R.id.textViewShort4);
         TextView original_link = (TextView) convertView.findViewById(R.id.textViewOriginal_link);
         Button buttonShareQrCode = (Button) convertView.findViewById(R.id.buttonShareQrCodeHistoric);
         ImageView imageViewQrCode = (ImageView) convertView.findViewById(R.id.imageViewQrCodeHistoric);
@@ -52,9 +53,10 @@ public class AdapterListView extends ArrayAdapter<ShortAddress> {
         // Populate the data into the template view using the data object
         id.setText(String.valueOf(urls.getId()));
         date.setText(urls.getDate());
-        link1.setText("shrtco.de/"+urls.getCode());
-        link2.setText("9qr.de/" +urls.getCode());
-        link3.setText("shiny.link/" +urls.getCode());
+        link1.setText("shrtco.de/"+urls.getCode1());
+        link2.setText("9qr.de/" +urls.getCode1());
+        link3.setText("shiny.link/" +urls.getCode1());
+        link4.setText(urls.getCode2().replace("https://",""));
         original_link.setText(urls.getOriginal_link());
 
         generateQrCode(original_link.getText().toString(),
@@ -71,10 +73,12 @@ public class AdapterListView extends ArrayAdapter<ShortAddress> {
         Button buttonCopyHistoric1 = (Button) convertView.findViewById(R.id.buttonCopyHistoric1);
         Button buttonCopyHistoric2 = (Button) convertView.findViewById(R.id.buttonCopyHistoric2);
         Button buttonCopyHistoric3 = (Button) convertView.findViewById(R.id.buttonCopyHistoric3);
+        Button buttonCopyHistoric4 = (Button) convertView.findViewById(R.id.buttonCopyHistoric4);
 
         Button buttonShareHistoric1 = (Button) convertView.findViewById(R.id.buttonShareHistoric1);
         Button buttonShareHistoric2 = (Button) convertView.findViewById(R.id.buttonShareHistoric2);
         Button buttonShareHistoric3 = (Button) convertView.findViewById(R.id.buttonShareHistoric3);
+        Button buttonShareHistoric4 = (Button) convertView.findViewById(R.id.buttonShareHistoric4);
 
         ImageButton buttonDeleteHistoric = (ImageButton) convertView.findViewById(R.id.imageButtonDeleteHistoric);
         buttonDeleteHistoric.setTag(urls.getId());
@@ -98,6 +102,13 @@ public class AdapterListView extends ArrayAdapter<ShortAddress> {
             }
         });
 
+        buttonCopyHistoric4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                copyUrl(link4.getText().toString(),v, getContext());
+            }
+        });
+
         buttonShareHistoric1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,6 +128,13 @@ public class AdapterListView extends ArrayAdapter<ShortAddress> {
             }
         });
 
+        buttonShareHistoric4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareUrl(link4.getText().toString(),getContext());
+            }
+        });
+
         buttonDeleteHistoric.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,7 +148,7 @@ public class AdapterListView extends ArrayAdapter<ShortAddress> {
     }
 
 
-    private void buildShowDialodDelete(ShortAddress urls, View v) {
+    private void buildShowDialodDelete(ShortLink urls, View v) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 

@@ -1,6 +1,10 @@
 package org.ezequiel.shortlink;
 
 public class ShortLink {
+
+
+    private  String id;
+    private String date;
     private  boolean isOkUrl1 = false;
     private  boolean isOkUrl2 = false;
     private  String errorMensagem1 = "", errorMensagem2 = "";
@@ -21,6 +25,22 @@ public class ShortLink {
 
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 
     public boolean getIsOkUrl1() {
         return isOkUrl1;

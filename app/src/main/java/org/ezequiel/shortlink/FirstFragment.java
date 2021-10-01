@@ -33,6 +33,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.zxing.WriterException;
 import com.startapp.sdk.ads.banner.Banner;
@@ -53,8 +54,6 @@ public class FirstFragment extends Fragment {
     private InterstitialAd mInterstitialAd;
     private Banner startAppBanner;
     private Async async;
-    private View viewRoot;
-
     private final String URL1 = "https://api.shrtco.de/v2/shorten?url=";
     private final String URL2 = "https://is.gd/create.php?format=json&url=";
     // for custom name link
@@ -68,7 +67,6 @@ public class FirstFragment extends Fragment {
     ) {
 
         binding = FragmentFirstBinding.inflate(inflater, container, false);
-        viewRoot = inflater.inflate(R.layout.fragment_first, container, false);
         return binding.getRoot();
 
     }
@@ -152,6 +150,7 @@ public class FirstFragment extends Fragment {
 
                         String url = binding.textInputUrl.getText().toString();
 
+
                         if (Patterns.WEB_URL.matcher(url).matches()) {
 
                             cancelAsync();
@@ -197,6 +196,13 @@ public class FirstFragment extends Fragment {
             }
         });
 
+        binding.buttonCopy4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                copyUrl(binding.textviewFour.getText().toString(), v, getActivity());
+            }
+        });
+
         binding.buttonShare1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -213,6 +219,13 @@ public class FirstFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 shareUrl(binding.textViewThree.getText().toString(), getActivity());
+            }
+        });
+
+        binding.buttonShare4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareUrl(binding.textviewFour.getText().toString(), getActivity());
             }
         });
 
@@ -235,7 +248,8 @@ public class FirstFragment extends Fragment {
             }
         });
 
-        receivedFromShare();
+
+
 
     }
 
@@ -259,10 +273,13 @@ public class FirstFragment extends Fragment {
                 String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
                 if (sharedText != null) {
 
+                    Snackbar.make(getActivity().getWindow().getDecorView().getRootView(), "URL received", Snackbar.LENGTH_LONG).show();
+
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             binding.textInputUrl.setText(sharedText);
+
                         }
                     });
 
@@ -270,8 +287,8 @@ public class FirstFragment extends Fragment {
                     async = new Async(getActivity().getWindow().getDecorView().getRootView());
                     async.execute(sharedText);
                     startProgress();
+                    getActivity().getIntent().setData(null);
 
-                    Snackbar.make(getActivity().getWindow().getDecorView().getRootView(), "URL received", Snackbar.LENGTH_LONG).show();
                 }
 
             }
@@ -297,6 +314,8 @@ public class FirstFragment extends Fragment {
         super.onStart();
         getSharedPreferences(getActivity().getSharedPreferences(
                 "savedUrl", Context.MODE_PRIVATE));
+
+        receivedFromShare();
 
 
     }
@@ -344,7 +363,7 @@ public class FirstFragment extends Fragment {
         Intent sharingIntent = new Intent(Intent.ACTION_SEND);
         sharingIntent.setType("text/html");
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml("<p>" + url + "</p>"));
-        context.startActivity(Intent.createChooser(sharingIntent, url));
+        context.startActivity(Intent.createChooser(sharingIntent, "https://"+url));
 
 
     }
@@ -359,7 +378,7 @@ public class FirstFragment extends Fragment {
 
         ClipboardManager clipboard = (ClipboardManager)
                 context.getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData clip = ClipData.newPlainText("Short url", shortUrl);
+        ClipData clip = ClipData.newPlainText("Short url", "https://"+shortUrl);
         clipboard.setPrimaryClip(clip);
         Snackbar.make(context, v, "url was copied", Snackbar.LENGTH_LONG).show();
 
@@ -447,9 +466,11 @@ public class FirstFragment extends Fragment {
         binding.textviewFirst.setText("wait...");
         binding.textViewSecond.setText("wait...");
         binding.textViewThree.setText("wait...");
+        binding.textviewFour.setText("wait...");
         binding.progressBar1.setVisibility(View.VISIBLE);
         binding.progressBar2.setVisibility(View.VISIBLE);
         binding.progressBar3.setVisibility(View.VISIBLE);
+        binding.progressBar4.setVisibility(View.VISIBLE);
 
     }
 
@@ -471,6 +492,7 @@ public class FirstFragment extends Fragment {
         private ShortLink    shortLink;
         private View view;
         private String url;
+        private String urlTemp;
 
         public Async(View view) {
             this.view = view;
@@ -480,12 +502,20 @@ public class FirstFragment extends Fragment {
         protected String doInBackground(String... params) {
 
             url = params[0];
+            urlTemp = url;
 
             try {
                 getShortLink = new GetShortLink();
                 getShortLink.requestShortlink(URL1+url);
+
+                if(!binding.textInputUrlCustomName.getText().toString().isEmpty()) {
+
+                    url = url + URLSHORTNAME+binding.textInputUrlCustomName.getText().toString();
+                }
+
                 getShortLink.requestShortlink(URL2+url);
                 shortLink = getShortLink.getShortlink();
+
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -504,13 +534,22 @@ public class FirstFragment extends Fragment {
                 if (shortLink != null)
                     if (shortLink.getIsOkUrl1()) {
 
-                        binding.textviewFirst.setText("https://shrtco.de/" + shortLink.getCode1());
-                        binding.textViewSecond.setText("https://9qr.de/" + shortLink.getCode1());
-                        binding.textViewThree.setText("https://shiny.link/" + shortLink.getCode1());
+                        binding.textviewFirst.setText("shrtco.de/" + shortLink.getCode1());
+                        binding.textViewSecond.setText("9qr.de/" + shortLink.getCode1());
+                        binding.textViewThree.setText("shiny.link/" + shortLink.getCode1());
                         saveSharedPreferences(getActivity().getSharedPreferences(
                                 "savedUrl", Context.MODE_PRIVATE));
+
                         DataBase dataBase = new DataBase(getActivity());
-                        dataBase.insert(shortLink.getCode1(), date,url);
+
+                        if(dataBase.selectUrlExists(urlTemp) > 0){
+                            dataBase.updateShortUrl1(shortLink.getCode1(),date,urlTemp);
+
+                        }else{
+                            dataBase.insertShortUrl1(shortLink.getCode1(), date,urlTemp);
+                        }
+
+
                         Snackbar.make(getActivity(), view, "Success! ", Snackbar.LENGTH_LONG).show();
 
                     } else {
@@ -530,11 +569,17 @@ public class FirstFragment extends Fragment {
                 if (shortLink != null)
                     if (shortLink.getIsOkUrl2()) {
 
-                        binding.textviewFour.setText(shortLink.getCode2());
+                        binding.textviewFour.setText(shortLink.getCode2().replace("https://",""));
                         saveSharedPreferences(getActivity().getSharedPreferences(
                                 "savedUrl", Context.MODE_PRIVATE));
                         DataBase dataBase = new DataBase(getActivity());
-                        dataBase.insert(shortLink.getCode1(), date,url);
+
+                        if(dataBase.selectUrlExists(urlTemp) > 0){
+                            dataBase.updateShortUrl2(shortLink.getCode2(),date,urlTemp);
+
+                        }else{
+                            dataBase.insertShortUrl2(shortLink.getCode2(), date,urlTemp);
+                        }
                         Snackbar.make(getActivity(), view, "Success! ", Snackbar.LENGTH_LONG).show();
 
                     } else {
@@ -565,6 +610,7 @@ public class FirstFragment extends Fragment {
                     binding.progressBar1.setVisibility(View.GONE);
                     binding.progressBar2.setVisibility(View.GONE);
                     binding.progressBar3.setVisibility(View.GONE);
+                    binding.progressBar4.setVisibility(View.GONE);
                 }
             });
 

@@ -14,6 +14,9 @@
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
             app:destination="@id/SecondFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_HelpFragment3"
+            app:destination="@id/HelpFragment" />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
@@ -23,6 +26,17 @@
 
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
+            app:destination="@id/FirstFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/HelpFragment"
+        android:name="org.ezequiel.shortlink.HelpFragment"
+        android:label="@string/help_fragment"
+        tools:layout="@layout/fragment_help">
+
+        <action
+            android:id="@+id/action_HelpFragment_to_FirstFragment2"
             app:destination="@id/FirstFragment" />
     </fragment>
 </navigation>
