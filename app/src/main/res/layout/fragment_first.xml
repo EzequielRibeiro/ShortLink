@@ -7,7 +7,6 @@
     tools:context="org.ezequiel.shortlink.FirstFragment">
 
 
-
     <Button
         android:id="@+id/buttonGoHistoric"
         android:layout_width="0dp"
@@ -16,7 +15,6 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
         android:text=" historic "
-        app:layout_constraintBottom_toTopOf="@+id/divider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/buttonGeneraterShort"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayoutCustomName" />
@@ -64,7 +62,6 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:text="Short link"
-        app:layout_constraintBottom_toTopOf="@+id/divider"
         app:layout_constraintEnd_toStartOf="@+id/buttonGoHistoric"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayoutCustomName" />
@@ -76,7 +73,6 @@
         android:layout_marginStart="1dp"
         android:layout_marginEnd="1dp"
         android:background="?android:attr/listDivider"
-        app:layout_constraintBottom_toTopOf="@id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -96,16 +92,17 @@
 
     <ImageView
         android:id="@+id/imageViewQrCode"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:adjustViewBounds="false"
-        android:paddingBottom="8dp"
         android:scaleType="centerInside"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayoutAd"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/buttonShareQrCode"
-        app:srcCompat="@drawable/icon256" />
+        app:srcCompat="@drawable/icon150" />
 
     <Button
         android:id="@+id/buttonShareQrCode"
@@ -147,7 +144,6 @@
         android:id="@+id/linearLayout2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -349,8 +345,6 @@
             android:background="?attr/actionModeShareDrawable"
             android:text="Button"
             tools:ignore="TouchTargetSizeCheck" />
-
-
 
 
     </LinearLayout>

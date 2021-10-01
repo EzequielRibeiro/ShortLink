@@ -563,7 +563,7 @@ public class FirstFragment extends Fragment {
 
                             }
                         });
-                        Snackbar.make(getActivity(), view, shortLink.getErrorMensagem1(), Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(getActivity(), view, shortLink.getErrorMensagem1(), Snackbar.LENGTH_INDEFINITE).show();
                     }
 
                 if (shortLink != null)
@@ -591,7 +591,7 @@ public class FirstFragment extends Fragment {
 
                             }
                         });
-                        Snackbar.make(getActivity(), view, shortLink.getErrorMensagem2(), Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(getActivity(), view, shortLink.getErrorMensagem2(), Snackbar.LENGTH_INDEFINITE).show();
                     }
 
 
