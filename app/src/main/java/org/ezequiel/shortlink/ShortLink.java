@@ -138,6 +138,7 @@ public class ShortLink {
 
     public void setErrorMensagem1(String errorMensagem1) {
         this.errorMensagem1 = errorMensagem1;
+        errorMensagem2 = errorMensagem1;
     }
     public void setErrorMensagem2(String errorMensagem2){
         this.errorMensagem2 = errorMensagem2;

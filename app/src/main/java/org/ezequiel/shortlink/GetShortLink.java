@@ -116,19 +116,19 @@ public class GetShortLink {
               readShortlink2(reader);
 
         } catch (SocketTimeoutException e) {
-            shortlink.setErrorMensagem1("Error: SocketTimeoutException");
+            shortlink.setErrorMensagem1("Error: Socket Timeout Exception");
             e.printStackTrace();
 
         } catch (FileNotFoundException e) {
-            shortlink.setErrorMensagem1("Error: FileNotFoundException");
+            shortlink.setErrorMensagem1("Error: File NotFound Exception");
             e.printStackTrace();
 
         } catch (MalformedURLException e) {
-            shortlink.setErrorMensagem1("Error: MalformedURLException");
+            shortlink.setErrorMensagem1("Error: MalformedURL Exception");
             e.printStackTrace();
 
         } catch (UnknownHostException e) {
-            shortlink.setErrorMensagem1("Error: UnknownHostException");
+            shortlink.setErrorMensagem1("Error: Unknown Host Exception");
             e.printStackTrace();
 
         } catch (IOException | RuntimeException e) {
