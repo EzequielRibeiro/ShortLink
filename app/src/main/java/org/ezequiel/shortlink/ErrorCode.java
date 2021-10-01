@@ -14,4 +14,5 @@ public interface ErrorCode {
     String errorCode_10 = "Trying to shorten a disallowed Link. More information on disallowed links";
     String errorCode   = "HTTP error code";
 
+
 }

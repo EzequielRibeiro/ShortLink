@@ -1,7 +1,6 @@
 package org.ezequiel.shortlink;
 
 import android.util.JsonReader;
-import android.util.Log;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -18,17 +17,83 @@ public class GetShortLink {
     //https://api.shrtco.de/v2/info?code=ZjPQyL
 
 
-    private ShortLink shortlink = new ShortLink();
 
-    public GetShortLink(String longLinkURL) throws IOException {
+    private ShortLink shortlink;
 
+    public GetShortLink() throws IOException {
+
+        shortlink = new ShortLink();
+
+
+
+    }
+
+    private ShortLink readShortlink1(JsonReader reader) throws IOException {
+
+        reader.beginObject();
+        while (reader.hasNext()) {
+            String name = reader.nextName();
+            if (name.equals("ok")) {
+                shortlink.setIsOkUr1(reader.nextBoolean());
+            } else if (name.equals("error_code")) {
+                shortlink.setError_code1(reader.nextString());
+            } else if (name.equals("result")) {
+                shortLink(reader, shortlink);
+            } else {
+                reader.skipValue();
+            }
+        }
+
+        reader.endObject();
+        return shortlink;
+    }
+
+    public ShortLink readShortlink2(JsonReader reader) throws IOException {
+
+        reader.beginObject();
+        while (reader.hasNext()) {
+            String name = reader.nextName();
+            if (name.equals("shorturl")) {
+                shortlink.setIsOkUr2(true);
+                shortlink.setCode2(reader.nextString());
+            } else if (name.equals("errorcode")) {
+                shortlink.setError_code2(reader.nextString());
+            } else if (name.equals("errormessage")) {
+                shortlink.setErrorMensagem2(reader.nextString());
+            } else {
+                reader.skipValue();
+            }
+        }
+
+        reader.endObject();
+        return shortlink;
+    }
+
+    private void shortLink(JsonReader reader, ShortLink shortlink) throws IOException {
+
+        reader.beginObject();
+        while (reader.hasNext()) {
+            String name = reader.nextName();
+            if (name.equals("code")) {
+                shortlink.setCode1(reader.nextString());
+            } else if (name.equals("original_link")) {
+                shortlink.setOriginal_link(reader.nextString());
+            } else {
+                reader.skipValue();
+            }
+        }
+        reader.endObject();
+    }
+
+    public void requestShortlink(String urlLongLink) throws IOException {
         JsonReader reader = null;
         HttpURLConnection conn = null;
 
         try {
 
-            URL url = new URL("https://api.shrtco.de/v2/shorten?url=" + longLinkURL);
+            //URL url = new URL("https://api.shrtco.de/v2/shorten?url=" + longLinkURL);
             // url = new URL("https://api.shrtco.de/v2/info?code=ZdlWIz");
+            URL url = new URL(urlLongLink);
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
@@ -44,26 +109,30 @@ public class GetShortLink {
 
             }
 
-            readshortlink(reader);
+
+          if(urlLongLink.contains("https://api.shrtco.de"))
+              readShortlink1(reader);
+          else
+              readShortlink2(reader);
 
         } catch (SocketTimeoutException e) {
-            shortlink.setErrorMensagem("Error: SocketTimeoutException");
+            shortlink.setErrorMensagem1("Error: SocketTimeoutException");
             e.printStackTrace();
 
         } catch (FileNotFoundException e) {
-            shortlink.setErrorMensagem("Error: FileNotFoundException");
+            shortlink.setErrorMensagem1("Error: FileNotFoundException");
             e.printStackTrace();
 
         } catch (MalformedURLException e) {
-            shortlink.setErrorMensagem("Error: MalformedURLException");
+            shortlink.setErrorMensagem1("Error: MalformedURLException");
             e.printStackTrace();
 
         } catch (UnknownHostException e) {
-            shortlink.setErrorMensagem("Error: UnknownHostException");
+            shortlink.setErrorMensagem1("Error: UnknownHostException");
             e.printStackTrace();
 
         } catch (IOException | RuntimeException e) {
-            shortlink.setErrorMensagem("Error: IOException | RuntimeException");
+            shortlink.setErrorMensagem1("Error: IOException | RuntimeException");
             e.printStackTrace();
 
         } finally {
@@ -72,47 +141,12 @@ public class GetShortLink {
             if (conn != null)
                 conn.disconnect();
         }
-
     }
 
-    public ShortLink readshortlink(JsonReader reader) throws IOException {
-
-        reader.beginObject();
-        while (reader.hasNext()) {
-            String name = reader.nextName();
-            if (name.equals("ok")) {
-                shortlink.setOk(reader.nextBoolean());
-            } else if (name.equals("error_code")) {
-                shortlink.setError_code(reader.nextString());
-            } else if (name.equals("result")) {
-                shortLink(reader, shortlink);
-            } else {
-                reader.skipValue();
-            }
-        }
-        reader.endObject();
+    public ShortLink getShortlink(){
         return shortlink;
     }
 
-    private void shortLink(JsonReader reader, ShortLink shortlink) throws IOException {
-
-        reader.beginObject();
-        while (reader.hasNext()) {
-            String name = reader.nextName();
-            if (name.equals("code")) {
-                shortlink.setCode(reader.nextString());
-            } else if (name.equals("original_link")) {
-                shortlink.setOriginal_link(reader.nextString());
-            } else {
-                reader.skipValue();
-            }
-        }
-        reader.endObject();
-    }
-
-    public ShortLink getShortlink() {
-        return shortlink;
-    }
 
     /*shrtco.de/
     9qr.de/

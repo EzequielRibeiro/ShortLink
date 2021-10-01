@@ -1,13 +1,9 @@
 package org.ezequiel.shortlink;
 
-import static android.content.Context.INPUT_METHOD_SERVICE;
 import static android.content.Context.WINDOW_SERVICE;
-import static android.widget.Toast.LENGTH_LONG;
-import static androidx.core.content.ContextCompat.getSystemService;
 
 import static org.ezequiel.shortlink.MainActivity.hideKeybaord;
 
-import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -25,33 +21,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.zxing.WriterException;
 import com.startapp.sdk.ads.banner.Banner;
 import com.startapp.sdk.ads.banner.BannerListener;
-import com.startapp.sdk.adsbase.StartAppAd;
-import com.startapp.sdk.adsbase.StartAppSDK;
 
 import org.ezequiel.shortlink.databinding.FragmentFirstBinding;
 
@@ -69,6 +54,11 @@ public class FirstFragment extends Fragment {
     private Banner startAppBanner;
     private Async async;
     private View viewRoot;
+
+    private final String URL1 = "https://api.shrtco.de/v2/shorten?url=";
+    private final String URL2 = "https://is.gd/create.php?format=json&url=";
+    // for custom name link
+    private final String URLSHORTNAME = "&shorturl=";
 
 
     @Override
@@ -322,6 +312,8 @@ public class FirstFragment extends Fragment {
                 preferences.edit().putString("shortUrl2", binding.textViewSecond.getText().toString()).apply();
             if (!binding.textViewThree.getText().toString().isEmpty())
                 preferences.edit().putString("shortUrl3", binding.textViewThree.getText().toString()).apply();
+            if (!binding.textviewFour.getText().toString().isEmpty())
+                preferences.edit().putString("shortUrl4", binding.textviewFour.getText().toString()).apply();
             generateQrCode(binding.textInputUrl.getText().toString(), getActivity(), binding.imageViewQrCode, binding.buttonShareQrCode);
         }
     }
@@ -331,6 +323,7 @@ public class FirstFragment extends Fragment {
         binding.textviewFirst.setText(preferences.getString("shortUrl1", "Short link 1"));
         binding.textViewSecond.setText(preferences.getString("shortUrl2", "Short link 2"));
         binding.textViewThree.setText(preferences.getString("shortUrl3", "Short link 3"));
+        binding.textviewFour.setText(preferences.getString("shortUrl4", "Short link 4"));
 
         String url = preferences.getString("longUrl", "");
 
@@ -474,7 +467,8 @@ public class FirstFragment extends Fragment {
 
     private class Async extends AsyncTask<String, String, String> {
 
-        private GetShortLink shortLink;
+        private GetShortLink getShortLink;
+        private ShortLink    shortLink;
         private View view;
         private String url;
 
@@ -485,11 +479,13 @@ public class FirstFragment extends Fragment {
         @Override
         protected String doInBackground(String... params) {
 
-
             url = params[0];
 
             try {
-                shortLink = new GetShortLink(url);
+                getShortLink = new GetShortLink();
+                getShortLink.requestShortlink(URL1+url);
+                getShortLink.requestShortlink(URL2+url);
+                shortLink = getShortLink.getShortlink();
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -500,24 +496,21 @@ public class FirstFragment extends Fragment {
 
         protected void onPostExecute(String result) {
 
+            DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, getActivity().getResources().getConfiguration().locale);
+            String date = df.format(Calendar.getInstance().getTime());
+
             try {
 
                 if (shortLink != null)
-                    if (shortLink.getShortlink().isOk()) {
-                        DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, getActivity().getResources().getConfiguration().locale);
-                        String date = df.format(Calendar.getInstance().getTime());
+                    if (shortLink.getIsOkUrl1()) {
 
-                        binding.textviewFirst.setText("shrtco.de/" + shortLink.getShortlink().getCode());
-                        binding.textViewSecond.setText("9qr.de/" + shortLink.getShortlink().getCode());
-                        binding.textViewThree.setText("shiny.link/" + shortLink.getShortlink().getCode());
+                        binding.textviewFirst.setText("https://shrtco.de/" + shortLink.getCode1());
+                        binding.textViewSecond.setText("https://9qr.de/" + shortLink.getCode1());
+                        binding.textViewThree.setText("https://shiny.link/" + shortLink.getCode1());
                         saveSharedPreferences(getActivity().getSharedPreferences(
                                 "savedUrl", Context.MODE_PRIVATE));
                         DataBase dataBase = new DataBase(getActivity());
-                        dataBase.insert(shortLink.getShortlink().getCode(), date,
-                                url);
-
-                        generateQrCode(url, getActivity(), binding.imageViewQrCode, binding.buttonShareQrCode);
-
+                        dataBase.insert(shortLink.getCode1(), date,url);
                         Snackbar.make(getActivity(), view, "Success! ", Snackbar.LENGTH_LONG).show();
 
                     } else {
@@ -531,8 +524,33 @@ public class FirstFragment extends Fragment {
 
                             }
                         });
-                        Snackbar.make(getActivity(), view, shortLink.getShortlink().getErrorMensagem(), Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(getActivity(), view, shortLink.getErrorMensagem1(), Snackbar.LENGTH_LONG).show();
                     }
+
+                if (shortLink != null)
+                    if (shortLink.getIsOkUrl2()) {
+
+                        binding.textviewFour.setText(shortLink.getCode2());
+                        saveSharedPreferences(getActivity().getSharedPreferences(
+                                "savedUrl", Context.MODE_PRIVATE));
+                        DataBase dataBase = new DataBase(getActivity());
+                        dataBase.insert(shortLink.getCode1(), date,url);
+                        Snackbar.make(getActivity(), view, "Success! ", Snackbar.LENGTH_LONG).show();
+
+                    } else {
+
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                              binding.textviewFour.setText("error");
+
+                            }
+                        });
+                        Snackbar.make(getActivity(), view, shortLink.getErrorMensagem2(), Snackbar.LENGTH_LONG).show();
+                    }
+
+
+                generateQrCode(url, getActivity(), binding.imageViewQrCode, binding.buttonShareQrCode);
 
 
             } catch (IllegalArgumentException e) {

@@ -83,12 +83,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                try {
-                    GetShortLink shortLink = new GetShortLink("http://www.bol.com.br");
-                    Log.i("Result",shortLink.getShortlink().toString());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+
             }
         });
     }

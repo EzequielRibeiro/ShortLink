@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     tools:context="org.ezequiel.shortlink.FirstFragment">
 
+
+
     <Button
         android:id="@+id/buttonGoHistoric"
         android:layout_width="0dp"
@@ -73,7 +75,7 @@
         android:background="?android:attr/listDivider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linearLayout4" />
+        app:layout_constraintTop_toBottomOf="@id/linearLayout5" />
 
     <ImageView
         android:id="@+id/imageViewQrCode"
@@ -145,12 +147,12 @@
 
         <TextView
             android:id="@+id/textview_first"
-            android:layout_width="150dp"
+            android:layout_width="180dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginStart="8dp"
             android:gravity="left"
-            android:text="Short link 1"
+            android:text="Short Link 1"
             android:textColor="@color/purple_500"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -159,6 +161,7 @@
             android:id="@+id/buttonCopy1"
             android:layout_width="25dp"
             android:layout_height="25dp"
+            android:layout_marginLeft="8dp"
             android:background="?attr/actionModeCopyDrawable"
             app:backgroundTint="@color/purple_500"
             tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
@@ -195,11 +198,11 @@
 
         <TextView
             android:id="@+id/textView_second"
-            android:layout_width="150dp"
+            android:layout_width="180dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:gravity="left"
-            android:text="Short link 2"
+            android:text="Short Link 2"
             android:textColor="@color/purple_500"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -208,6 +211,7 @@
             android:id="@+id/buttonCopy2"
             android:layout_width="25dp"
             android:layout_height="25dp"
+            android:layout_marginLeft="8dp"
             android:background="?attr/actionModeCopyDrawable"
             android:text="Button"
             app:backgroundTint="@color/purple_500"
@@ -244,11 +248,11 @@
 
         <TextView
             android:id="@+id/textView_three"
-            android:layout_width="150dp"
+            android:layout_width="180dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:gravity="left"
-            android:text="Short link 3"
+            android:text="Short Link 3"
             android:textColor="@color/purple_500"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -257,6 +261,7 @@
             android:id="@+id/buttonCopy3"
             android:layout_width="25dp"
             android:layout_height="25dp"
+            android:layout_marginLeft="8dp"
             android:background="?attr/actionModeCopyDrawable"
             android:text="Button"
             app:backgroundTint="@color/purple_500"
@@ -264,6 +269,56 @@
 
         <Button
             android:id="@+id/buttonShare3"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="8dp"
+            android:background="?attr/actionModeShareDrawable"
+            android:text="Button"
+            tools:ignore="TouchTargetSizeCheck" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linearLayout4">
+
+        <ProgressBar
+            android:id="@+id/progressBar4"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/textview_four"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:gravity="left"
+            android:text="Short Link 3"
+            android:textColor="@color/purple_500"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/buttonCopy4"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="8dp"
+            android:background="?attr/actionModeCopyDrawable"
+            android:text="Button"
+            app:backgroundTint="@color/purple_500"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <Button
+            android:id="@+id/buttonShare4"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_marginStart="8dp"
