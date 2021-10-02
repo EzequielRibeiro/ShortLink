@@ -15,7 +15,7 @@
             android:id="@+id/action_FirstFragment_to_SecondFragment"
             app:destination="@id/SecondFragment" />
         <action
-            android:id="@+id/action_FirstFragment_to_HelpFragment3"
+            android:id="@+id/action_FirstFragment_to_HelpFragment"
             app:destination="@id/HelpFragment" />
     </fragment>
     <fragment
@@ -27,6 +27,9 @@
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
+        <action
+            android:id="@+id/action_SecondFragment_to_HelpFragment"
+            app:destination="@id/HelpFragment" />
     </fragment>
 
     <fragment
@@ -38,5 +41,8 @@
         <action
             android:id="@+id/action_HelpFragment_to_FirstFragment2"
             app:destination="@id/FirstFragment" />
+        <action
+            android:id="@+id/action_HelpFragment_to_SecondFragment"
+            app:destination="@id/SecondFragment" />
     </fragment>
 </navigation>

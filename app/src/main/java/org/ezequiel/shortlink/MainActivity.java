@@ -1,6 +1,9 @@
 package org.ezequiel.shortlink;
 //d:\android-sdk\platform-tools\adb.exe connect 192.168.0.36
 
+
+import android.annotation.SuppressLint;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,8 +13,6 @@ import android.os.Bundle;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.startapp.sdk.adsbase.StartAppAd;
 import com.startapp.sdk.adsbase.StartAppSDK;
@@ -36,7 +37,9 @@ import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import org.ezequiel.shortlink.databinding.ActivityMainBinding;
-import java.io.IOException;
+import org.ezequiel.shortlink.R;
+
+import java.util.Objects;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -112,7 +115,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (id == R.id.action_help) {
-            showHelp();
+
+            try {
+                showHelp();
+            }catch (IllegalArgumentException e){
+                e.printStackTrace();
+            }
+
             return true;
         }
 
@@ -137,17 +146,21 @@ public class MainActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    private void showHelp(){
+    @SuppressLint("ResourceType")
+    private void showHelp() throws IllegalArgumentException {
         FragmentManager fragmentManager = MainActivity.this.getSupportFragmentManager();
         Fragment fragment = fragmentManager.getPrimaryNavigationFragment();
 
         try {
             NavHostFragment.findNavController(fragment)
-                    .navigate(R.id.action_FirstFragment_to_HelpFragment3);
+                    .navigate(R.id.action_FirstFragment_to_HelpFragment);
         }catch(IllegalArgumentException e){
             e.printStackTrace();
-        }
+            NavHostFragment.findNavController(fragment)
+                    .navigate(R.id.action_SecondFragment_to_HelpFragment);
 
+
+        }
     }
 
     private void about() {

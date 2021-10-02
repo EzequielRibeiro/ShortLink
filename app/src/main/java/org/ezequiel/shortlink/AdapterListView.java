@@ -59,14 +59,15 @@ public class AdapterListView extends ArrayAdapter<ShortLink> {
         link4.setText(urls.getCode2().replace("https://",""));
         original_link.setText(urls.getOriginal_link());
 
-        generateQrCode(original_link.getText().toString(),
-                getContext(),imageViewQrCode,buttonShareQrCode);
+        imageViewQrCode.setImageBitmap(generateQrCode(original_link.getText().toString(),
+                getContext()));
+        buttonShareQrCode.setVisibility(View.VISIBLE);
 
         buttonShareQrCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Activity activity = (Activity) getContext();
-                new ShareQrCode(imageViewQrCode,activity);
+                new ShareQrCode(urls.getOriginal_link(),activity);
             }
         });
 

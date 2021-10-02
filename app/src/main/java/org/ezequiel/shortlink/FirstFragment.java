@@ -1,6 +1,7 @@
 package org.ezequiel.shortlink;
 
 import static android.content.Context.WINDOW_SERVICE;
+import static android.view.View.VISIBLE;
 
 import static org.ezequiel.shortlink.MainActivity.hideKeybaord;
 
@@ -233,7 +234,7 @@ public class FirstFragment extends Fragment {
         binding.buttonShareQrCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new ShareQrCode(binding.imageViewQrCode, getActivity());
+                new ShareQrCode(binding.textInputUrl.getText().toString(), getActivity());
             }
         });
 
@@ -333,7 +334,9 @@ public class FirstFragment extends Fragment {
                 preferences.edit().putString("shortUrl3", binding.textViewThree.getText().toString()).apply();
             if (!binding.textviewFour.getText().toString().isEmpty())
                 preferences.edit().putString("shortUrl4", binding.textviewFour.getText().toString()).apply();
-            generateQrCode(binding.textInputUrl.getText().toString(), getActivity(), binding.imageViewQrCode, binding.buttonShareQrCode);
+
+            binding.imageViewQrCode.setImageBitmap(generateQrCode(binding.textInputUrl.getText().toString(), getActivity()));
+            binding.buttonShareQrCode.setVisibility(VISIBLE);
         }
     }
 
@@ -347,7 +350,8 @@ public class FirstFragment extends Fragment {
         String url = preferences.getString("longUrl", "");
 
         if (!url.isEmpty()) {
-            generateQrCode(url, getActivity(), binding.imageViewQrCode, binding.buttonShareQrCode);
+            binding.imageViewQrCode.setImageBitmap(generateQrCode(url, getActivity()));
+            binding.buttonShareQrCode.setVisibility(View.VISIBLE);
         }
 
     }
@@ -384,11 +388,11 @@ public class FirstFragment extends Fragment {
 
     }
 
-    public static void generateQrCode(String text, Context context, ImageView imageViewQrCode, Button buttonShareQrCode) {
+    public static Bitmap generateQrCode(String text, Context context) {
 
         WindowManager manager = (WindowManager) context.getSystemService(WINDOW_SERVICE);
         QRGEncoder qrgEncoder;
-        Bitmap bitmap;
+        Bitmap bitmap = null;
 
         // initializing a variable for default display.
         Display display = manager.getDefaultDisplay();
@@ -413,16 +417,14 @@ public class FirstFragment extends Fragment {
         try {
             // getting our qrcode in the form of bitmap.
             bitmap = qrgEncoder.encodeAsBitmap();
-            // the bitmap is set inside our image
-            // view using .setimagebitmap method.
-            imageViewQrCode.setImageBitmap(bitmap);
-            buttonShareQrCode.setVisibility(View.VISIBLE);
+
         } catch (WriterException e) {
             // this method is called for
             // exception handling.
             Log.e("Tag", e.toString());
         }
 
+        return bitmap;
 
     }
 
@@ -467,10 +469,10 @@ public class FirstFragment extends Fragment {
         binding.textViewSecond.setText("wait...");
         binding.textViewThree.setText("wait...");
         binding.textviewFour.setText("wait...");
-        binding.progressBar1.setVisibility(View.VISIBLE);
-        binding.progressBar2.setVisibility(View.VISIBLE);
-        binding.progressBar3.setVisibility(View.VISIBLE);
-        binding.progressBar4.setVisibility(View.VISIBLE);
+        binding.progressBar1.setVisibility(VISIBLE);
+        binding.progressBar2.setVisibility(VISIBLE);
+        binding.progressBar3.setVisibility(VISIBLE);
+        binding.progressBar4.setVisibility(VISIBLE);
 
     }
 
@@ -595,7 +597,8 @@ public class FirstFragment extends Fragment {
                     }
 
 
-                generateQrCode(url, getActivity(), binding.imageViewQrCode, binding.buttonShareQrCode);
+                binding.imageViewQrCode.setImageBitmap(generateQrCode(url, getActivity()));
+                binding.buttonShareQrCode.setVisibility(View.VISIBLE);
 
 
             } catch (IllegalArgumentException e) {

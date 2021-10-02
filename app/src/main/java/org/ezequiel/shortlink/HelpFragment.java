@@ -1,16 +1,10 @@
 package org.ezequiel.shortlink;
 
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
-
-import org.ezequiel.shortlink.databinding.FragmentFirstBinding;
 import org.ezequiel.shortlink.databinding.FragmentHelpBinding;
 
 /**

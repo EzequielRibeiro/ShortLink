@@ -25,31 +25,15 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import static android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
+import static org.ezequiel.shortlink.FirstFragment.generateQrCode;
 
 
 public class ShareQrCode {
 
 
-    public ShareQrCode(View view, Activity context) {
+    public ShareQrCode(String url, Activity context) {
 
-        Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(),Bitmap.Config.ARGB_8888);
-        //Bind a canvas to it
-        Canvas canvas = new Canvas(bitmap);
-        //Get the view's background
-        Drawable bgDrawable =view.getBackground();
-        if (bgDrawable!=null)
-            //has background drawable, then draw it on the canvas
-            bgDrawable.draw(canvas);
-        else
-            //does not have background drawable, then draw white background on the canvas
-            canvas.drawColor(Color.WHITE);
-        // draw the view on the canvas
-        view.draw(canvas);
-        //return the bitmap
-
-
-     //   String pathofBmp = MediaStore.Images.Media.insertImage( context.getContentResolver(), bitmap,"Short Link", null);
-     //   Uri uri = Uri.parse(pathofBmp);
+        Bitmap bitmap = generateQrCode(url,context);
 
         File file = new File(context.getCacheDir(), "qrcode" + ".png");
         FileOutputStream fOut = null;
