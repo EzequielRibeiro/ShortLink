@@ -161,6 +161,10 @@ public class FirstFragment extends Fragment {
 
                         } else {
                             Snackbar.make(getActivity(), v, "url is invalid", Snackbar.LENGTH_LONG).show();
+                            binding.textviewFirst.setText("error");
+                            binding.textViewSecond.setText("error");
+                            binding.textViewThree.setText("error");
+                            binding.textviewFour.setText("error");
 
                         }
                     } else {
@@ -283,12 +287,23 @@ public class FirstFragment extends Fragment {
 
                         }
                     });
+                    if (Patterns.WEB_URL.matcher(sharedText).matches()) {
 
-                    cancelAsync();
-                    async = new Async(getActivity().getWindow().getDecorView().getRootView());
-                    async.execute(sharedText);
-                    startProgress();
-                    getActivity().getIntent().setData(null);
+                            cancelAsync();
+                            async = new Async(getActivity().getWindow().getDecorView().getRootView());
+                            async.execute(url);
+                            startProgress();
+
+                        } else{
+                            Snackbar.make(getActivity(), v, "url is invalid", Snackbar.LENGTH_LONG).show();
+                            
+                            binding.textviewFirst.setText("error");
+                            binding.textViewSecond.setText("error");
+                            binding.textViewThree.setText("error");
+                            binding.textviewFour.setText("error");
+ }
+         
+                            getActivity().getIntent().setData(null);
 
                 }
 
