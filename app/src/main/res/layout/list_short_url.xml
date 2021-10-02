@@ -208,7 +208,9 @@
         app:layout_constraintEnd_toStartOf="@+id/imageButtonDeleteHistoric"
         app:layout_constraintStart_toEndOf="@+id/buttonShareHistoric2"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/icon256" />
+        app:srcCompat="@drawable/icon256"
+        android:background="#000000"
+        android:padding="1dp" />
 
     <Button
         android:id="@+id/buttonShareQrCodeHistoric"
