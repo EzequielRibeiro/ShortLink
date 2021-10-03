@@ -89,16 +89,18 @@
         android:id="@+id/imageViewQrCode"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginBottom="1dp"
         android:adjustViewBounds="false"
-        android:background="@drawable/border_view"
+        android:padding="1dp"
+        android:paddingTop="1dp"
+        android:paddingBottom="1dp"
         android:scaleType="centerInside"
+
         app:layout_constraintBottom_toTopOf="@+id/linearLayoutAd"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/buttonShareQrCode"
-        app:srcCompat="@drawable/icon150"
-
-        />
+        app:srcCompat="@drawable/icon150" />
 
     <Button
         android:id="@+id/buttonShareQrCode"

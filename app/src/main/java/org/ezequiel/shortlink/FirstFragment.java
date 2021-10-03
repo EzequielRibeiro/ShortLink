@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -34,12 +35,10 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.zxing.WriterException;
 import com.startapp.sdk.ads.banner.Banner;
 import com.startapp.sdk.ads.banner.BannerListener;
-
 import org.ezequiel.shortlink.databinding.FragmentFirstBinding;
 
 import java.io.IOException;
@@ -302,6 +301,9 @@ public class FirstFragment extends Fragment {
                             binding.textViewSecond.setText("error");
                             binding.textViewThree.setText("error");
                             binding.textviewFour.setText("error");
+                            binding.buttonShareQrCode.setVisibility(View.INVISIBLE);
+                            binding.imageViewQrCode.setVisibility(View.INVISIBLE);
+                            binding.textInputUrl.setText("");
                       }
          
                             getActivity().getIntent().setData(null);
@@ -316,8 +318,7 @@ public class FirstFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
-
+        receivedFromShare();
     }
 
     @Override
@@ -331,10 +332,6 @@ public class FirstFragment extends Fragment {
         super.onStart();
         getSharedPreferences(getActivity().getSharedPreferences(
                 "savedUrl", Context.MODE_PRIVATE));
-
-        receivedFromShare();
-
-
     }
 
     private void saveSharedPreferences(SharedPreferences preferences) {
@@ -431,15 +428,8 @@ public class FirstFragment extends Fragment {
         // encoder to generate our qr code.
         qrgEncoder = new QRGEncoder(text, null, QRGContents.Type.TEXT, dimen);
 
-        try {
-            // getting our qrcode in the form of bitmap.
-            bitmap = qrgEncoder.encodeAsBitmap();
-
-        } catch (WriterException e) {
-            // this method is called for
-            // exception handling.
-            Log.e("Tag", e.toString());
-        }
+        // getting our qrcode in the form of bitmap.
+        bitmap = qrgEncoder.getBitmap();
 
         return bitmap;
 
