@@ -291,17 +291,18 @@ public class FirstFragment extends Fragment {
 
                             cancelAsync();
                             async = new Async(getActivity().getWindow().getDecorView().getRootView());
-                            async.execute(url);
+                            async.execute(sharedText);
                             startProgress();
 
                         } else{
-                            Snackbar.make(getActivity(), v, "url is invalid", Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(getActivity(),getActivity().getWindow().getDecorView()
+                                    .getRootView(), "url is invalid", Snackbar.LENGTH_INDEFINITE).show();
                             
                             binding.textviewFirst.setText("error");
                             binding.textViewSecond.setText("error");
                             binding.textViewThree.setText("error");
                             binding.textviewFour.setText("error");
- }
+                      }
          
                             getActivity().getIntent().setData(null);
 
@@ -429,6 +430,7 @@ public class FirstFragment extends Fragment {
         // setting this dimensions inside our qr code
         // encoder to generate our qr code.
         qrgEncoder = new QRGEncoder(text, null, QRGContents.Type.TEXT, dimen);
+
         try {
             // getting our qrcode in the form of bitmap.
             bitmap = qrgEncoder.encodeAsBitmap();

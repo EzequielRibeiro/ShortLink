@@ -3,9 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Projeto-Android/ShortLink/app/src/main/res/drawable/border_view.xml" value="0.2203125" />
         <entry key="..\:/Projeto-Android/ShortLink/app/src/main/res/layout-land-mdpi/fragment_first.xml" value="0.5" />
         <entry key="..\:/Projeto-Android/ShortLink/app/src/main/res/layout-land-xxhdpi/fragment_first.xml" value="0.3182291666666667" />
-        <entry key="..\:/Projeto-Android/ShortLink/app/src/main/res/layout-land/fragment_first.xml" value="0.67" />
+        <entry key="..\:/Projeto-Android/ShortLink/app/src/main/res/layout-land/fragment_first.xml" value="0.33" />
         <entry key="..\:/Projeto-Android/ShortLink/app/src/main/res/layout-land/fragment_second.xml" value="0.25" />
         <entry key="..\:/Projeto-Android/ShortLink/app/src/main/res/layout-port-hdpi/fragment_first.xml" value="0.25" />
         <entry key="..\:/Projeto-Android/ShortLink/app/src/main/res/layout-port-mdpi/fragment_first.xml" value="0.75" />
@@ -13,7 +14,7 @@
         <entry key="..\:/Projeto-Android/ShortLink/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/Projeto-Android/ShortLink/app/src/main/res/layout/activity_privacy_policy.xml" value="0.20416666666666666" />
         <entry key="..\:/Projeto-Android/ShortLink/app/src/main/res/layout/content_main.xml" value="0.18" />
-        <entry key="..\:/Projeto-Android/ShortLink/app/src/main/res/layout/fragment_first.xml" value="0.67" />
+        <entry key="..\:/Projeto-Android/ShortLink/app/src/main/res/layout/fragment_first.xml" value="0.33" />
         <entry key="..\:/Projeto-Android/ShortLink/app/src/main/res/layout/fragment_help.xml" value="0.67" />
         <entry key="..\:/Projeto-Android/ShortLink/app/src/main/res/layout/fragment_second.xml" value="0.20416666666666666" />
         <entry key="..\:/Projeto-Android/ShortLink/app/src/main/res/layout/list_short_url.xml" value="0.33" />

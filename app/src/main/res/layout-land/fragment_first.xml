@@ -89,10 +89,11 @@
 
     <ImageView
         android:id="@+id/imageViewQrCode"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginEnd="16dp"
         android:adjustViewBounds="false"
+        android:background="@drawable/border_view"
         android:scaleType="centerInside"
         app:layout_constraintBottom_toTopOf="@+id/divider2"
         app:layout_constraintEnd_toStartOf="@+id/buttonShareQrCode"
@@ -104,7 +105,7 @@
         android:id="@+id/buttonShareQrCode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Share"
+        android:text="Share QR"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/divider2"
         app:layout_constraintEnd_toEndOf="@+id/buttonGoHistoric"

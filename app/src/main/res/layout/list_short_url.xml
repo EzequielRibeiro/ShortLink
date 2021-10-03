@@ -86,6 +86,7 @@
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:background="?attr/actionModeShareDrawable"
         android:text="Button"
         app:layout_constraintBottom_toBottomOf="@+id/buttonCopyHistoric2"
@@ -127,7 +128,8 @@
         android:gravity="left"
         android:text="TextView"
         android:visibility="invisible"
-        app:layout_constraintEnd_toStartOf="@+id/textViewShortDate"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewQrCodeHistoric"
+        app:layout_constraintStart_toEndOf="@+id/textViewShortDate"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -201,16 +203,14 @@
         android:id="@+id/imageViewQrCodeHistoric"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="8dp"
+        android:background="@drawable/border_view"
         app:layout_constraintBottom_toTopOf="@+id/buttonShareQrCodeHistoric"
         app:layout_constraintEnd_toStartOf="@+id/imageButtonDeleteHistoric"
         app:layout_constraintStart_toEndOf="@+id/buttonShareHistoric2"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/icon256"
-        android:background="#000000"
-        android:padding="1dp" />
+
+        />
 
     <Button
         android:id="@+id/buttonShareQrCodeHistoric"
