@@ -303,7 +303,7 @@ public class FirstFragment extends Fragment {
                             binding.textviewFour.setText("error");
                             binding.buttonShareQrCode.setVisibility(View.INVISIBLE);
                             binding.imageViewQrCode.setVisibility(View.INVISIBLE);
-                            binding.textInputUrl.setText("");
+                           
                       }
          
                             getActivity().getIntent().setData(null);
