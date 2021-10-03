@@ -14,7 +14,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:text=" historic "
-        app:layout_constraintBottom_toTopOf="@+id/divider"
+        app:layout_constraintBottom_toBottompOf="@+id/buttonGeneraterShort"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/buttonGeneraterShort"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayoutCustomName" />
