@@ -164,6 +164,8 @@ public class FirstFragment extends Fragment {
                             binding.textViewSecond.setText("error");
                             binding.textViewThree.setText("error");
                             binding.textviewFour.setText("error");
+                            binding.buttonShareQrCode.setVisibility(View.INVISIBLE);
+                            binding.imageViewQrCode.setBackgroundResource(R.drawable.icon150);
 
                         }
                     } else {
@@ -302,7 +304,7 @@ public class FirstFragment extends Fragment {
                             binding.textViewThree.setText("error");
                             binding.textviewFour.setText("error");
                             binding.buttonShareQrCode.setVisibility(View.INVISIBLE);
-                            binding.imageViewQrCode.setBackgroundResource(R.drawable.iconapp);
+                            binding.imageViewQrCode.setBackgroundResource(R.drawable.icon150);
                            
                       }
          
