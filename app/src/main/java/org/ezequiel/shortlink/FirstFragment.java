@@ -149,6 +149,7 @@ public class FirstFragment extends Fragment {
                     if (!binding.textInputUrl.getText().toString().isEmpty()) {
 
                         String url = binding.textInputUrl.getText().toString();
+                        url = url.replace(" ","");
 
 
                         if (Patterns.WEB_URL.matcher(url).matches()) {
@@ -288,6 +289,8 @@ public class FirstFragment extends Fragment {
 
                         }
                     });
+                     
+                    sharedText = sharedText.replace(" ","");
                     if (Patterns.WEB_URL.matcher(sharedText).matches()) {
 
                             cancelAsync();
