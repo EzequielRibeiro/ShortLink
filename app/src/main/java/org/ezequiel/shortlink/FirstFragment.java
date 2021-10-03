@@ -166,7 +166,7 @@ public class FirstFragment extends Fragment {
                             binding.textViewThree.setText("error");
                             binding.textviewFour.setText("error");
                             binding.buttonShareQrCode.setVisibility(View.INVISIBLE);
-                            binding.imageViewQrCode.setBackgroundResource(R.drawable.icon150);
+                            binding.imageViewQrCode.setImageResource(R.drawable.icon150);
 
                         }
                     } else {
@@ -277,7 +277,7 @@ public class FirstFragment extends Fragment {
         if (Intent.ACTION_SEND.equals(action) && type != null) {
             if ("text/plain".equals(type)) {
 
-                String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+              final String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
                 if (sharedText != null) {
 
                     Snackbar.make(getActivity().getWindow().getDecorView().getRootView(), "URL received", Snackbar.LENGTH_LONG).show();
@@ -289,13 +289,12 @@ public class FirstFragment extends Fragment {
 
                         }
                     });
-                     
-                    sharedText = sharedText.replace(" ","");
+
                     if (Patterns.WEB_URL.matcher(sharedText).matches()) {
 
                             cancelAsync();
                             async = new Async(getActivity().getWindow().getDecorView().getRootView());
-                            async.execute(sharedText);
+                            async.execute(sharedText.replace(" ",""));
                             startProgress();
 
                         } else{
@@ -307,7 +306,7 @@ public class FirstFragment extends Fragment {
                             binding.textViewThree.setText("error");
                             binding.textviewFour.setText("error");
                             binding.buttonShareQrCode.setVisibility(View.INVISIBLE);
-                            binding.imageViewQrCode.setBackgroundResource(R.drawable.icon150);
+                            binding.imageViewQrCode.setImageResource(R.drawable.icon150);
                            
                       }
          
