@@ -302,7 +302,7 @@ public class FirstFragment extends Fragment {
                             binding.textViewThree.setText("error");
                             binding.textviewFour.setText("error");
                             binding.buttonShareQrCode.setVisibility(View.INVISIBLE);
-                            binding.imageViewQrCode.setVisibility(View.INVISIBLE);
+                            binding.imageViewQrCode.setBackgroundResource(R.drawable.iconapp);
                            
                       }
          
