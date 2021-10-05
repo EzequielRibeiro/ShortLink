@@ -593,7 +593,9 @@ public class FirstFragment extends Fragment {
                         }else{
                             dataBase.insertShortUrl2(shortLink.getCode2(), date,urlTemp);
                         }
-                        Snackbar.make(getActivity(), view, "Success! ", Snackbar.LENGTH_LONG).show();
+
+                        if (shortLink.getIsOkUrl1()) 
+                             Snackbar.make(getActivity(), view, "Success! ", Snackbar.LENGTH_LONG).show();
 
                     } else {
 
