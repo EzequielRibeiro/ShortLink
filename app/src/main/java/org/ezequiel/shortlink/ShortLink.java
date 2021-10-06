@@ -3,19 +3,28 @@ package org.ezequiel.shortlink;
 public class ShortLink {
 
 
-    private  String id;
+    private String id;
     private String date;
-    private  boolean isOkUrl1 = false;
-    private  boolean isOkUrl2 = false;
-    private  String errorMensagem1 = "", errorMensagem2 = "";
-    private  String error_code1 = "-1";
-    private  String error_code2 = "-1";
-    private  String code1 = "KCveN";
-    private  String code2 = "KCveN";
+    private boolean isOkUrl1 = false;
+    private boolean isOkUrl2 = false;
+    private String errorMensagem1 = "", errorMensagem2 = "";
+    private String error_code1 = "-1";
+    private String error_code2 = "-1";
+    private String code1 = "error";
+    private String code2 = "error";
+    private String url = " ";
 
-    private  String original_link = "http://example.org/very/long/link.html";
+    public String getUrl() {
+        return url;
+    }
 
-    public ShortLink(boolean isOkUrl1, String code1, String original_link){
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    private String original_link = "http://example.org/very/long/link.html";
+
+    public ShortLink(boolean isOkUrl1, String code1, String original_link) {
         this.isOkUrl1 = isOkUrl1;
         this.code1 = code1;
         this.original_link = original_link;
@@ -45,6 +54,7 @@ public class ShortLink {
     public boolean getIsOkUrl1() {
         return isOkUrl1;
     }
+
     public boolean getIsOkUrl2() {
         return isOkUrl2;
     }
@@ -52,13 +62,15 @@ public class ShortLink {
     public String getError_code1() {
         return error_code1;
     }
+
     public String getError_code2() {
         return error_code2;
     }
+
     public void setError_code1(String error_code) {
         error_code1 = error_code;
 
-        switch (Integer.parseInt(error_code)){
+        switch (Integer.parseInt(error_code)) {
 
             case 1:
                 setErrorMensagem1(ErrorCode.errorCode_1);
@@ -92,9 +104,8 @@ public class ShortLink {
                 break;
 
             default:
-                setErrorMensagem1(ErrorCode.errorCode+'='+error_code);
+                setErrorMensagem1(ErrorCode.errorCode + '=' + error_code);
                 break;
-
 
 
         }
@@ -102,28 +113,38 @@ public class ShortLink {
 
     }
 
-    public void setError_code2(String error_code2){this.error_code2 = error_code2;}
+    public void setError_code2(String error_code2) {
+        this.error_code2 = error_code2;
+    }
+
     public void setIsOkUr1(boolean ok) {
         isOkUrl1 = ok;
     }
+
     public void setIsOkUr2(boolean ok) {
         isOkUrl2 = ok;
     }
+
     public String getCode1() {
         return code1;
     }
+
     public String getCode2() {
         return code2;
     }
+
     public void setCode1(String code) {
         this.code1 = code;
     }
+
     public void setCode2(String code) {
         this.code2 = code;
     }
+
     public String getOriginal_link() {
         return original_link;
     }
+
     public void setOriginal_link(String original_link) {
         this.original_link = original_link;
     }
@@ -140,7 +161,8 @@ public class ShortLink {
         this.errorMensagem1 = errorMensagem1;
         errorMensagem2 = errorMensagem1;
     }
-    public void setErrorMensagem2(String errorMensagem2){
+
+    public void setErrorMensagem2(String errorMensagem2) {
         this.errorMensagem2 = errorMensagem2;
     }
 

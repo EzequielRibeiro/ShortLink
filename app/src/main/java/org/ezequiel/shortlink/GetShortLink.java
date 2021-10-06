@@ -17,13 +17,11 @@ public class GetShortLink {
     //https://api.shrtco.de/v2/info?code=ZjPQyL
 
 
-
     private ShortLink shortlink;
 
     public GetShortLink() throws IOException {
 
         shortlink = new ShortLink();
-
 
 
     }
@@ -48,7 +46,7 @@ public class GetShortLink {
         return shortlink;
     }
 
-    public ShortLink readShortlink2(JsonReader reader) throws IOException {
+    private ShortLink readShortlink2(JsonReader reader) throws IOException {
 
         reader.beginObject();
         while (reader.hasNext()) {
@@ -56,6 +54,8 @@ public class GetShortLink {
             if (name.equals("shorturl")) {
                 shortlink.setIsOkUr2(true);
                 shortlink.setCode2(reader.nextString());
+            } else if (name.equals("url")) {
+                shortlink.setUrl(reader.nextString());
             } else if (name.equals("errorcode")) {
                 shortlink.setError_code2(reader.nextString());
             } else if (name.equals("errormessage")) {
@@ -110,10 +110,10 @@ public class GetShortLink {
             }
 
 
-          if(urlLongLink.contains("https://api.shrtco.de"))
-              readShortlink1(reader);
-          else
-              readShortlink2(reader);
+            if (urlLongLink.contains("https://api.shrtco.de"))
+                readShortlink1(reader);
+            else
+                readShortlink2(reader);
 
         } catch (SocketTimeoutException e) {
             shortlink.setErrorMensagem1("Error: Socket Timeout Exception");
@@ -143,7 +143,7 @@ public class GetShortLink {
         }
     }
 
-    public ShortLink getShortlink(){
+    public ShortLink getShortlink() {
         return shortlink;
     }
 

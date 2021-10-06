@@ -39,6 +39,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.zxing.WriterException;
 import com.startapp.sdk.ads.banner.Banner;
 import com.startapp.sdk.ads.banner.BannerListener;
+
 import org.ezequiel.shortlink.databinding.FragmentFirstBinding;
 
 import java.io.IOException;
@@ -56,6 +57,7 @@ public class FirstFragment extends Fragment {
     private Async async;
     private final String URL1 = "https://api.shrtco.de/v2/shorten?url=";
     private final String URL2 = "https://is.gd/create.php?format=json&url=";
+    private final String checkCustomUrl = "https://is.gd/forward.php?format=json&shorturl=";
     // for custom name link
     private final String URLSHORTNAME = "&shorturl=";
 
@@ -149,7 +151,7 @@ public class FirstFragment extends Fragment {
                     if (!binding.textInputUrl.getText().toString().isEmpty()) {
 
                         String url = binding.textInputUrl.getText().toString();
-                        url = url.replace(" ","");
+                        url = url.replace(" ", "");
 
 
                         if (Patterns.WEB_URL.matcher(url).matches()) {
@@ -256,8 +258,6 @@ public class FirstFragment extends Fragment {
         });
 
 
-
-
     }
 
     private void cancelAsync() {
@@ -269,7 +269,7 @@ public class FirstFragment extends Fragment {
         }
     }
 
-    private void receivedFromShare(){
+    private void receivedFromShare() {
         Intent intent = getActivity().getIntent();
         String action = intent.getAction();
         String type = intent.getType();
@@ -277,7 +277,7 @@ public class FirstFragment extends Fragment {
         if (Intent.ACTION_SEND.equals(action) && type != null) {
             if ("text/plain".equals(type)) {
 
-              final String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+                final String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
                 if (sharedText != null) {
 
                     Snackbar.make(getActivity().getWindow().getDecorView().getRootView(), "URL received", Snackbar.LENGTH_LONG).show();
@@ -292,25 +292,25 @@ public class FirstFragment extends Fragment {
 
                     if (Patterns.WEB_URL.matcher(sharedText).matches()) {
 
-                            cancelAsync();
-                            async = new Async(getActivity().getWindow().getDecorView().getRootView());
-                            async.execute(sharedText.replace(" ",""));
-                            startProgress();
+                        cancelAsync();
+                        async = new Async(getActivity().getWindow().getDecorView().getRootView());
+                        async.execute(sharedText.replace(" ", ""));
+                        startProgress();
 
-                        } else{
-                            Snackbar.make(getActivity(),getActivity().getWindow().getDecorView()
-                                    .getRootView(), "url is invalid", Snackbar.LENGTH_INDEFINITE).show();
-                            
-                            binding.textviewFirst.setText("error");
-                            binding.textViewSecond.setText("error");
-                            binding.textViewThree.setText("error");
-                            binding.textviewFour.setText("error");
-                            binding.buttonShareQrCode.setVisibility(View.INVISIBLE);
-                            binding.imageViewQrCode.setImageResource(R.drawable.icon150);
-                           
-                      }
-         
-                            getActivity().getIntent().setData(null);
+                    } else {
+                        Snackbar.make(getActivity(), getActivity().getWindow().getDecorView()
+                                .getRootView(), "url is invalid", Snackbar.LENGTH_INDEFINITE).show();
+
+                        binding.textviewFirst.setText("error");
+                        binding.textViewSecond.setText("error");
+                        binding.textViewThree.setText("error");
+                        binding.textviewFour.setText("error");
+                        binding.buttonShareQrCode.setVisibility(View.INVISIBLE);
+                        binding.imageViewQrCode.setImageResource(R.drawable.icon150);
+
+                    }
+
+                    getActivity().getIntent().setData(null);
 
                 }
 
@@ -384,7 +384,7 @@ public class FirstFragment extends Fragment {
         Intent sharingIntent = new Intent(Intent.ACTION_SEND);
         sharingIntent.setType("text/html");
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml("<p>" + url + "</p>"));
-        context.startActivity(Intent.createChooser(sharingIntent, "https://"+url));
+        context.startActivity(Intent.createChooser(sharingIntent, "https://" + url));
 
 
     }
@@ -399,7 +399,7 @@ public class FirstFragment extends Fragment {
 
         ClipboardManager clipboard = (ClipboardManager)
                 context.getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData clip = ClipData.newPlainText("Short url", "https://"+shortUrl);
+        ClipData clip = ClipData.newPlainText("Short url", "https://" + shortUrl);
         clipboard.setPrimaryClip(clip);
         Snackbar.make(context, v, "url was copied", Snackbar.LENGTH_LONG).show();
 
@@ -502,7 +502,7 @@ public class FirstFragment extends Fragment {
     private class Async extends AsyncTask<String, String, String> {
 
         private GetShortLink getShortLink;
-        private ShortLink    shortLink;
+        private ShortLink shortLink;
         private View view;
         private String url;
         private String urlTemp;
@@ -519,14 +519,14 @@ public class FirstFragment extends Fragment {
 
             try {
                 getShortLink = new GetShortLink();
-                getShortLink.requestShortlink(URL1+url);
+                getShortLink.requestShortlink(URL1 + url);
 
-                if(!binding.textInputUrlCustomName.getText().toString().isEmpty()) {
+                if (!binding.textInputUrlCustomName.getText().toString().isEmpty()) {
 
-                    url = url + URLSHORTNAME+binding.textInputUrlCustomName.getText().toString();
+                    url = url + URLSHORTNAME + binding.textInputUrlCustomName.getText().toString();
                 }
 
-                getShortLink.requestShortlink(URL2+url);
+                getShortLink.requestShortlink(URL2 + url);
                 shortLink = getShortLink.getShortlink();
 
 
@@ -555,15 +555,13 @@ public class FirstFragment extends Fragment {
 
                         DataBase dataBase = new DataBase(getActivity());
 
-                        if(dataBase.selectUrlExists(urlTemp) > 0){
-                            dataBase.updateShortUrl1(shortLink.getCode1(),date,urlTemp);
+                        if (dataBase.selectUrlExists(urlTemp) > 0) {
+                            dataBase.updateShortUrl1(shortLink.getCode1(), date, urlTemp);
 
-                        }else{
-                            dataBase.insertShortUrl1(shortLink.getCode1(), date,urlTemp);
+                        } else {
+                            dataBase.insertShortUrl1(shortLink.getCode1(), date, urlTemp);
                         }
-
-
-                        Snackbar.make(getActivity(), view, "Success! ", Snackbar.LENGTH_LONG).show();
+                        binding.textInputUrl.setError(null);
 
                     } else {
 
@@ -576,47 +574,70 @@ public class FirstFragment extends Fragment {
 
                             }
                         });
-                        Snackbar.make(getActivity(), view, shortLink.getErrorMensagem1(), Snackbar.LENGTH_INDEFINITE).show();
+                        binding.textInputUrl.setError(shortLink.getErrorMensagem1());
                     }
 
                 if (shortLink != null)
                     if (shortLink.getIsOkUrl2()) {
 
-                        binding.textviewFour.setText(shortLink.getCode2().replace("https://",""));
+                        binding.textviewFour.setText(shortLink.getCode2().replace("https://", ""));
                         saveSharedPreferences(getActivity().getSharedPreferences(
                                 "savedUrl", Context.MODE_PRIVATE));
-                        DataBase dataBase = new DataBase(getActivity());
+                        saveInDataBase2(shortLink.getCode2(), date, urlTemp);
 
-                        if(dataBase.selectUrlExists(urlTemp) > 0){
-                            dataBase.updateShortUrl2(shortLink.getCode2(),date,urlTemp);
+                    } else if (shortLink.getError_code2().equals("2")) {
+                        //error 2 is reference for custom name exist
+                        String custom = binding.textInputUrlCustomName.getText().toString();
+                        GetShortLink getShortLink = new GetShortLink();
+                        getShortLink.requestShortlink(checkCustomUrl + custom);
+                        ShortLink shortLinkCkeck = getShortLink.getShortlink();
+                        shortLink.setCode2("http://is.gd/" + custom);
 
-                        }else{
-                            dataBase.insertShortUrl2(shortLink.getCode2(), date,urlTemp);
+                        String url1, url2;
+                        url1 = binding.textInputUrl.getText().toString();
+                        url2 = shortLinkCkeck.getUrl();
+
+                        if (url1.contains("http://")) {
+                            url1 = url1.replace("http://", "");
+                        }
+                        if (url1.contains("https://")) {
+                            url1 = url1.replace("https://", "");
+                        }
+                        if (url2.contains("http://")) {
+                            url2 = url2.replace("http://", "");
+                        }
+                        if (url2.contains("https://")) {
+                            url2 = url2.replace("https://", "");
                         }
 
-                        if (shortLink.getIsOkUrl1()) 
-                             Snackbar.make(getActivity(), view, "Success! ", Snackbar.LENGTH_LONG).show();
+                        Log.e("url", url1);
+                        Log.e("url", url2);
+                        if (url1.contains(url2)) {
+                            binding.textviewFour.setText("is.gd/" + custom);
+                            saveInDataBase2(shortLink.getCode2(), date, urlTemp);
+                            shortLink.setIsOkUr2(true);
+                            binding.textInputUrlCustomName.setError(null);
+                        } else {
+                            showError();
+                        }
 
                     } else {
-
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                              binding.textviewFour.setText("error");
-
-                            }
-                        });
-                        Snackbar.make(getActivity(), view, shortLink.getErrorMensagem2(), Snackbar.LENGTH_INDEFINITE).show();
+                        showError();
                     }
-
 
                 binding.imageViewQrCode.setImageBitmap(generateQrCode(url, getActivity()));
                 binding.buttonShareQrCode.setVisibility(View.VISIBLE);
+
+                if (shortLink.getIsOkUrl1() == true && shortLink.getIsOkUrl2() == true) {
+                    Snackbar.make(getActivity(), view, "Success! ", Snackbar.LENGTH_LONG).show();
+                }
 
 
             } catch (IllegalArgumentException e) {
                 e.printStackTrace();
             } catch (NullPointerException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 
@@ -629,6 +650,33 @@ public class FirstFragment extends Fragment {
                     binding.progressBar4.setVisibility(View.GONE);
                 }
             });
+
+        }
+
+        private void showError() {
+
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    binding.textviewFour.setText("error");
+
+                }
+            });
+            binding.textInputUrlCustomName.setError(shortLink.getErrorMensagem2());
+
+        }
+
+        private void saveInDataBase2(String code, String date, String urlTemp) {
+
+            DataBase dataBase = new DataBase(getActivity());
+
+            if (dataBase.selectUrlExists(urlTemp) > 0) {
+                dataBase.updateShortUrl2(code, date, urlTemp);
+                Log.e("code", code);
+
+            } else {
+                dataBase.insertShortUrl2(code, date, urlTemp);
+            }
 
         }
 

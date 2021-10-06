@@ -53,10 +53,14 @@ public class AdapterListView extends ArrayAdapter<ShortLink> {
         // Populate the data into the template view using the data object
         id.setText(String.valueOf(urls.getId()));
         date.setText(urls.getDate());
-        link1.setText("shrtco.de/"+urls.getCode1());
-        link2.setText("9qr.de/" +urls.getCode1());
-        link3.setText("shiny.link/" +urls.getCode1());
-        link4.setText(urls.getCode2().replace("https://",""));
+        if(!urls.getCode1().equals("error")) {
+            link1.setText("shrtco.de/" + urls.getCode1());
+            link2.setText("9qr.de/" + urls.getCode1());
+            link3.setText("shiny.link/" + urls.getCode1());
+        }
+        if(!urls.getCode2().equals("error"))
+           link4.setText(urls.getCode2().replace("https://",""));
+
         original_link.setText(urls.getOriginal_link());
 
         imageViewQrCode.setImageBitmap(generateQrCode(original_link.getText().toString(),

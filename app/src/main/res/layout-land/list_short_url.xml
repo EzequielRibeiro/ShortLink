@@ -205,17 +205,17 @@
 
     <ImageView
         android:id="@+id/imageViewQrCodeHistoric"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="5dp"
         android:background="@drawable/border_view"
         android:padding="1dp"
         app:layout_constraintBottom_toTopOf="@+id/buttonShareQrCodeHistoric"
-        app:layout_constraintEnd_toStartOf="@+id/imageButtonDeleteHistoric"
-        app:layout_constraintStart_toEndOf="@+id/buttonShareHistoric2"
 
+        app:layout_constraintStart_toEndOf="@+id/buttonShareHistoric2"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/icon256" />
+        app:srcCompat="@drawable/icon150" />
 
     <Button
         android:id="@+id/buttonShareQrCodeHistoric"
@@ -231,8 +231,9 @@
         android:id="@+id/imageButtonDeleteHistoric"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="5dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageViewQrCodeHistoric"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_menu_delete"
         tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />

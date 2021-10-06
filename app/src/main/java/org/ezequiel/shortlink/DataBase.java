@@ -18,8 +18,8 @@ public class DataBase extends SQLiteOpenHelper {
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + TABLE_NAME + " (" +
                     "id" + " INTEGER PRIMARY KEY," +
-                    "codeShort1" + " TEXT DEFAULT '...'," +
-                    "codeShort2" + " TEXT DEFAULT '...'," +
+                    "codeShort1" + " TEXT DEFAULT 'error'," +
+                    "codeShort2" + " TEXT DEFAULT 'error'," +
                     "long_url" + " TEXT NOT NULL UNIQUE," +
                     "date" + " TEXT)";
 
