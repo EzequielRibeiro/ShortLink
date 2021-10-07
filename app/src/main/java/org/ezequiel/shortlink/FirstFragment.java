@@ -13,6 +13,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
@@ -60,6 +61,7 @@ public class FirstFragment extends Fragment {
     private final String checkCustomUrl = "https://is.gd/forward.php?format=json&shorturl=";
     private final String URLSHORTNAME = "&shorturl=";
     public static final String URLSTATS = "&logstats=1";
+    private View view;
 
 
     @Override
@@ -67,7 +69,7 @@ public class FirstFragment extends Fragment {
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
-
+        view = inflater.inflate(R.layout.fragment_first,container,false);
         binding = FragmentFirstBinding.inflate(inflater, container, false);
         return binding.getRoot();
 
@@ -167,7 +169,6 @@ public class FirstFragment extends Fragment {
                             binding.textViewSecond.setText("error");
                             binding.textViewThree.setText("error");
                             binding.textviewFour.setText("error");
-                            binding.buttonShareQrCode.setVisibility(View.INVISIBLE);
                             binding.imageViewQrCode.setImageResource(R.drawable.icon150);
 
                         }
@@ -238,15 +239,6 @@ public class FirstFragment extends Fragment {
             }
         });
 
-
-        binding.buttonShareQrCode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new ShareQrCode(binding.textInputUrl.getText().toString(), getActivity());
-            }
-        });
-
-
         binding.buttonGoHistoric.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -254,6 +246,13 @@ public class FirstFragment extends Fragment {
                 NavHostFragment.findNavController(FirstFragment.this)
                         .navigate(R.id.action_FirstFragment_to_SecondFragment);
                 showInterstitial();
+            }
+        });
+
+        binding.imageViewQrCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new ShareQrCode(binding.textInputUrl.getText().toString(), getActivity());
             }
         });
 
@@ -305,7 +304,6 @@ public class FirstFragment extends Fragment {
                         binding.textViewSecond.setText("error");
                         binding.textViewThree.setText("error");
                         binding.textviewFour.setText("error");
-                        binding.buttonShareQrCode.setVisibility(View.INVISIBLE);
                         binding.imageViewQrCode.setImageResource(R.drawable.icon150);
 
                     }
@@ -353,7 +351,7 @@ public class FirstFragment extends Fragment {
                 preferences.edit().putString("shortUrl4", binding.textviewFour.getText().toString()).apply();
 
             binding.imageViewQrCode.setImageBitmap(generateQrCode(binding.textInputUrl.getText().toString(), getActivity()));
-            binding.buttonShareQrCode.setVisibility(VISIBLE);
+
         }
     }
 
@@ -368,9 +366,7 @@ public class FirstFragment extends Fragment {
 
         if (!url.isEmpty()) {
             binding.imageViewQrCode.setImageBitmap(generateQrCode(url, getActivity()));
-            binding.buttonShareQrCode.setVisibility(View.VISIBLE);
         }
-
     }
 
     public static void shareUrl(String url, Context context) {
@@ -630,7 +626,7 @@ public class FirstFragment extends Fragment {
                     }
 
                 binding.imageViewQrCode.setImageBitmap(generateQrCode(url, getActivity()));
-                binding.buttonShareQrCode.setVisibility(View.VISIBLE);
+
 
                 if (shortLink.getIsOkUrl1() == true && shortLink.getIsOkUrl2() == true) {
                     Snackbar.make(getActivity(), view, "Success! ", Snackbar.LENGTH_LONG).show();
