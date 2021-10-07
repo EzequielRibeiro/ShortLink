@@ -30,6 +30,9 @@
         <action
             android:id="@+id/action_SecondFragment_to_HelpFragment"
             app:destination="@id/HelpFragment" />
+        <action
+            android:id="@+id/action_SecondFragment_to_StatsFragment"
+            app:destination="@id/StatsFragment" />
     </fragment>
 
     <fragment
@@ -45,4 +48,17 @@
             android:id="@+id/action_HelpFragment_to_SecondFragment"
             app:destination="@id/SecondFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/StatsFragment"
+        android:name="org.ezequiel.shortlink.StatsFragment"
+        android:label="@string/stats_fragment"
+        tools:layout="@layout/fragment_stats">
+
+        <action
+            android:id="@+id/action_StatsFragment_to_SecondFragment"
+            app:destination="@id/SecondFragment"/>
+    </fragment>
+
+
 </navigation>

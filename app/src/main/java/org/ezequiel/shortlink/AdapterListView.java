@@ -4,9 +4,12 @@ import static org.ezequiel.shortlink.FirstFragment.copyUrl;
 import static org.ezequiel.shortlink.FirstFragment.generateQrCode;
 import static org.ezequiel.shortlink.FirstFragment.shareUrl;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +20,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -25,10 +31,13 @@ import java.util.ArrayList;
 public class AdapterListView extends ArrayAdapter<ShortLink> {
 
     private ArrayList<ShortLink> urlsList;
+    private String statisticsUrl = "https://is.gd/stats.php?url=";
+    private Context context;
 
     public AdapterListView(Context context, ArrayList<ShortLink> urls) {
         super(context, 0, urls);
         urlsList = urls;
+        this.context = context;
     }
 
     @Override
@@ -59,7 +68,7 @@ public class AdapterListView extends ArrayAdapter<ShortLink> {
             link3.setText("shiny.link/" + urls.getCode1());
         }
         if(!urls.getCode2().equals("error"))
-           link4.setText(urls.getCode2().replace("https://",""));
+            link4.setText(urls.getCode2().replace("https://", ""));
 
         original_link.setText(urls.getOriginal_link());
 
@@ -87,6 +96,15 @@ public class AdapterListView extends ArrayAdapter<ShortLink> {
 
         ImageButton buttonDeleteHistoric = (ImageButton) convertView.findViewById(R.id.imageButtonDeleteHistoric);
         buttonDeleteHistoric.setTag(urls.getId());
+
+        ImageButton buttonStatistics = (ImageButton) convertView.findViewById(R.id.imageButtonStatistics);
+
+        buttonStatistics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openStatistics(statisticsUrl + link4.getText().toString().replace("is.gd/",""));
+            }
+        });
 
         buttonCopyHistoric1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,6 +170,23 @@ public class AdapterListView extends ArrayAdapter<ShortLink> {
         return convertView;
     }
 
+    private void openStatistics(String url) {
+
+            MainActivity activity = (MainActivity) context;
+
+            Bundle bundle = new Bundle();
+            bundle.putString("urlstats",url);
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
+            Fragment fragment = fragmentManager.getPrimaryNavigationFragment();
+
+            try {
+                NavHostFragment.findNavController(fragment)
+                        .navigate(R.id.action_SecondFragment_to_StatsFragment,bundle);
+            }catch(IllegalArgumentException e){
+                e.printStackTrace();
+
+            }
+        }
 
     private void buildShowDialodDelete(ShortLink urls, View v) {
 

@@ -1,6 +1,7 @@
 package org.ezequiel.shortlink;
 
 import android.util.JsonReader;
+import android.util.Log;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -89,6 +90,13 @@ public class GetShortLink {
         JsonReader reader = null;
         HttpURLConnection conn = null;
 
+        if (urlLongLink.contains("https://api.shrtco.de")){
+
+            urlLongLink = urlLongLink.replace(FirstFragment.URLSTATS,"");
+
+        }
+
+        Log.e("getshort",urlLongLink);
         try {
 
             //URL url = new URL("https://api.shrtco.de/v2/shorten?url=" + longLinkURL);

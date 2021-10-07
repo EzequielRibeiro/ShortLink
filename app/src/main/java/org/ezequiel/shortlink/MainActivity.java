@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
     private StartAppAd startAppAd ;
     private FirebaseAnalytics mFirebaseAnalytics;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

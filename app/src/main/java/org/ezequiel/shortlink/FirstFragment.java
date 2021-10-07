@@ -58,8 +58,8 @@ public class FirstFragment extends Fragment {
     private final String URL1 = "https://api.shrtco.de/v2/shorten?url=";
     private final String URL2 = "https://is.gd/create.php?format=json&url=";
     private final String checkCustomUrl = "https://is.gd/forward.php?format=json&shorturl=";
-    // for custom name link
     private final String URLSHORTNAME = "&shorturl=";
+    public static final String URLSTATS = "&logstats=1";
 
 
     @Override
@@ -526,7 +526,11 @@ public class FirstFragment extends Fragment {
                     url = url + URLSHORTNAME + binding.textInputUrlCustomName.getText().toString();
                 }
 
-                getShortLink.requestShortlink(URL2 + url);
+                if(binding.checkBox.isChecked())
+                    getShortLink.requestShortlink(URL2 + url + URLSTATS);
+                else
+                    getShortLink.requestShortlink(URL2 + url);
+
                 shortLink = getShortLink.getShortlink();
 
 

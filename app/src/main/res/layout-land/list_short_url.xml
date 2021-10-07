@@ -238,4 +238,14 @@
         app:srcCompat="@android:drawable/ic_menu_delete"
         tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
+    <ImageButton
+        android:id="@+id/imageButtonStatistics"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/statistics_icon"
+        app:layout_constraintStart_toEndOf="@+id/imageViewQrCodeHistoric"
+        app:layout_constraintTop_toBottomOf="@+id/imageButtonDeleteHistoric" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

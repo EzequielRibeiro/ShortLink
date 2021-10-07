@@ -11,7 +11,6 @@
         android:id="@+id/buttonGoHistoric"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
         android:text=" historic "
         app:layout_constraintBottom_toTopOf="@+id/buttonShareQrCode"
         app:layout_constraintEnd_toEndOf="@+id/buttonGeneraterShort"
@@ -25,6 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/textInputLayoutCustomName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -51,6 +51,7 @@
         app:counterEnabled="true"
         app:counterMaxLength="30"
         app:errorEnabled="true"
+        app:layout_constraintBottom_toTopOf="@+id/divider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textInputLayout">
@@ -64,6 +65,15 @@
             android:hint="Enter a custom name"
             android:maxLines="1"
             android:textSize="16sp" />
+
+        <CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:checked="false"
+            android:text="enable detailed statistics"
+            tools:ignore="TouchTargetSizeCheck" />
+
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
@@ -74,13 +84,14 @@
         android:text="Short link"
         app:layout_constraintBottom_toTopOf="@+id/buttonGoHistoric"
         app:layout_constraintStart_toEndOf="@+id/imageViewQrCode"
-        app:layout_constraintTop_toTopOf="@+id/imageViewQrCode" />
+        app:layout_constraintTop_toBottomOf="@id/divider" />
 
     <View
         android:id="@+id/divider"
         android:layout_width="0dp"
         android:layout_height="2dp"
         android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toTopOf="@+id/imageViewQrCode"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -100,7 +111,7 @@
 
     <ImageView
         android:id="@+id/imageViewQrCode"
-        android:layout_width="200dp"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:adjustViewBounds="false"
@@ -119,7 +130,7 @@
         android:layout_height="wrap_content"
         android:text="Share QR"
         android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="@+id/imageViewQrCode"
+        app:layout_constraintBottom_toTopOf="@+id/divider2"
         app:layout_constraintEnd_toEndOf="@+id/buttonGoHistoric"
         app:layout_constraintStart_toStartOf="@+id/buttonGoHistoric"
         app:layout_constraintTop_toBottomOf="@+id/buttonGoHistoric" />
@@ -133,7 +144,8 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider2">
 
         <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
             android:id="@+id/adView"
@@ -202,7 +214,6 @@
         android:id="@+id/linearLayout3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
@@ -254,7 +265,6 @@
         android:id="@+id/linearLayout4"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
@@ -305,7 +315,6 @@
         android:id="@+id/linearLayout5"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="@+id/imageViewQrCode"
