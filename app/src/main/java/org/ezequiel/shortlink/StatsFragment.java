@@ -71,7 +71,7 @@ public class StatsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         String url = getArguments().getString("urlstats");
-        Log.e("teste",url);
+     //   Log.e("teste",url);
 
         View view = inflater.inflate(R.layout.fragment_stats, container, false);
         WebView webView = view.findViewById(R.id.webViewStats);

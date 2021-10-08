@@ -377,7 +377,7 @@
             android:layout_alignBottom="@+id/textInputLayoutCustomName"
             android:layout_marginTop="-20dp"
             android:checked="false"
-            android:text="enable detailed statistics"
+            android:text="enable statistics"
             tools:ignore="TouchTargetSizeCheck" />
     </RelativeLayout>
 

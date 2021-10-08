@@ -102,7 +102,8 @@ public class AdapterListView extends ArrayAdapter<ShortLink> {
         buttonStatistics.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openStatistics(statisticsUrl + link4.getText().toString().replace("is.gd/",""));
+                String [] url = link4.getText().toString().split("/");
+                openStatistics(statisticsUrl + url[url.length - 1]);
             }
         });
 

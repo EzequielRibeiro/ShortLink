@@ -144,8 +144,6 @@ public class FirstFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                showInterstitial();
-
                 try {
 
                     hideKeybaord(v, getActivity());
@@ -155,16 +153,18 @@ public class FirstFragment extends Fragment {
                         String url = binding.textInputUrl.getText().toString();
                         url = url.replace(" ", "");
 
-
                         if (Patterns.WEB_URL.matcher(url).matches()) {
 
                             cancelAsync();
                             async = new Async(v);
                             async.execute(url);
                             startProgress();
+                            binding.textInputUrl.setError(null);
+                            showInterstitial();
 
                         } else {
-                            Snackbar.make(getActivity(), v, "url is invalid", Snackbar.LENGTH_LONG).show();
+
+                            binding.textInputUrl.setError("url is invalid");
                             binding.textviewFirst.setText("error");
                             binding.textViewSecond.setText("error");
                             binding.textViewThree.setText("error");
@@ -173,9 +173,7 @@ public class FirstFragment extends Fragment {
 
                         }
                     } else {
-
-                        Snackbar.make(getActivity(), v, "Please enter a valid URL", Snackbar.LENGTH_LONG).show();
-
+                        binding.textInputUrl.setError("Please enter a valid URL");
                     }
 
                 } catch (NullPointerException e) {
@@ -377,10 +375,14 @@ public class FirstFragment extends Fragment {
         if (url.equals("wait...") || url.equals("error"))
             return;
 
+        if(!(url.contains("https://") || url.contains("https://"))){
+            url = "https://" + url;
+        }
+
         Intent sharingIntent = new Intent(Intent.ACTION_SEND);
         sharingIntent.setType("text/html");
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml("<p>" + url + "</p>"));
-        context.startActivity(Intent.createChooser(sharingIntent, "https://" + url));
+        context.startActivity(Intent.createChooser(sharingIntent, url));
 
 
     }
@@ -392,10 +394,13 @@ public class FirstFragment extends Fragment {
         if (shortUrl.equals("wait...") || shortUrl.equals("error"))
             return;
 
+        if(!(shortUrl.contains("https://") || shortUrl.contains("https://"))){
+            shortUrl = "https://" + shortUrl;
+        }
 
         ClipboardManager clipboard = (ClipboardManager)
                 context.getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData clip = ClipData.newPlainText("Short url", "https://" + shortUrl);
+        ClipData clip = ClipData.newPlainText("Short url", shortUrl);
         clipboard.setPrimaryClip(clip);
         Snackbar.make(context, v, "url was copied", Snackbar.LENGTH_LONG).show();
 
@@ -487,10 +492,8 @@ public class FirstFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-
         saveSharedPreferences(getActivity().getSharedPreferences(
                 "savedUrl", Context.MODE_PRIVATE));
-
         binding = null;
 
     }
@@ -550,8 +553,7 @@ public class FirstFragment extends Fragment {
                         binding.textviewFirst.setText("shrtco.de/" + shortLink.getCode1());
                         binding.textViewSecond.setText("9qr.de/" + shortLink.getCode1());
                         binding.textViewThree.setText("shiny.link/" + shortLink.getCode1());
-                        saveSharedPreferences(getActivity().getSharedPreferences(
-                                "savedUrl", Context.MODE_PRIVATE));
+
 
                         DataBase dataBase = new DataBase(getActivity());
 
@@ -581,8 +583,6 @@ public class FirstFragment extends Fragment {
                     if (shortLink.getIsOkUrl2()) {
 
                         binding.textviewFour.setText(shortLink.getCode2().replace("https://", ""));
-                        saveSharedPreferences(getActivity().getSharedPreferences(
-                                "savedUrl", Context.MODE_PRIVATE));
                         saveInDataBase2(shortLink.getCode2(), date, urlTemp);
 
                     } else if (shortLink.getError_code2().equals("2")) {
@@ -630,6 +630,8 @@ public class FirstFragment extends Fragment {
 
                 if (shortLink.getIsOkUrl1() == true && shortLink.getIsOkUrl2() == true) {
                     Snackbar.make(getActivity(), view, "Success! ", Snackbar.LENGTH_LONG).show();
+                    saveSharedPreferences(getActivity().getSharedPreferences(
+                            "savedUrl", Context.MODE_PRIVATE));
                 }
 
 

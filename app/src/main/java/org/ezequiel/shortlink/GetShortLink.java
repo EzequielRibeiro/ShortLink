@@ -96,7 +96,6 @@ public class GetShortLink {
 
         }
 
-        Log.e("getshort",urlLongLink);
         try {
 
             //URL url = new URL("https://api.shrtco.de/v2/shorten?url=" + longLinkURL);
