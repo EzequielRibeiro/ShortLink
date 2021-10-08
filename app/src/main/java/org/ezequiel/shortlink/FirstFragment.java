@@ -590,12 +590,12 @@ public class FirstFragment extends Fragment {
                         String custom = binding.textInputUrlCustomName.getText().toString();
                         GetShortLink getShortLink = new GetShortLink();
                         getShortLink.requestShortlink(checkCustomUrl + custom);
-                        ShortLink shortLinkCkeck = getShortLink.getShortlink();
-                        shortLink.setCode2("http://is.gd/" + custom);
+                        ShortLink shortLinkCheck = getShortLink.getShortlink();
+                        shortLinkCheck.setCode2("https://is.gd/" + custom);
 
                         String url1, url2;
                         url1 = binding.textInputUrl.getText().toString();
-                        url2 = shortLinkCkeck.getUrl();
+                        url2 = shortLinkCheck.getUrl();
 
                         if (url1.contains("http://")) {
                             url1 = url1.replace("http://", "");
@@ -614,7 +614,7 @@ public class FirstFragment extends Fragment {
                         Log.e("url", url2);
                         if (url1.contains(url2)) {
                             binding.textviewFour.setText("is.gd/" + custom);
-                            saveInDataBase2(shortLink.getCode2(), date, urlTemp);
+                            saveInDataBase2(shortLinkCheck.getCode2(), date, urlTemp);
                             shortLink.setIsOkUr2(true);
                             binding.textInputUrlCustomName.setError(null);
                         } else {
