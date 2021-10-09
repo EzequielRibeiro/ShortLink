@@ -14,6 +14,7 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.startapp.sdk.adsbase.StartAppAd;
 import com.startapp.sdk.adsbase.StartAppSDK;
 import androidx.appcompat.app.AlertDialog;
@@ -69,11 +70,15 @@ public class MainActivity extends AppCompatActivity {
                 new RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build();
         MobileAds.setRequestConfiguration(configuration);*/
 
-        StartAppSDK.init(this, getString(R.string.startapp_app_id), false);
+        try {
+            StartAppSDK.init(this, getString(R.string.startapp_app_id), false);
 
-        StartAppAd.disableSplash();
+            StartAppAd.disableSplash();
 
-        startAppAd = new StartAppAd(this);
+            startAppAd = new StartAppAd(this);
+        }catch(NullPointerException e){
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -141,7 +146,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        startAppAd.onBackPressed();
+        try {
+            startAppAd.onBackPressed();
+        }catch(NullPointerException e){
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
         super.onBackPressed();
     }
 

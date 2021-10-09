@@ -293,7 +293,8 @@
             android:adjustViewBounds="false"
 
             android:padding="5dp"
-            android:scaleType="centerInside" />
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/icon50" />
 
         <TextView
             android:id="@+id/textViewTap"

@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
@@ -71,6 +72,7 @@ public class FirstFragment extends Fragment {
     ) {
         view = inflater.inflate(R.layout.fragment_first,container,false);
         binding = FragmentFirstBinding.inflate(inflater, container, false);
+
         return binding.getRoot();
 
     }
@@ -169,7 +171,7 @@ public class FirstFragment extends Fragment {
                             binding.textViewSecond.setText("error");
                             binding.textViewThree.setText("error");
                             binding.textviewFour.setText("error");
-                            binding.imageViewQrCode.setImageResource(R.drawable.icon150);
+                            binding.imageViewQrCode.setImageResource(R.drawable.icon50);
 
                         }
                     } else {
@@ -250,7 +252,8 @@ public class FirstFragment extends Fragment {
         binding.imageViewQrCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new ShareQrCode(binding.textInputUrl.getText().toString(), getActivity());
+               if(!binding.textInputUrl.getText().toString().isEmpty())
+                    new ShareQrCode(binding.textInputUrl.getText().toString(), getActivity());
             }
         });
 
@@ -348,7 +351,8 @@ public class FirstFragment extends Fragment {
             if (!binding.textviewFour.getText().toString().isEmpty())
                 preferences.edit().putString("shortUrl4", binding.textviewFour.getText().toString()).apply();
 
-            binding.imageViewQrCode.setImageBitmap(generateQrCode(binding.textInputUrl.getText().toString(), getActivity()));
+            if(!binding.textInputUrl.getText().toString().isEmpty())
+                 binding.imageViewQrCode.setImageBitmap(generateQrCode(binding.textInputUrl.getText().toString(), getActivity()));
 
         }
     }
@@ -408,9 +412,16 @@ public class FirstFragment extends Fragment {
 
     public static Bitmap generateQrCode(String text, Context context) {
 
+        Bitmap bitmap ;
+
+        if(text == null){
+            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.icon50);;
+            return bitmap;
+        }
+
         WindowManager manager = (WindowManager) context.getSystemService(WINDOW_SERVICE);
         QRGEncoder qrgEncoder;
-        Bitmap bitmap = null;
+
 
         // initializing a variable for default display.
         Display display = manager.getDefaultDisplay();

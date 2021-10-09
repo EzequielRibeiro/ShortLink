@@ -295,7 +295,8 @@
             android:layout_height="match_parent"
 
             android:adjustViewBounds="false"
-            android:scaleType="centerInside" />
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/icon50" />
 
         <TextView
             android:id="@+id/textViewTap"
