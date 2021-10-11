@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        String msg = getString(R.string.app_name) + " " + version + "\nDeveloper: Ezequiel A. Ribeiro" + "\nContact: https://ezequielportfolio.wordpress.com/contato/";
+        String msg = getString(R.string.app_name) + " " + version + "\nDeveloper: Ezequiel A. Ribeiro" + "\nContact: "+getString(R.string.contact);
         final SpannableString s = new SpannableString(msg);
         Linkify.addLinks(s, Linkify.ALL);
 

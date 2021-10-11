@@ -33,6 +33,7 @@ public class AdapterListView extends ArrayAdapter<ShortLink> {
     private ArrayList<ShortLink> urlsList;
     private String statisticsUrl = "https://is.gd/stats.php?url=";
     private Context context;
+    private View view;
 
     public AdapterListView(Context context, ArrayList<ShortLink> urls) {
         super(context, 0, urls);
@@ -48,6 +49,7 @@ public class AdapterListView extends ArrayAdapter<ShortLink> {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_short_url, parent, false);
         }
+        view = convertView;
         // Lookup view for data population
         TextView id = (TextView) convertView.findViewById(R.id.textViewId);
         TextView date = (TextView) convertView.findViewById(R.id.textViewShortDate);
@@ -103,7 +105,11 @@ public class AdapterListView extends ArrayAdapter<ShortLink> {
             @Override
             public void onClick(View v) {
                 String [] url = link4.getText().toString().split("/");
-                openStatistics(statisticsUrl + url[url.length - 1]);
+               if(!url[url.length - 1].equals("error"))
+                   openStatistics(statisticsUrl + url[url.length - 1]);
+               else{
+                   Snackbar.make(view.getRootView(), "there are no statistics for this link", Snackbar.LENGTH_LONG).show();
+               }
             }
         });
 
