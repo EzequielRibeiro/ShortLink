@@ -284,6 +284,7 @@
     <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:gravity="center"
         app:layout_constraintBottom_toTopOf="@+id/linearLayoutAd"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -291,20 +292,25 @@
 
         <ImageView
             android:id="@+id/imageViewQrCode"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
             android:adjustViewBounds="false"
+            android:maxHeight="150dp"
             android:scaleType="centerInside"
-            app:srcCompat="@drawable/icon50" />
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/icon150" />
 
         <TextView
             android:id="@+id/textViewTap"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/imageViewQrCode"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
             android:layout_marginBottom="5dp"
             android:gravity="center"
             android:text="tap to share QR" />

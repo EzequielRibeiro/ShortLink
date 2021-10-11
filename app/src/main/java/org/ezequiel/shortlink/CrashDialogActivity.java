@@ -18,7 +18,6 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 public class CrashDialogActivity extends AppCompatActivity {
 
-    private TextView textViewLog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

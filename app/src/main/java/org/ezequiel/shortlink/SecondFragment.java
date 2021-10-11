@@ -45,7 +45,8 @@ public class SecondFragment extends Fragment {
 
             @Override
             public void onFailedToReceiveAd(View view) {
-                startAppBanner = null;
+
+                binding.linearLayoutAdSecond.removeView(startAppBanner);
             }
 
             @Override
@@ -58,9 +59,8 @@ public class SecondFragment extends Fragment {
 
             }
         });
+        binding.linearLayoutAdSecond.addView(startAppBanner);
 
-        if(startAppBanner != null)
-            binding.linearLayoutAdSecond.addView(startAppBanner);
 
 
 

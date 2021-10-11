@@ -104,7 +104,7 @@ public class FirstFragment extends Fragment {
 
                     @Override
                     public void onFailedToReceiveAd(View view) {
-                        startAppBanner = null;
+                        binding.linearLayoutAd.removeView(startAppBanner);
                     }
 
                     @Override
@@ -117,9 +117,6 @@ public class FirstFragment extends Fragment {
 
                     }
                 });
-
-                if (startAppBanner != null)
-                    binding.linearLayoutAd.addView(startAppBanner);
 
             }
 
@@ -172,10 +169,12 @@ public class FirstFragment extends Fragment {
                             binding.textViewThree.setText("error");
                             binding.textviewFour.setText("error");
                             binding.imageViewQrCode.setImageResource(R.drawable.icon50);
+                            binding.textViewTap.setVisibility(View.INVISIBLE);
 
                         }
                     } else {
                         binding.textInputUrl.setError("Please enter a valid URL");
+                        binding.textViewTap.setVisibility(View.INVISIBLE);
                     }
 
                 } catch (NullPointerException e) {
@@ -256,6 +255,8 @@ public class FirstFragment extends Fragment {
                     new ShareQrCode(binding.textInputUrl.getText().toString(), getActivity());
             }
         });
+
+        binding.textViewTap.setVisibility(View.INVISIBLE);
 
 
     }
@@ -368,6 +369,7 @@ public class FirstFragment extends Fragment {
 
         if (!url.isEmpty()) {
             binding.imageViewQrCode.setImageBitmap(generateQrCode(url, getActivity()));
+            binding.textViewTap.setVisibility(View.VISIBLE);
         }
     }
 
@@ -637,6 +639,7 @@ public class FirstFragment extends Fragment {
                     }
 
                 binding.imageViewQrCode.setImageBitmap(generateQrCode(url, getActivity()));
+                binding.textViewTap.setVisibility(View.VISIBLE);
 
 
                 if (shortLink.getIsOkUrl1() == true && shortLink.getIsOkUrl2() == true) {
