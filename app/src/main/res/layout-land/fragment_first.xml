@@ -380,6 +380,19 @@
             android:checked="false"
             android:text="enable statistics"
             tools:ignore="TouchTargetSizeCheck" />
+
+        <CheckBox
+            android:id="@+id/checkBox2"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_below="@+id/textInputLayoutCustomName"
+            android:layout_alignBottom="@+id/textInputLayoutCustomName"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="-20dp"
+            android:layout_toEndOf="@+id/checkBox"
+            android:checked="true"
+            android:text="v.gd"
+            tools:ignore="TouchTargetSizeCheck" />
     </RelativeLayout>
 
 

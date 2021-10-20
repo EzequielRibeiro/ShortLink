@@ -3,6 +3,8 @@ package org.ezequiel.shortlink;
 import android.util.JsonReader;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -20,11 +22,10 @@ public class GetShortLink {
 
     private ShortLink shortlink;
 
-    public GetShortLink() throws IOException {
+    public GetShortLink(String url) throws IOException {
 
         shortlink = new ShortLink();
-
-
+        shortlink.setUrl(url);
     }
 
     private ShortLink readShortlink1(JsonReader reader) throws IOException {
@@ -37,12 +38,11 @@ public class GetShortLink {
             } else if (name.equals("error_code")) {
                 shortlink.setError_code1(reader.nextString());
             } else if (name.equals("result")) {
-                shortLink(reader, shortlink);
+                    shortLink(reader, shortlink);
             } else {
                 reader.skipValue();
             }
         }
-
         reader.endObject();
         return shortlink;
     }
@@ -86,15 +86,11 @@ public class GetShortLink {
         reader.endObject();
     }
 
-    public void requestShortlink(String urlLongLink) throws IOException {
+    public void requestShortlink(@NonNull String urlLongLink) throws IOException {
         JsonReader reader = null;
         HttpURLConnection conn = null;
-
-        if (urlLongLink.contains("https://api.shrtco.de")){
-
-            urlLongLink = urlLongLink.replace(FirstFragment.URLSTATS,"");
-
-        }
+        shortlink.setUrlApi(urlLongLink);
+        Log.e("request",shortlink.getUrlApi());
 
         try {
 
@@ -123,23 +119,24 @@ public class GetShortLink {
                 readShortlink2(reader);
 
         } catch (SocketTimeoutException e) {
-            shortlink.setErrorMensagem1("Error: Socket Timeout Exception");
+            showError(urlLongLink,"Error: Socket Timeout");
             e.printStackTrace();
 
         } catch (FileNotFoundException e) {
-            shortlink.setErrorMensagem1("Error: File NotFound Exception");
+            showError(urlLongLink,"Error: File NotFound");
             e.printStackTrace();
 
         } catch (MalformedURLException e) {
-            shortlink.setErrorMensagem1("Error: MalformedURL Exception");
+            showError(urlLongLink,"Error: MalformedURL");
             e.printStackTrace();
 
         } catch (UnknownHostException e) {
-            shortlink.setErrorMensagem1("Error: Unknown Host Exception");
-            e.printStackTrace();
+
+            showError(urlLongLink,"Error: Unknown Host");
+           e.printStackTrace();
 
         } catch (IOException | RuntimeException e) {
-            shortlink.setErrorMensagem1("Error: IOException | RuntimeException");
+            showError(urlLongLink,"Error: IOException | RuntimeException");
             e.printStackTrace();
 
         } finally {
@@ -148,12 +145,20 @@ public class GetShortLink {
             if (conn != null)
                 conn.disconnect();
         }
+
     }
 
     public ShortLink getShortlink() {
+
         return shortlink;
     }
 
+    private void showError(String urlLongLink, String error){
+
+           shortlink.setErrorMensagem1(error);
+           shortlink.setErrorMensagem2(error);
+
+    }
 
     /*shrtco.de/
     9qr.de/

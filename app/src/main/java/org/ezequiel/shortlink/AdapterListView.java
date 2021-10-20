@@ -104,9 +104,15 @@ public class AdapterListView extends ArrayAdapter<ShortLink> {
         buttonStatistics.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String [] url = link4.getText().toString().split("/");
-               if(!url[url.length - 1].equals("error"))
-                   openStatistics(statisticsUrl + url[url.length - 1]);
+                String [] url1 = link4.getText().toString().split("/");
+               if(!url1[url1.length - 1].equals("error")) {
+                   String url2 = statisticsUrl + url1[url1.length - 1];
+
+                   if(link4.getText().toString().contains("v.gd/"))
+                       url2 = url2.replace("is.gd/","v.gd/");
+
+                       openStatistics(url2);
+               }
                else{
                    Snackbar.make(view.getRootView(), "there are no statistics for this link", Snackbar.LENGTH_LONG).show();
                }

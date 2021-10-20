@@ -14,6 +14,16 @@ public class ShortLink {
     private String code2 = "error";
     private String url = " ";
 
+    public String getUrlApi() {
+        return urlApi;
+    }
+
+    public void setUrlApi(String urlApi) {
+        this.urlApi = urlApi;
+    }
+
+    private String urlApi = " ";
+
     public String getUrl() {
         return url;
     }
@@ -33,6 +43,8 @@ public class ShortLink {
     public ShortLink() {
 
     }
+
+
 
     public String getId() {
         return id;

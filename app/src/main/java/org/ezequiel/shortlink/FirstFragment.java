@@ -12,9 +12,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.Point;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
@@ -25,8 +23,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -38,7 +34,6 @@ import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.zxing.WriterException;
 import com.startapp.sdk.ads.banner.Banner;
 import com.startapp.sdk.ads.banner.BannerListener;
 
@@ -57,9 +52,11 @@ public class FirstFragment extends Fragment {
     private InterstitialAd mInterstitialAd;
     private Banner startAppBanner;
     private Async async;
-    private final String URL1 = "https://api.shrtco.de/v2/shorten?url=";
+    public static final String URL1 = "https://api.shrtco.de/v2/shorten?url=";
     private final String URL2 = "https://is.gd/create.php?format=json&url=";
-    private final String checkCustomUrl = "https://is.gd/forward.php?format=json&shorturl=";
+    private final String URL3 = "https://v.gd/create.php?format=json&url=";
+    private final String CHECKCUSTOMURL1 = "https://is.gd/forward.php?format=json&shorturl=";
+    private final String CHECKCUSTOMURL2 = "https://v.gd/forward.php?format=json&shorturl=";
     private final String URLSHORTNAME = "&shorturl=";
     public static final String URLSTATS = "&logstats=1";
     private View view;
@@ -70,7 +67,7 @@ public class FirstFragment extends Fragment {
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
-        view = inflater.inflate(R.layout.fragment_first,container,false);
+        view = inflater.inflate(R.layout.fragment_first, container, false);
         binding = FragmentFirstBinding.inflate(inflater, container, false);
 
         return binding.getRoot();
@@ -251,7 +248,7 @@ public class FirstFragment extends Fragment {
         binding.imageViewQrCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               if(!binding.textInputUrl.getText().toString().isEmpty())
+                if (!binding.textInputUrl.getText().toString().isEmpty())
                     new ShareQrCode(binding.textInputUrl.getText().toString(), getActivity());
             }
         });
@@ -352,8 +349,8 @@ public class FirstFragment extends Fragment {
             if (!binding.textviewFour.getText().toString().isEmpty())
                 preferences.edit().putString("shortUrl4", binding.textviewFour.getText().toString()).apply();
 
-            if(!binding.textInputUrl.getText().toString().isEmpty())
-                 binding.imageViewQrCode.setImageBitmap(generateQrCode(binding.textInputUrl.getText().toString(), getActivity()));
+            if (!binding.textInputUrl.getText().toString().isEmpty())
+                binding.imageViewQrCode.setImageBitmap(generateQrCode(binding.textInputUrl.getText().toString(), getActivity()));
 
         }
     }
@@ -381,7 +378,7 @@ public class FirstFragment extends Fragment {
         if (url.equals("wait...") || url.equals("error"))
             return;
 
-        if(!(url.contains("https://") || url.contains("https://"))){
+        if (!(url.contains("https://") || url.contains("https://"))) {
             url = "https://" + url;
         }
 
@@ -400,7 +397,7 @@ public class FirstFragment extends Fragment {
         if (shortUrl.equals("wait...") || shortUrl.equals("error"))
             return;
 
-        if(!(shortUrl.contains("https://") || shortUrl.contains("https://"))){
+        if (!(shortUrl.contains("https://") || shortUrl.contains("https://"))) {
             shortUrl = "https://" + shortUrl;
         }
 
@@ -414,10 +411,11 @@ public class FirstFragment extends Fragment {
 
     public static Bitmap generateQrCode(String text, Context context) {
 
-        Bitmap bitmap ;
+        Bitmap bitmap;
 
-        if(text == null){
-            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.icon50);;
+        if (text == null) {
+            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.icon50);
+            ;
             return bitmap;
         }
 
@@ -511,104 +509,115 @@ public class FirstFragment extends Fragment {
 
     }
 
-    private class Async extends AsyncTask<String, String, String> {
+    private class Async extends AsyncTask<String, String, ShortLink> {
 
         private GetShortLink getShortLink;
-        private ShortLink shortLink;
+
         private View view;
         private String url;
-        private String urlTemp;
 
         public Async(View view) {
             this.view = view;
         }
 
         @Override
-        protected String doInBackground(String... params) {
+        protected ShortLink doInBackground(String... params) {
 
+            ShortLink shortLink = null;
             url = params[0];
-            urlTemp = url;
 
             try {
-                getShortLink = new GetShortLink();
+                getShortLink = new GetShortLink(url);
                 getShortLink.requestShortlink(URL1 + url);
+
 
                 if (!binding.textInputUrlCustomName.getText().toString().isEmpty()) {
 
                     url = url + URLSHORTNAME + binding.textInputUrlCustomName.getText().toString();
                 }
 
-                if(binding.checkBox.isChecked())
+                if (binding.checkBox.isChecked() && binding.checkBox2.isChecked())
+                    getShortLink.requestShortlink(URL3 + url + URLSTATS);
+                else if (!binding.checkBox.isChecked() && binding.checkBox2.isChecked())
+                    getShortLink.requestShortlink(URL3 + url);
+                else if (binding.checkBox.isChecked() && !binding.checkBox2.isChecked())
                     getShortLink.requestShortlink(URL2 + url + URLSTATS);
                 else
                     getShortLink.requestShortlink(URL2 + url);
 
                 shortLink = getShortLink.getShortlink();
 
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            return null;
+            return shortLink;
         }
 
-        protected void onPostExecute(String result) {
+        protected void onPostExecute(ShortLink result) {
 
             DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, getActivity().getResources().getConfiguration().locale);
             String date = df.format(Calendar.getInstance().getTime());
-
+            Log.e("result url", " " + result.getUrl());
             try {
 
-                if (shortLink != null)
-                    if (shortLink.getIsOkUrl1()) {
+                ShortLink shortlink = new ShortLink();
 
-                        binding.textviewFirst.setText("shrtco.de/" + shortLink.getCode1());
-                        binding.textViewSecond.setText("9qr.de/" + shortLink.getCode1());
-                        binding.textViewThree.setText("shiny.link/" + shortLink.getCode1());
+                if (result != null)
+                    if (result.getIsOkUrl1()) {
 
+                        binding.textviewFirst.setText("shrtco.de/" + result.getCode1());
+                        binding.textviewFirst.setError(null);
+                        binding.textViewSecond.setText("9qr.de/" + result.getCode1());
+                        binding.textViewSecond.setError(null);
+                        binding.textViewThree.setText("shiny.link/" + result.getCode1());
+                        binding.textViewThree.setError(null);
 
                         DataBase dataBase = new DataBase(getActivity());
 
-                        if (dataBase.selectUrlExists(urlTemp) > 0) {
-                            dataBase.updateShortUrl1(shortLink.getCode1(), date, urlTemp);
+                        if (dataBase.selectUrlExists(result.getUrl()) > 0) {
+                            dataBase.updateShortUrl1(result.getCode1(), date, result.getUrl());
 
                         } else {
-                            dataBase.insertShortUrl1(shortLink.getCode1(), date, urlTemp);
+                            dataBase.insertShortUrl1(result.getCode1(), date, result.getUrl());
                         }
                         binding.textInputUrl.setError(null);
 
                     } else {
-
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                binding.textviewFirst.setText("error");
-                                binding.textViewSecond.setText("error");
-                                binding.textViewThree.setText("error");
-
-                            }
-                        });
-                        binding.textInputUrl.setError(shortLink.getErrorMensagem1());
+                        binding.textviewFirst.setText("error");
+                        binding.textviewFirst.setError("");
+                        binding.textViewSecond.setText("error");
+                        binding.textViewSecond.setError("");
+                        binding.textViewThree.setText("error");
+                        binding.textViewThree.setError("");
+                        binding.textInputUrl.setError(result.getErrorMensagem1());
                     }
 
-                if (shortLink != null)
-                    if (shortLink.getIsOkUrl2()) {
+                if (result != null)
+                    if (result.getIsOkUrl2()) {
 
-                        binding.textviewFour.setText(shortLink.getCode2().replace("https://", ""));
-                        saveInDataBase2(shortLink.getCode2(), date, urlTemp);
+                        binding.textviewFour.setText(result.getCode2().replace("https://", ""));
+                        saveInDataBase2(result.getCode2(), date, result.getUrl());
+                        binding.textInputUrlCustomName.setError(null);
+                        binding.textviewFour.setError(null);
 
-                    } else if (shortLink.getError_code2().equals("2")) {
+                    } else if (result.getError_code2().equals("2")) {
                         //error 2 is reference for custom name exist
                         String custom = binding.textInputUrlCustomName.getText().toString();
-                        GetShortLink getShortLink = new GetShortLink();
-                        getShortLink.requestShortlink(checkCustomUrl + custom);
-                        ShortLink shortLinkCheck = getShortLink.getShortlink();
-                        shortLinkCheck.setCode2("https://is.gd/" + custom);
 
-                        String url1, url2;
-                        url1 = binding.textInputUrl.getText().toString();
-                        url2 = shortLinkCheck.getUrl();
+                        GetShortLink getShortLink = new GetShortLink(result.getUrl());
+
+                        if (result.getUrlApi().contains("https://v.gd/"))
+                            getShortLink.requestShortlink(CHECKCUSTOMURL2 + custom);
+                        else
+                            getShortLink.requestShortlink(CHECKCUSTOMURL1 + custom);
+
+                        shortlink = getShortLink.getShortlink();
+
+                        String url1, url2,urlTemp;
+                        url1 = result.getUrl();
+                        url2 = shortlink.getUrl();
+                        urlTemp = url1;
 
                         if (url1.contains("http://")) {
                             url1 = url1.replace("http://", "");
@@ -623,26 +632,31 @@ public class FirstFragment extends Fragment {
                             url2 = url2.replace("https://", "");
                         }
 
-                        Log.e("url", url1);
-                        Log.e("url", url2);
-                        if (url1.contains(url2)) {
-                            binding.textviewFour.setText("is.gd/" + custom);
-                            saveInDataBase2(shortLinkCheck.getCode2(), date, urlTemp);
-                            shortLink.setIsOkUr2(true);
+                        if (url1.equals(url2)) {
+
+                            String temp;
+
+                            if (result.getUrlApi().contains("https://v.gd/"))
+                                temp = "v.gd/" + custom;
+                            else
+                                temp = "is.gd/" + custom;
+                            binding.textviewFour.setText(temp);
+                            saveInDataBase2(temp, date, urlTemp);
+                            shortlink.setIsOkUr2(true);
                             binding.textInputUrlCustomName.setError(null);
+                            binding.textviewFour.setError(null);
                         } else {
-                            showError();
+                            showError(result);
                         }
 
                     } else {
-                        showError();
+                        showError(result);
                     }
 
-                binding.imageViewQrCode.setImageBitmap(generateQrCode(url, getActivity()));
+                binding.imageViewQrCode.setImageBitmap(generateQrCode(result.getUrl(), getActivity()));
                 binding.textViewTap.setVisibility(View.VISIBLE);
 
-
-                if (shortLink.getIsOkUrl1() == true && shortLink.getIsOkUrl2() == true) {
+                if (result.getIsOkUrl1() == true && shortlink.getIsOkUrl2() == true) {
                     Snackbar.make(getActivity(), view, "Success! ", Snackbar.LENGTH_LONG).show();
                     saveSharedPreferences(getActivity().getSharedPreferences(
                             "savedUrl", Context.MODE_PRIVATE));
@@ -650,10 +664,13 @@ public class FirstFragment extends Fragment {
 
 
             } catch (IllegalArgumentException e) {
+                Snackbar.make(getActivity(), view, "Failed to create a short link! ", Snackbar.LENGTH_LONG).show();
                 e.printStackTrace();
             } catch (NullPointerException e) {
+                Snackbar.make(getActivity(), view, "Failed to create a short link! ", Snackbar.LENGTH_LONG).show();
                 e.printStackTrace();
             } catch (IOException e) {
+                Snackbar.make(getActivity(), view, "Failed to create a short link! ", Snackbar.LENGTH_LONG).show();
                 e.printStackTrace();
             }
 
@@ -669,29 +686,25 @@ public class FirstFragment extends Fragment {
 
         }
 
-        private void showError() {
+        private void showError(ShortLink shortlink) {
 
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    binding.textviewFour.setText("error");
+            binding.textInputUrlCustomName.setError(shortlink.getErrorMensagem2());
+            binding.textviewFour.setText("error");
+            binding.textviewFour.setError("");
 
-                }
-            });
-            binding.textInputUrlCustomName.setError(shortLink.getErrorMensagem2());
 
         }
 
-        private void saveInDataBase2(String code, String date, String urlTemp) {
+        private void saveInDataBase2(String code, String date, String url) {
 
             DataBase dataBase = new DataBase(getActivity());
 
-            if (dataBase.selectUrlExists(urlTemp) > 0) {
-                dataBase.updateShortUrl2(code, date, urlTemp);
+            if (dataBase.selectUrlExists(url) > 0) {
+                dataBase.updateShortUrl2(code, date, url);
                 Log.e("code", code);
 
             } else {
-                dataBase.insertShortUrl2(code, date, urlTemp);
+                dataBase.insertShortUrl2(code, date, url);
             }
 
         }
