@@ -152,7 +152,7 @@ public class DataBase extends SQLiteOpenHelper {
                     cursor.getColumnIndexOrThrow("codeShort2")));
             shortAddress.setDate(cursor.getString(
                     cursor.getColumnIndexOrThrow("date")));
-            shortAddress.setOriginal_link(cursor.getString(
+            shortAddress.setOriginalLink(cursor.getString(
                     cursor.getColumnIndexOrThrow("long_url")));
 
             itemIds.add(shortAddress);

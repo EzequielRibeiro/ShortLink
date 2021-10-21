@@ -72,7 +72,7 @@ public class AdapterListView extends ArrayAdapter<ShortLink> {
         if(!urls.getCode2().equals("error"))
             link4.setText(urls.getCode2().replace("https://", ""));
 
-        original_link.setText(urls.getOriginal_link());
+        original_link.setText(urls.getOriginalLink());
 
         imageViewQrCode.setImageBitmap(generateQrCode(original_link.getText().toString(),
                 getContext()));
@@ -82,7 +82,7 @@ public class AdapterListView extends ArrayAdapter<ShortLink> {
             @Override
             public void onClick(View v) {
                 Activity activity = (Activity) getContext();
-                new ShareQrCode(urls.getOriginal_link(),activity);
+                new ShareQrCode(urls.getOriginalLink(),activity);
             }
         });
 

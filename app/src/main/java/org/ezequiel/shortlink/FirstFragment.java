@@ -524,13 +524,12 @@ public class FirstFragment extends Fragment {
         protected ShortLink doInBackground(String... params) {
 
             ShortLink shortLink = null;
+            urlToCompare = params[0];
             url = params[0];
-            urlToCompare = url;
 
             try {
                 getShortLink = new GetShortLink();
-                getShortLink.requestShortlink(URL1 + url);
-
+                getShortLink.requestShortlink(URL1 + params[0]);
 
                 if (!binding.textInputUrlCustomName.getText().toString().isEmpty()) {
 
@@ -559,7 +558,7 @@ public class FirstFragment extends Fragment {
 
             DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, getActivity().getResources().getConfiguration().locale);
             String date = df.format(Calendar.getInstance().getTime());
-            Log.e("result url", " " + result.getUrl());
+
             try {
 
                 ShortLink shortlink = new ShortLink();
@@ -576,11 +575,11 @@ public class FirstFragment extends Fragment {
 
                         DataBase dataBase = new DataBase(getActivity());
 
-                        if (dataBase.selectUrlExists(resut.getOriginalLink()) > 0) {
-                            dataBase.updateShortUrl1(result.getCode1(), date, result.getOriginalLink());
+                        if (dataBase.selectUrlExists(result.getOriginalLink()) > 0) {
+                            dataBase.updateShortUrl1(result.getCode1(), date, urlToCompare);
 
                         } else {
-                            dataBase.insertShortUrl1(result.getCode1(), date, result.getOriginalLink());
+                            dataBase.insertShortUrl1(result.getCode1(), date, urlToCompare);
                         }
                         binding.textInputUrl.setError(null);
 
@@ -598,11 +597,11 @@ public class FirstFragment extends Fragment {
                     if (result.getIsOkUrl2()) {
 
                         binding.textviewFour.setText(result.getCode2().replace("https://", ""));
-                        saveInDataBase2(result.getCode2(), date, result.getUrl());
+                        saveInDataBase2(result.getCode2(), date, urlToCompare);
                         binding.textInputUrlCustomName.setError(null);
                         binding.textviewFour.setError(null);
 
-                    } else if (result.getError_code2.equals("2")) {
+                    } else if (result.getError_code2().equals("2")) {
                         //error 2 is reference for custom name exist
                         String custom = binding.textInputUrlCustomName.getText().toString();
 
