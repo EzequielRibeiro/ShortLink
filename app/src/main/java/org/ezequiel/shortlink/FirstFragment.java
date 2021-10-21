@@ -514,7 +514,7 @@ public class FirstFragment extends Fragment {
         private GetShortLink getShortLink;
 
         private View view;
-        private String url;
+        private String url, urlToCompare;
 
         public Async(View view) {
             this.view = view;
@@ -525,9 +525,10 @@ public class FirstFragment extends Fragment {
 
             ShortLink shortLink = null;
             url = params[0];
+            urlToCompare = url;
 
             try {
-                getShortLink = new GetShortLink(url);
+                getShortLink = new GetShortLink();
                 getShortLink.requestShortlink(URL1 + url);
 
 
@@ -575,11 +576,11 @@ public class FirstFragment extends Fragment {
 
                         DataBase dataBase = new DataBase(getActivity());
 
-                        if (dataBase.selectUrlExists(result.getUrl()) > 0) {
-                            dataBase.updateShortUrl1(result.getCode1(), date, result.getUrl());
+                        if (dataBase.selectUrlExists(resut.getOriginalLink()) > 0) {
+                            dataBase.updateShortUrl1(result.getCode1(), date, result.getOriginalLink());
 
                         } else {
-                            dataBase.insertShortUrl1(result.getCode1(), date, result.getUrl());
+                            dataBase.insertShortUrl1(result.getCode1(), date, result.getOriginalLink());
                         }
                         binding.textInputUrl.setError(null);
 
@@ -605,7 +606,7 @@ public class FirstFragment extends Fragment {
                         //error 2 is reference for custom name exist
                         String custom = binding.textInputUrlCustomName.getText().toString();
 
-                        GetShortLink getShortLink = new GetShortLink(result.getUrl());
+                        GetShortLink getShortLink = new GetShortLink();
 
                         if (result.getUrlApi().contains("https://v.gd/"))
                             getShortLink.requestShortlink(CHECKCUSTOMURL2 + custom);
@@ -614,10 +615,10 @@ public class FirstFragment extends Fragment {
 
                         shortlink = getShortLink.getShortlink();
 
-                        String url1, url2,urlTemp;
-                        url1 = result.getUrl();
+                        String url1, url2;
+                        url1 = urlToCompare;
                         url2 = shortlink.getUrl();
-                        urlTemp = url1;
+                        
 
                         if (url1.contains("http://")) {
                             url1 = url1.replace("http://", "");
@@ -641,7 +642,7 @@ public class FirstFragment extends Fragment {
                             else
                                 temp = "is.gd/" + custom;
                             binding.textviewFour.setText(temp);
-                            saveInDataBase2(temp, date, urlTemp);
+                            saveInDataBase2(temp, date, urlToCompare);
                             shortlink.setIsOkUr2(true);
                             binding.textInputUrlCustomName.setError(null);
                             binding.textviewFour.setError(null);
