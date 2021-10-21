@@ -22,10 +22,10 @@ public class GetShortLink {
 
     private ShortLink shortlink;
 
-    public GetShortLink(String url) throws IOException {
+    public GetShortLink() throws IOException {
 
         shortlink = new ShortLink();
-        shortlink.setUrl(url);
+       
     }
 
     private ShortLink readShortlink1(JsonReader reader) throws IOException {
