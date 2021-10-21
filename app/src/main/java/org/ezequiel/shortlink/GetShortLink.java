@@ -78,7 +78,7 @@ public class GetShortLink {
             if (name.equals("code")) {
                 shortlink.setCode1(reader.nextString());
             } else if (name.equals("original_link")) {
-                shortlink.setOriginal_link(reader.nextString());
+                shortlink.setOriginalLink(reader.nextString());
             } else {
                 reader.skipValue();
             }
