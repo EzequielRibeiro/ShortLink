@@ -601,7 +601,7 @@ public class FirstFragment extends Fragment {
                         binding.textInputUrlCustomName.setError(null);
                         binding.textviewFour.setError(null);
 
-                    } else if (result.getError_code2().equals("2")) {
+                    } else if (result.getErrorMensagem2().contains("already exists")) {
                         //error 2 is reference for custom name exist
                         String custom = binding.textInputUrlCustomName.getText().toString();
 
