@@ -153,11 +153,11 @@ public class ShortLink {
         this.code2 = code;
     }
 
-    public String getOriginal_link() {
+    public String getOriginalLink() {
         return original_link;
     }
 
-    public void setOriginal_link(String original_link) {
+    public void setOriginalLink(String original_link) {
         this.original_link = original_link;
     }
 
