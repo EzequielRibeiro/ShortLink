@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -17,13 +18,14 @@ import androidx.work.WorkManager;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 public class MessagingService  extends FirebaseMessagingService {
     private static final String TAG = "MessagingService";
-    private String token = " ";
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     /**
      * Called when message is received.
@@ -91,8 +93,6 @@ public class MessagingService  extends FirebaseMessagingService {
      */
     @Override
     public void onNewToken(String token) {
-        Log.d(TAG, "Refreshed token: " + token);
-
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the
         // FCM registration token to your app server.
@@ -102,7 +102,6 @@ public class MessagingService  extends FirebaseMessagingService {
 
 
     public void onTokenRefresh() {
-
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(new OnCompleteListener<String>() {
                     @Override
@@ -122,7 +121,6 @@ public class MessagingService  extends FirebaseMessagingService {
                         //  Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
-
 
 
     }
@@ -155,8 +153,18 @@ public class MessagingService  extends FirebaseMessagingService {
      * @param token The new token.
      */
     private void sendRegistrationToServer(String token) {
+
+        String localeCountryCode= this.getResources().getConfiguration().locale.getCountry();
+
         // TODO: Implement this method to send token to your app server.
-        this.token = token;
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, mFirebaseAnalytics.getFirebaseInstanceId());
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, Build.MANUFACTURER);
+        bundle.putString("Country", localeCountryCode);
+        bundle.putString("Token",token);
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+
     }
 
     /**

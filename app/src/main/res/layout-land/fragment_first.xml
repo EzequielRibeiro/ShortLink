@@ -12,55 +12,33 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginEnd="8dp"
         android:text=" historic "
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/buttonGeneraterShort"
-        app:layout_constraintTop_toBottomOf="@id/relativeLayoutInputs" />
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayoutInputs" />
 
     <Button
         android:id="@+id/buttonGeneraterShort"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
         android:text="Short link"
         app:layout_constraintEnd_toStartOf="@+id/buttonGoHistoric"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/relativeLayoutInputs" />
-
-    <View
-        android:id="@+id/divider"
-        android:layout_width="0dp"
-        android:layout_height="2dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginEnd="1dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonGeneraterShort" />
-
-    <View
-        android:id="@+id/divider2"
-        android:layout_width="0dp"
-        android:layout_height="2dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linearLayout5" />
+        app:layout_constraintStart_toEndOf="@+id/relativeLayoutInputs"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayoutInputs" />
 
     <LinearLayout
         android:id="@+id/linearLayoutAd"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="5dp"
         android:foregroundGravity="center"
-        android:gravity="center"
+        android:gravity="bottom|center"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/relativeLayout"
-        app:layout_constraintTop_toBottomOf="@+id/divider2">
+        app:layout_constraintEnd_toEndOf="@+id/buttonGoHistoric"
+        app:layout_constraintStart_toEndOf="@+id/relativeLayoutInputs"
+        app:layout_constraintTop_toBottomOf="@+id/buttonGeneraterShort">
 
         <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
             android:id="@+id/adView"
@@ -74,326 +52,348 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toStartOf="@+id/linearLayout3"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider">
-
-        <ProgressBar
-            android:id="@+id/progressBar1"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:indeterminate="true"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/textview_first"
-            android:layout_width="150dp"
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="8dp"
-            android:gravity="left"
-            android:maxWidth="150dp"
-            android:singleLine="true"
-            android:text="Short Link 1"
-            android:textColor="@color/purple_500"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/buttonCopy1"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginLeft="8dp"
-            android:background="?attr/actionModeCopyDrawable"
-            app:backgroundTint="@color/purple_500"
-            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-
-        <Button
-            android:id="@+id/buttonShare1"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:background="?attr/actionModeShareDrawable"
-            android:text="Button"
-            tools:ignore="TouchTargetSizeCheck" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout3"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/linearLayout2"
-        app:layout_constraintTop_toBottomOf="@id/divider">
-
-        <ProgressBar
-            android:id="@+id/progressBar2"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:indeterminate="true"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/textView_second"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:gravity="left"
-            android:maxWidth="180dp"
-            android:singleLine="true"
-            android:text="Short Link 2"
-            android:textColor="@color/purple_500"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/buttonCopy2"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginLeft="8dp"
-            android:background="?attr/actionModeCopyDrawable"
-            android:text="Button"
-            app:backgroundTint="@color/purple_500"
-            tools:ignore="TouchTargetSizeCheck" />
-
-        <Button
-            android:id="@+id/buttonShare2"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:background="?attr/actionModeShareDrawable"
-            android:text="Button"
-            tools:ignore="TouchTargetSizeCheck" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout4"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="@+id/linearLayout2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
-
-        <ProgressBar
-            android:id="@+id/progressBar3"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/textView_three"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:gravity="left"
-            android:maxWidth="150dp"
-            android:singleLine="true"
-            android:text="Short Link 3"
-            android:textColor="@color/purple_500"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/buttonCopy3"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginLeft="8dp"
-            android:background="?attr/actionModeCopyDrawable"
-            android:text="Button"
-            app:backgroundTint="@color/purple_500"
-            tools:ignore="TouchTargetSizeCheck" />
-
-        <Button
-            android:id="@+id/buttonShare3"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:background="?attr/actionModeShareDrawable"
-            android:text="Button"
-            tools:ignore="TouchTargetSizeCheck" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout5"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="@+id/linearLayout3"
-        app:layout_constraintStart_toEndOf="@+id/linearLayout4"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
-
-        <ProgressBar
-            android:id="@+id/progressBar4"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/textview_four"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:gravity="left"
-            android:maxWidth="150dp"
-            android:text="Short Link 4"
-            android:textColor="@color/purple_500"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/buttonCopy4"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginLeft="8dp"
-            android:background="?attr/actionModeCopyDrawable"
-            android:text="Button"
-            app:backgroundTint="@color/purple_500"
-            tools:ignore="TouchTargetSizeCheck" />
-
-        <Button
-            android:id="@+id/buttonShare4"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:background="?attr/actionModeShareDrawable"
-            android:text="Button"
-            tools:ignore="TouchTargetSizeCheck" />
-
-
-    </LinearLayout>
-
-    <RelativeLayout
-        android:id="@+id/relativeLayout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/linearLayoutAd"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider2">
-
-        <ImageView
-            android:id="@+id/imageViewQrCode"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:adjustViewBounds="false"
-
-            android:padding="5dp"
-            android:scaleType="centerInside"
-            app:srcCompat="@drawable/icon50" />
-
-        <TextView
-            android:id="@+id/textViewTap"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
+            android:layout_marginTop="2dp"
             android:gravity="center"
-            android:text="tap to share QR" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/relativeLayoutInputs"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonGoHistoric"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:startIconDrawable="@drawable/icon_title">
+            app:layout_constraintStart_toEndOf="@+id/relativeLayoutInputs"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/textInputUrl"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-                android:layout_width="match_parent"
+            <ProgressBar
+                android:id="@+id/progressBar1"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:indeterminate="true"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/textView_first"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:focusable="auto"
-                android:hint="Enter a Url to shorten"
-                android:maxLines="2"
-                android:textSize="16sp" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayoutCustomName"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textInputLayout"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            app:counterEnabled="true"
-            app:counterMaxLength="30"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/textInputUrlCustomName"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Enter a custom name"
-                android:maxLines="1"
+                android:layout_gravity="center"
+                android:layout_marginStart="8dp"
+                android:gravity="left"
+                android:maxWidth="150dp"
+                android:singleLine="true"
+                android:text="Short Link 1"
+                android:textColor="@color/purple_500"
                 android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/buttonCopy1"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="8dp"
+                android:background="?attr/actionModeCopyDrawable"
+                app:backgroundTint="@color/purple_500"
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+            <Button
+                android:id="@+id/buttonShare1"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:background="?attr/actionModeShareDrawable"
+                android:text="Button"
+                tools:ignore="TouchTargetSizeCheck" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/relativeLayoutInputs"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+            <ProgressBar
+                android:id="@+id/progressBar2"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:indeterminate="true"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/textView_second"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:gravity="left"
+                android:maxWidth="180dp"
+                android:singleLine="true"
+                android:text="Short Link 2"
+                android:textColor="@color/purple_500"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/buttonCopy2"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="8dp"
+                android:background="?attr/actionModeCopyDrawable"
+                android:text="Button"
+                app:backgroundTint="@color/purple_500"
+                tools:ignore="TouchTargetSizeCheck" />
+
+            <Button
+                android:id="@+id/buttonShare2"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:background="?attr/actionModeShareDrawable"
+                android:text="Button"
+                tools:ignore="TouchTargetSizeCheck" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/relativeLayoutInputs"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+
+            <ProgressBar
+                android:id="@+id/progressBar3"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/textView_three"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:gravity="left"
+                android:maxWidth="150dp"
+                android:singleLine="true"
+                android:text="Short Link 3"
+                android:textColor="@color/purple_500"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/buttonCopy3"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="8dp"
+                android:background="?attr/actionModeCopyDrawable"
+                android:text="Button"
+                app:backgroundTint="@color/purple_500"
+                tools:ignore="TouchTargetSizeCheck" />
+
+            <Button
+                android:id="@+id/buttonShare3"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:background="?attr/actionModeShareDrawable"
+                android:text="Button"
+                tools:ignore="TouchTargetSizeCheck" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/buttonGoHistoric"
+            app:layout_constraintEnd_toEndOf="@+id/linearLayout3"
+            app:layout_constraintStart_toEndOf="@+id/relativeLayoutInputs"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
+
+            <ProgressBar
+                android:id="@+id/progressBar4"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/textView_four"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:focusable="auto"
+                android:gravity="left"
+                android:maxWidth="150dp"
+                android:text="Short Link 4"
+                android:textColor="@color/purple_500"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/buttonCopy4"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="8dp"
+                android:background="?attr/actionModeCopyDrawable"
+                android:text="Button"
+                app:backgroundTint="@color/purple_500"
+                tools:ignore="TouchTargetSizeCheck" />
+
+            <Button
+                android:id="@+id/buttonShare4"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:background="?attr/actionModeShareDrawable"
+                android:text="Button"
+                tools:ignore="TouchTargetSizeCheck" />
+
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/buttonGeneraterShort"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/relativeLayoutInputs">
+
+            <ImageView
+                android:id="@+id/imageViewQrCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/textViewTap"
+
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:adjustViewBounds="false"
+                android:padding="5dp"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/icon50" />
+
+            <TextView
+                android:id="@+id/textViewTap"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:gravity="center"
+                android:text="tap to share QR" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutInputs"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@id/linearLayout2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:startIconDrawable="@drawable/icon_title">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textInputUrl"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="auto"
+                    android:hint="Enter a Url to shorten"
+                    android:maxLines="2"
+                    android:textSize="16sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayoutCustomName"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textInputLayout"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 app:counterEnabled="true"
                 app:counterMaxLength="30"
-                app:errorEnabled="true" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textInputUrlCustomName"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter a custom name"
+                    android:maxLines="1"
+                    android:textSize="16sp"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="30"
+                    app:errorEnabled="true" />
 
 
-        </com.google.android.material.textfield.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <CheckBox
-            android:id="@+id/checkBox"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:layout_below="@+id/textInputLayoutCustomName"
-            android:layout_alignStart="@+id/textInputLayoutCustomName"
-            android:layout_alignBottom="@+id/textInputLayoutCustomName"
-            android:layout_marginTop="-20dp"
-            android:checked="false"
-            android:text="enable statistics"
-            tools:ignore="TouchTargetSizeCheck" />
+            <CheckBox
+                android:id="@+id/checkBoxStatistic"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_below="@+id/textInputLayoutCustomName"
+                android:layout_alignStart="@+id/textInputLayoutCustomName"
+                android:layout_alignBottom="@+id/textInputLayoutCustomName"
+                android:layout_marginTop="-20dp"
+                android:checked="false"
+                android:text="@string/enable_statistics"
+                tools:ignore="TouchTargetSizeCheck" />
 
-        <CheckBox
-            android:id="@+id/checkBox2"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:layout_below="@+id/textInputLayoutCustomName"
-            android:layout_alignBottom="@+id/textInputLayoutCustomName"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="-20dp"
-            android:layout_toEndOf="@+id/checkBox"
-            android:checked="true"
-            android:text="v.gd"
-            tools:ignore="TouchTargetSizeCheck" />
-    </RelativeLayout>
+            <CheckBox
+                android:id="@+id/checkBoxVGD"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_below="@+id/textInputLayoutCustomName"
+                android:layout_alignBottom="@+id/textInputLayoutCustomName"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="-20dp"
+                android:layout_toEndOf="@+id/checkBoxStatistic"
+                android:checked="true"
+                android:text="v.gd"
+                tools:ignore="TouchTargetSizeCheck" />
+
+            <CheckBox
+                android:id="@+id/checkBoxISGD"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_below="@+id/textInputLayoutCustomName"
+                android:layout_alignBottom="@+id/textInputLayoutCustomName"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="-20dp"
+                android:layout_toEndOf="@+id/checkBoxVGD"
+                android:text="is.gd"
+                tools:ignore="TouchTargetSizeCheck" />
+        </RelativeLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>

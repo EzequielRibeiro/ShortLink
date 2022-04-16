@@ -7,26 +7,113 @@
     tools:context="org.ezequiel.shortlink.FirstFragment">
 
 
-    <Button
-        android:id="@+id/buttonGoHistoric"
-        android:layout_width="0dp"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="24dp"
-        android:text=" historic "
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/buttonGeneraterShort"
-        app:layout_constraintTop_toBottomOf="@id/relativeLayoutInputs" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:startIconDrawable="@drawable/icon_title">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInputUrl"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="auto"
+            android:focusableInTouchMode="false"
+            android:hint="Enter a Url to shorten"
+            android:maxLines="2"
+            android:textSize="16sp"
+            app:textInputLayoutFocusedRectEnabled="false" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutCustomName"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:counterEnabled="true"
+        app:counterMaxLength="30"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInputUrlCustomName"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter a custom name"
+            android:maxLines="1"
+            android:textSize="16sp"
+            app:counterEnabled="true"
+            app:counterMaxLength="30"
+            app:errorEnabled="true" />
+
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-20dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="@+id/textInputLayoutCustomName"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutCustomName">
+
+        <CheckBox
+            android:id="@+id/checkBoxStatistic"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+
+            android:checked="false"
+            android:text="@string/enable_statistics"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <CheckBox
+            android:id="@+id/checkBoxVGD"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:checked="true"
+            android:text="v.gd"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <CheckBox
+            android:id="@+id/checkBoxISGD"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:text="is.gd"
+            tools:ignore="TouchTargetSizeCheck" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/buttonGeneraterShort"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
         android:text="Short link"
         app:layout_constraintEnd_toStartOf="@+id/buttonGoHistoric"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/relativeLayoutInputs" />
+        app:layout_constraintStart_toStartOf="@+id/textInputLayoutCustomName"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+    <Button
+        android:id="@+id/buttonGoHistoric"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text=" historic "
+        app:layout_constraintEnd_toEndOf="@+id/textInputLayoutCustomName"
+        app:layout_constraintStart_toEndOf="@+id/buttonGeneraterShort"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <View
         android:id="@+id/divider"
@@ -50,32 +137,10 @@
         app:layout_constraintTop_toBottomOf="@id/linearLayout5" />
 
     <LinearLayout
-        android:id="@+id/linearLayoutAd"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:foregroundGravity="center"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/adView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            ads:adSize="BANNER"
-            ads:adUnitId="@string/banner_ad_unit_id"></com.google.android.gms.ads.AdView>
-
-
-    </LinearLayout>
-
-    <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -91,7 +156,7 @@
             android:visibility="gone" />
 
         <TextView
-            android:id="@+id/textview_first"
+            android:id="@+id/textView_first"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -238,7 +303,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linearLayout4">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
 
         <ProgressBar
             android:id="@+id/progressBar4"
@@ -248,7 +313,7 @@
             android:visibility="gone" />
 
         <TextView
-            android:id="@+id/textview_four"
+            android:id="@+id/textView_four"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -279,130 +344,42 @@
             tools:ignore="TouchTargetSizeCheck" />
 
 
-    </LinearLayout>
+    </LinearLayout><![CDATA[
 
-    <RelativeLayout
+
+        android:id="@+id/constraintLayout"
+        android:layout_width="0dp"
+        android:layout_height="300dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+    ]]>
+
+    <TextView
+        android:id="@+id/textViewTap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="tap to share QR"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/imageViewQrCode"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider2" />
+
+    <ImageView
+        android:id="@+id/imageViewQrCode"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:gravity="center"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayoutAd"
+        android:layout_marginBottom="8dp"
+        android:adjustViewBounds="false"
+        android:scaleType="center"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider2">
-
-        <ImageView
-            android:id="@+id/imageViewQrCode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:adjustViewBounds="false"
-            android:maxHeight="150dp"
-            android:scaleType="centerInside"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/icon150" />
-
-        <TextView
-            android:id="@+id/textViewTap"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/imageViewQrCode"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginBottom="5dp"
-            android:gravity="center"
-            android:text="tap to share QR" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/relativeLayoutInputs"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonGoHistoric"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:startIconDrawable="@drawable/icon_title">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/textInputUrl"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusable="auto"
-                android:hint="Enter a Url to shorten"
-                android:maxLines="2"
-                android:textSize="16sp" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayoutCustomName"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textInputLayout"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            app:counterEnabled="true"
-            app:counterMaxLength="30"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/textInputUrlCustomName"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Enter a custom name"
-                android:maxLines="1"
-                android:textSize="16sp"
-                app:counterEnabled="true"
-                app:counterMaxLength="30"
-                app:errorEnabled="true" />
-
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <CheckBox
-            android:id="@+id/checkBox"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:layout_below="@+id/textInputLayoutCustomName"
-            android:layout_alignStart="@+id/textInputLayoutCustomName"
-            android:layout_alignBottom="@+id/textInputLayoutCustomName"
-            android:layout_marginTop="-20dp"
-            android:checked="false"
-            android:text="enable statistics"
-            tools:ignore="TouchTargetSizeCheck" />
-
-        <CheckBox
-            android:id="@+id/checkBox2"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:layout_below="@+id/textInputLayoutCustomName"
-            android:layout_alignBottom="@+id/textInputLayoutCustomName"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="-20dp"
-            android:layout_toEndOf="@+id/checkBox"
-            android:checked="true"
-            android:text="v.gd"
-            tools:ignore="TouchTargetSizeCheck" />
-    </RelativeLayout>
+        app:layout_constraintTop_toBottomOf="@+id/textViewTap"
+        app:srcCompat="@mipmap/ic_launcher" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

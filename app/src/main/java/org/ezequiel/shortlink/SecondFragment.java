@@ -1,13 +1,10 @@
 package org.ezequiel.shortlink;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import com.startapp.sdk.ads.banner.Banner;
-import com.startapp.sdk.ads.banner.BannerListener;
 
 import org.ezequiel.shortlink.databinding.FragmentSecondBinding;
 
@@ -15,7 +12,6 @@ import org.ezequiel.shortlink.databinding.FragmentSecondBinding;
 public class SecondFragment extends Fragment {
 
     private FragmentSecondBinding binding;
-    private Banner startAppBanner;
 
     @Override
     public View onCreateView(
@@ -35,34 +31,6 @@ public class SecondFragment extends Fragment {
 
         AdapterListView adapter = new AdapterListView(getActivity(), dataBase.readData());
         binding.listViewHistoric.setAdapter(adapter);
-
-
-        startAppBanner = new Banner(getActivity(), new BannerListener() {
-            @Override
-            public void onReceiveAd(View view) {
-
-            }
-
-            @Override
-            public void onFailedToReceiveAd(View view) {
-
-                binding.linearLayoutAdSecond.removeView(startAppBanner);
-            }
-
-            @Override
-            public void onImpression(View view) {
-
-            }
-
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-        binding.linearLayoutAdSecond.addView(startAppBanner);
-
-
-
 
        /* binding.buttonSecond.setOnClickListener(new View.OnClickListener() {
             @Override
