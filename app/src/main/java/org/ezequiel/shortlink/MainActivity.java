@@ -46,11 +46,6 @@ import com.google.android.gms.ads.initialization.OnInitializationCompleteListene
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
-import com.startapp.sdk.ads.banner.Banner;
-import com.startapp.sdk.ads.banner.BannerListener;
-import com.startapp.sdk.adsbase.StartAppAd;
-import com.startapp.sdk.adsbase.StartAppSDK;
-
 import org.ezequiel.shortlink.databinding.ActivityMainBinding;
 
 
@@ -59,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
     private FirebaseAnalytics mFirebaseAnalytics;
-    private Banner startAppBanner;
     private TextView textInputUrl;
     private TextView textviewFirst;
     private TextView textViewSecond;
@@ -83,8 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onInitializationComplete(InitializationStatus initializationStatus) {
                 }
             });
-            StartAppSDK.init(this, getString(R.string.startapp_app_id), false);
-            StartAppAd.disableSplash();
+
         }catch(NullPointerException e){
             FirebaseCrashlytics.getInstance().recordException(e);
         }
@@ -225,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                 new StartAppAd(getBaseContext()).show();  ;
+
             }
         });
 
@@ -264,28 +257,6 @@ public class MainActivity extends AppCompatActivity {
             public void onAdFailedToLoad(LoadAdError adError) {
                 // Code to be executed when an ad request fails.
                 linearLayoutAd.removeAllViews();
-
-                startAppBanner = new Banner(MainActivity.this, new BannerListener() {
-                    @Override
-                    public void onReceiveAd(View view) {
-
-                    }
-
-                    @Override
-                    public void onFailedToReceiveAd(View view) {
-                       linearLayoutAd.removeView(startAppBanner);
-                    }
-
-                    @Override
-                    public void onImpression(View view) {
-
-                    }
-
-                    @Override
-                    public void onClick(View view) {
-
-                    }
-                });
 
             }
 
@@ -363,6 +334,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
+
       try {
           textInputUrl.setText(savedInstanceState.getString("longUrl"));
           textviewFirst.setText(savedInstanceState.getString("shortUrl1"));
@@ -370,8 +342,6 @@ public class MainActivity extends AppCompatActivity {
           textViewThree.setText(savedInstanceState.getString("shortUrl3"));
           textviewFour.setText(savedInstanceState.getString("shortUrl4"));
           imageViewQrCode.setImageBitmap(generateQrCode(savedInstanceState.getString("longUrl"), getBaseContext()));
-
-          new StartAppAd(getBaseContext()).onRestoreInstanceState(savedInstanceState);
           super.onRestoreInstanceState(savedInstanceState);
       }catch (NullPointerException exception){
           exception.printStackTrace();
@@ -396,7 +366,7 @@ public class MainActivity extends AppCompatActivity {
                     outState.putString("shortUrl4", textviewFour.getText().toString());
 
             }
-            new StartAppAd(getBaseContext()).onSaveInstanceState(outState);
+
             super.onSaveInstanceState(outState);
         }catch (NullPointerException exception){
             exception.printStackTrace();
