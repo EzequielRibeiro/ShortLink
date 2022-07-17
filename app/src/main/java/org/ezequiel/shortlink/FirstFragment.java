@@ -494,7 +494,6 @@ public class FirstFragment extends Fragment {
             String date = df.format(Calendar.getInstance().getTime());
 
             try {
-
                 ShortLink shortlink = new ShortLink();
               if(binding.checkBoxShrtco.isChecked())
                 if (result != null)
@@ -514,13 +513,14 @@ public class FirstFragment extends Fragment {
                             dataBase.insertShortUrl1(result.getCode1(), date, urlToCompare);
                         }
                         binding.textInputUrl.setError(null);
-                        binding.textViewTap.setVisibility(VISIBLE);
 
                     } else {
                         binding.textViewFirst.setText("error");
                         binding.textViewFirst.setError("");
                         binding.textInputUrl.setError(result.getErrorMensagem1());
-                        binding.textViewTap.setVisibility(View.INVISIBLE);
+                        binding.linearLayout2.setVisibility(GONE);
+                        binding.textViewTitle.setVisibility(GONE);
+
                     }
 
               if(binding.checkBoxVGD.isChecked() || binding.checkBoxISGD.isChecked())
@@ -531,6 +531,7 @@ public class FirstFragment extends Fragment {
                         binding.textInputUrlCustomName.setError(null);
                         binding.textViewFirst.setError(null);
                         binding.linearLayout2.setVisibility(VISIBLE);
+
 
                     } else if (result.getError_code2().equals("2")) {
                         //error 2 is reference for custom name exist
@@ -582,8 +583,11 @@ public class FirstFragment extends Fragment {
 
                     } else {
                         showError(result);
+
+
                     }
 
+                binding.linearLayoutQrCode.setVisibility(VISIBLE);
                 binding.imageViewQrCode.setImageBitmap(generateQrCode(result.getUrl(), getActivity()));
                 binding.textViewTap.setVisibility(View.VISIBLE);
 
@@ -618,7 +622,8 @@ public class FirstFragment extends Fragment {
         }
 
         private void showError(ShortLink shortlink) {
-
+            binding.linearLayout2.setVisibility(GONE);
+            binding.textViewTitle.setVisibility(GONE);
             binding.textInputUrlCustomName.setError(shortlink.getErrorMensagem2());
             binding.textViewFirst.setText("error");
             binding.textViewFirst.setError("");

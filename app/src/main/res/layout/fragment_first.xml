@@ -168,8 +168,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="vertical"
-            android:visibility="gone">
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -190,6 +189,7 @@
                     android:layout_marginTop="8dp"
                     android:background="@drawable/border_view"
                     android:gravity="center"
+                    android:visibility="gone"
                     android:orientation="horizontal">
 
                     <TextView
@@ -225,6 +225,7 @@
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/textViewTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignLeft="@+id/linearLayout2"
@@ -235,22 +236,25 @@
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
                     android:text="Short Link"
+                    android:visibility="gone"
                     android:textColor="@android:color/white" />
             </RelativeLayout>
 
             <LinearLayout
                 android:id="@+id/linearLayoutQrCode"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/textViewTap"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="tap to share QR"
-                    android:visibility="visible" />
+                    android:text="tap to share QRCODE"
+                    android:visibility="visible"
+                    app:autoSizeTextType="uniform" />
 
                 <ImageView
                     android:id="@+id/imageViewQrCode"
