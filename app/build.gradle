@@ -11,8 +11,8 @@ android {
         applicationId "org.ezequiel.shortlink"
         minSdk 20
         targetSdk 33
-        versionCode 17
-        versionName "1.17"
+        versionCode 19
+        versionName "1.19"
         multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

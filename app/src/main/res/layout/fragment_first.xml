@@ -66,7 +66,6 @@
         android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-20dp"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="@+id/textInputLayoutCustomName"
@@ -160,6 +159,8 @@
             android:layout_height="100dp"
             android:gravity="center"
             android:indeterminateOnly="true"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:visibility="gone" />
 
         <LinearLayout
@@ -173,21 +174,20 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="16dp"
+                android:paddingStart="5dp"
                 android:paddingTop="16dp"
-                android:paddingRight="16dp"
-                android:paddingBottom="16dp">
+                android:paddingEnd="5dp"
+
+                >
 
                 <LinearLayout
                     android:id="@+id/linearLayout2"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="60dp"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
                     android:background="@drawable/border_view"
                     android:gravity="center"
                     android:orientation="horizontal">
@@ -195,19 +195,20 @@
                     <TextView
                         android:id="@+id/textView_first"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_gravity="center"
-                        android:gravity="left"
-                        android:singleLine="true"
-                        android:text="Short Link 1"
+                        android:autoSizeMaxTextSize="100sp"
+                        android:gravity="center"
+                        android:text="Short Link"
                         android:textColor="@color/purple_500"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:autoSizeTextType="uniform" />
 
                     <Button
                         android:id="@+id/buttonCopy1"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="30sp"
+                        android:layout_height="30sp"
                         android:layout_marginLeft="8dp"
                         android:background="?attr/actionModeCopyDrawable"
                         app:backgroundTint="@color/purple_500"
@@ -215,9 +216,8 @@
 
                     <Button
                         android:id="@+id/buttonShare1"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_marginStart="8dp"
+                        android:layout_width="30sp"
+                        android:layout_height="30sp"
                         android:background="?attr/actionModeShareDrawable"
                         android:text="Button"
                         tools:ignore="TouchTargetSizeCheck" />
