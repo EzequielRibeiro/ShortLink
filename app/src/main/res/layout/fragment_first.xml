@@ -289,7 +289,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            app:adSize="LARGE_BANNER"
+            app:adSize="BANNER"
             app:adUnitId="@string/banner_large_ad_unit_id"></com.google.android.gms.ads.AdView>
 
 

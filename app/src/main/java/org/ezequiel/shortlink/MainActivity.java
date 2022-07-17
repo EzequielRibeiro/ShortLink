@@ -12,6 +12,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -25,8 +26,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.google.android.gms.tasks.*;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -36,22 +40,23 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.LoadAdError;
+
 import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.RequestConfiguration;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+
 import org.ezequiel.shortlink.databinding.ActivityMainBinding;
 
-import java.util.Arrays;
-import java.util.List;
+import com.google.android.play.core.review.ReviewInfo;
+import com.google.android.play.core.review.ReviewManager;
+import com.google.android.play.core.review.ReviewManagerFactory;
+import com.google.android.play.core.tasks.OnFailureListener;
 
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -61,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView textInputUrl;
     private TextView textviewFirst;
     private ImageView imageViewQrCode;
+    private NavController navController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,14 +85,14 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-        }catch(NullPointerException e){
+        } catch (NullPointerException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // Create channel to show notifications.
-            String channelId  = getString(R.string.default_notification_channel_id);
+            String channelId = getString(R.string.default_notification_channel_id);
             String channelName = getString(R.string.default_notification_channel_name);
             NotificationManager notificationManager =
                     getSystemService(NotificationManager.class);
@@ -105,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setLogo(R.drawable.icon_title);
 
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
@@ -116,8 +122,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static void hideKeybaord(View v, Context context) {
-        InputMethodManager inputMethodManager = (InputMethodManager)  context.getSystemService(INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(v.getApplicationWindowToken(),0);
+        InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
     }
 
     @Override
@@ -145,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
 
             try {
                 showHelp();
-            }catch (IllegalArgumentException e){
+            } catch (IllegalArgumentException e) {
                 e.printStackTrace();
             }
 
@@ -157,23 +163,95 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
 
+        if (id == R.id.action_rate) {
+            rateApp();
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         return NavigationUI.navigateUp(navController, appBarConfiguration)
                 || super.onSupportNavigateUp();
     }
 
     @Override
     public void onBackPressed() {
-        // super.onBackPressed();
-        confirmExit();
+        Log.e("name",navController.getCurrentDestination().getLabel().toString());
+        if (Objects.requireNonNull(navController.getCurrentDestination()).getLabel().equals(getString(R.string.app_name))) {
+                confirmExit();
+            }else
+               super.onBackPressed();
+
     }
 
-    public void confirmExit(){
+
+    private void rateAppOnPlayStore() {
+        final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+        } catch (android.content.ActivityNotFoundException anfe) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+        }
+    }
+
+    private void rateApp() {
+
+
+        final ReviewManager reviewManager = ReviewManagerFactory.create(MainActivity.this);
+        //reviewManager = new FakeReviewManager(this);
+        com.google.android.play.core.tasks.Task<ReviewInfo> request = reviewManager.requestReviewFlow();
+
+        request.addOnCompleteListener(new com.google.android.play.core.tasks.OnCompleteListener<ReviewInfo>() {
+            @Override
+            public void onComplete(@NonNull com.google.android.play.core.tasks.Task<ReviewInfo> task) {
+                if (task.isSuccessful()) {
+                    ReviewInfo reviewInfo = task.getResult();
+                    com.google.android.play.core.tasks.Task<Void> flow = reviewManager.launchReviewFlow(MainActivity.this, reviewInfo);
+                    flow.addOnCompleteListener(new com.google.android.play.core.tasks.OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull com.google.android.play.core.tasks.Task<Void> task) {
+                            Log.i("Rate Flow", "Sucess");
+                        }
+                    });
+
+                    flow.addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(Exception e) {
+                            rateAppOnPlayStore();
+                            Log.i("Rate Flow", "Fail");
+                            e.printStackTrace();
+                        }
+                    });
+
+                } else {
+                    try {
+                        String reviewErrorCode = task.getException().getMessage();
+                        Log.d("Rate Task Fail", "cause: " + reviewErrorCode);
+                        rateAppOnPlayStore();
+                    } catch (NullPointerException | ClassCastException e) {
+                        rateAppOnPlayStore();
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(Exception e) {
+                e.printStackTrace();
+                Log.d("Rate Request", "Fail");
+                rateAppOnPlayStore();
+            }
+        });
+
+    }
+
+
+    public void confirmExit() {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setTitle(R.string.app_name);
         builder.setIcon(R.mipmap.ic_launcher);
@@ -204,7 +282,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             NavHostFragment.findNavController(fragment)
                     .navigate(R.id.action_FirstFragment_to_HelpFragment);
-        }catch(IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             e.printStackTrace();
             NavHostFragment.findNavController(fragment)
                     .navigate(R.id.action_SecondFragment_to_HelpFragment);
@@ -225,7 +303,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        String msg = getString(R.string.app_name) + " " + version + "\nDeveloper: Ezequiel A. Ribeiro" + "\nContact: "+getString(R.string.contact);
+        String msg = getString(R.string.app_name) + " " + version + "\nDeveloper: Ezequiel A. Ribeiro" + "\nContact: " + getString(R.string.contact);
         final SpannableString s = new SpannableString(msg);
         Linkify.addLinks(s, Linkify.ALL);
 
@@ -250,7 +328,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         receivedFromShare();
 
@@ -261,13 +339,13 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String action = intent.getAction();
         String type = intent.getType();
-        Log.e("text",action);
+        Log.e("text", action);
         if (Intent.ACTION_SEND.equals(action) && type != null) {
             if ("text/plain".equals(type)) {
 
                 final String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
                 if (sharedText != null) {
-                    Log.e("text",sharedText);
+                    Log.e("text", sharedText);
                     Snackbar.make(getWindow().getDecorView().getRootView(), "URL received", Snackbar.LENGTH_LONG).show();
 
                     runOnUiThread(new Runnable() {
@@ -282,7 +360,7 @@ public class MainActivity extends AppCompatActivity {
 
                     if (!Patterns.WEB_URL.matcher(sharedText).matches()) {
 
-                        Snackbar.make(MainActivity.this,getWindow().getDecorView()
+                        Snackbar.make(MainActivity.this, getWindow().getDecorView()
                                 .getRootView(), "url is invalid", Snackbar.LENGTH_INDEFINITE).show();
 
                         textInputUrl.setError("url is invalid");
@@ -293,8 +371,8 @@ public class MainActivity extends AppCompatActivity {
 
                     getIntent().setData(null);
 
-                }else{
-                    Log.e("text","null");
+                } else {
+                    Log.e("text", "null");
                 }
 
             }
@@ -306,14 +384,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
 
-      try {
-          textInputUrl.setText(savedInstanceState.getString("longUrl"));
-          textviewFirst.setText(savedInstanceState.getString("shortUrl1"));
-          imageViewQrCode.setImageBitmap(generateQrCode(savedInstanceState.getString("longUrl"), getBaseContext()));
-          super.onRestoreInstanceState(savedInstanceState);
-      }catch (NullPointerException exception){
-          exception.printStackTrace();
-      }
+        try {
+            textInputUrl.setText(savedInstanceState.getString("longUrl"));
+            textviewFirst.setText(savedInstanceState.getString("shortUrl1"));
+            imageViewQrCode.setImageBitmap(generateQrCode(savedInstanceState.getString("longUrl"), getBaseContext()));
+            super.onRestoreInstanceState(savedInstanceState);
+        } catch (NullPointerException exception) {
+            exception.printStackTrace();
+        }
 
     }
 
@@ -324,10 +402,10 @@ public class MainActivity extends AppCompatActivity {
             if (!textviewFirst.getText().equals("wait...") && !textviewFirst.getText().equals("error")) {
                 if (!textInputUrl.getText().toString().isEmpty())
                     outState.putString("longUrl", textInputUrl.getText().toString());
-           }
+            }
 
             super.onSaveInstanceState(outState);
-        }catch (NullPointerException exception){
+        } catch (NullPointerException exception) {
             exception.printStackTrace();
         }
     }

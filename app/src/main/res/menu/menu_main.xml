@@ -13,6 +13,11 @@
         android:title="Help"
         app:showAsAction="never" />
     <item
+        android:id="@+id/action_rate"
+        android:orderInCategory="100"
+        android:title="Rate"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_about"
         android:orderInCategory="100"
         android:title="About"

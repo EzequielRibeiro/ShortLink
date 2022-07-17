@@ -11,8 +11,8 @@ android {
         applicationId "org.ezequiel.shortlink"
         minSdk 20
         targetSdk 33
-        versionCode 18
-        versionName "1.18"
+        versionCode 19
+        versionName "1.19"
         multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -50,8 +50,11 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics:18.2.11'
     implementation 'com.google.firebase:firebase-inappmessaging-display:20.1.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'com.google.android.play:core:1.10.3'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     implementation 'com.android.support:multidex:1.0.3'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0'
 }
