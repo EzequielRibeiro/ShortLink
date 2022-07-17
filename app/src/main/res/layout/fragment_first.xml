@@ -76,8 +76,6 @@
             android:id="@+id/checkBoxStatistic"
             android:layout_width="wrap_content"
             android:layout_height="25dp"
-
-            android:checked="false"
             android:text="@string/enable_statistics"
             tools:ignore="TouchTargetSizeCheck" />
 
@@ -85,7 +83,6 @@
             android:id="@+id/checkBoxVGD"
             android:layout_width="wrap_content"
             android:layout_height="25dp"
-            android:checked="false"
             android:text="v.gd"
             tools:ignore="TouchTargetSizeCheck" />
 
@@ -95,6 +92,13 @@
             android:layout_height="25dp"
             android:checked="true"
             android:text="is.gd"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <CheckBox
+            android:id="@+id/checkBoxShrtco"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:text="shrtco.de"
             tools:ignore="TouchTargetSizeCheck" />
     </LinearLayout>
 
@@ -129,258 +133,159 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonGeneraterShort" />
 
-    <View
-        android:id="@+id/divider2"
-        android:layout_width="0dp"
-        android:layout_height="2dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linearLayout5" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider">
-
-        <ProgressBar
-            android:id="@+id/progressBar1"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:indeterminate="true"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/textView_first"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="8dp"
-            android:gravity="left"
-            android:maxWidth="150dp"
-            android:singleLine="true"
-            android:text="Short Link 1"
-            android:textColor="@color/purple_500"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/buttonCopy1"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginLeft="8dp"
-            android:background="?attr/actionModeCopyDrawable"
-            app:backgroundTint="@color/purple_500"
-            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-
-        <Button
-            android:id="@+id/buttonShare1"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginStart="8dp"
-            android:background="?attr/actionModeShareDrawable"
-            android:text="Button"
-            tools:ignore="TouchTargetSizeCheck" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout3"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
-
-        <ProgressBar
-            android:id="@+id/progressBar2"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:indeterminate="true"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/textView_second"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:gravity="left"
-            android:maxWidth="180dp"
-            android:singleLine="true"
-            android:text="Short Link 2"
-            android:textColor="@color/purple_500"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/buttonCopy2"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginLeft="8dp"
-            android:background="?attr/actionModeCopyDrawable"
-            android:text="Button"
-            app:backgroundTint="@color/purple_500"
-            tools:ignore="TouchTargetSizeCheck" />
-
-        <Button
-            android:id="@+id/buttonShare2"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginStart="8dp"
-            android:background="?attr/actionModeShareDrawable"
-            android:text="Button"
-            tools:ignore="TouchTargetSizeCheck" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout4"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
-
-        <ProgressBar
-            android:id="@+id/progressBar3"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/textView_three"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:gravity="left"
-            android:maxWidth="150dp"
-            android:singleLine="true"
-            android:text="Short Link 3"
-            android:textColor="@color/purple_500"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/buttonCopy3"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginLeft="8dp"
-            android:background="?attr/actionModeCopyDrawable"
-            android:text="Button"
-            app:backgroundTint="@color/purple_500"
-            tools:ignore="TouchTargetSizeCheck" />
-
-        <Button
-            android:id="@+id/buttonShare3"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginStart="8dp"
-            android:background="?attr/actionModeShareDrawable"
-            android:text="Button"
-            tools:ignore="TouchTargetSizeCheck" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout5"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
-
-        <ProgressBar
-            android:id="@+id/progressBar4"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/textView_four"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:gravity="left"
-            android:maxWidth="150dp"
-            android:text="Short Link 4"
-            android:textColor="@color/purple_500"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/buttonCopy4"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginLeft="8dp"
-            android:background="?attr/actionModeCopyDrawable"
-            android:text="Button"
-            app:backgroundTint="@color/purple_500"
-            tools:ignore="TouchTargetSizeCheck" />
-
-        <Button
-            android:id="@+id/buttonShare4"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginStart="8dp"
-            android:background="?attr/actionModeShareDrawable"
-            android:text="Button"
-            tools:ignore="TouchTargetSizeCheck" />
-
-
-    </LinearLayout><![CDATA[
-
-
-        android:id="@+id/constraintLayout"
-        android:layout_width="0dp"
-        android:layout_height="300dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-    ]]>
-
-    <TextView
-        android:id="@+id/textViewTap"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="tap to share QR"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/imageViewQrCode"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider2" />
-
-    <ImageView
-        android:id="@+id/imageViewQrCode"
+    <FrameLayout
+        android:id="@+id/frameLayoutBox"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
-        android:adjustViewBounds="false"
-        android:scaleType="center"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayoutAdFirst"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider">
+
+        <TextView
+            android:id="@+id/textViewPut"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="put a long link and the App \nwill shorten it for you"
+            android:visibility="visible"
+            app:fontFamily="sans-serif-medium"
+            app:textAllCaps="true" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:gravity="center"
+            android:indeterminateOnly="true"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/linearLayoutBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="16dp"
+                android:paddingTop="16dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="16dp">
+
+                <LinearLayout
+                    android:id="@+id/linearLayout2"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/border_view"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView_first"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="left"
+                        android:singleLine="true"
+                        android:text="Short Link 1"
+                        android:textColor="@color/purple_500"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/buttonCopy1"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginLeft="8dp"
+                        android:background="?attr/actionModeCopyDrawable"
+                        app:backgroundTint="@color/purple_500"
+                        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+                    <Button
+                        android:id="@+id/buttonShare1"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="8dp"
+                        android:background="?attr/actionModeShareDrawable"
+                        android:text="Button"
+                        tools:ignore="TouchTargetSizeCheck" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/linearLayout2"
+                    android:layout_alignTop="@+id/linearLayout2"
+                    android:layout_marginLeft="28dp"
+                    android:layout_marginTop="-10dp"
+                    android:background="#8106a9"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:text="Short Link"
+                    android:textColor="@android:color/white" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutQrCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textViewTap"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="tap to share QR"
+                    android:visibility="visible" />
+
+                <ImageView
+                    android:id="@+id/imageViewQrCode"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="false"
+                    android:scaleType="center"
+                    android:visibility="visible"
+                    app:srcCompat="@mipmap/ic_launcher" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutAdFirst"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foregroundGravity="center"
+        android:gravity="center"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTap"
-        app:srcCompat="@mipmap/ic_launcher" />
+        app:layout_constraintTop_toBottomOf="@+id/nav_host_fragment_content_main">
+
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adViewLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            app:adSize="LARGE_BANNER"
+            app:adUnitId="@string/banner_large_ad_unit_id"></com.google.android.gms.ads.AdView>
 
 
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

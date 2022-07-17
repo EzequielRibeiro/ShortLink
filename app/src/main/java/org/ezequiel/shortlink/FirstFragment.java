@@ -1,6 +1,7 @@
 package org.ezequiel.shortlink;
 
 import static android.content.Context.WINDOW_SERVICE;
+import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static org.ezequiel.shortlink.MainActivity.hideKeybaord;
 import android.content.ClipData;
@@ -14,6 +15,7 @@ import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.Display;
@@ -22,10 +24,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
+
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
@@ -68,16 +77,33 @@ public class FirstFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        binding.checkBoxShrtco.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                if(b) {
+                    binding.checkBoxISGD.setChecked(false);
+                    binding.checkBoxVGD.setChecked(false);
+                    binding.checkBoxStatistic.setChecked(false);
+                    binding.checkBoxStatistic.setEnabled(false);
+                    binding.textInputUrlCustomName.setEnabled(false);
+                    binding.textInputUrlCustomName.setText("");
+                }
+                binding.checkBoxShrtco.setChecked(b);
+
+            }
+        });
 
         binding.checkBoxVGD.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                if(b)
-                   binding.checkBoxISGD.setChecked(false);
-                else
-                    binding.checkBoxISGD.setChecked(true);
-
+                if(b) {
+                    binding.checkBoxISGD.setChecked(false);
+                    binding.checkBoxShrtco.setChecked(false);
+                    binding.checkBoxStatistic.setEnabled(true);
+                    binding.textInputUrlCustomName.setEnabled(true);
+                }
 
             }
         });
@@ -88,8 +114,9 @@ public class FirstFragment extends Fragment {
 
                 if(b)
                     binding.checkBoxVGD.setChecked(false);
-                else
-                    binding.checkBoxVGD.setChecked(true);
+                    binding.checkBoxShrtco.setChecked(false);
+                    binding.checkBoxStatistic.setEnabled(true);
+                    binding.textInputUrlCustomName.setEnabled(true);
 
             }
         });
@@ -121,9 +148,6 @@ public class FirstFragment extends Fragment {
 
                             binding.textInputUrl.setError("url is invalid");
                             binding.textViewFirst.setText("error");
-                            binding.textViewSecond.setText("error");
-                            binding.textViewThree.setText("error");
-                            binding.textViewFour.setText("error");
                             binding.imageViewQrCode.setImageResource(R.drawable.icon50);
                             binding.textViewTap.setVisibility(View.INVISIBLE);
 
@@ -147,56 +171,22 @@ public class FirstFragment extends Fragment {
             }
         });
 
-        binding.buttonCopy2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                copyUrl(binding.textViewSecond.getText().toString(), v, getActivity());
-            }
-        });
-
-        binding.buttonCopy3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                copyUrl(binding.textViewThree.getText().toString(), v, getActivity());
-            }
-        });
-
-        binding.buttonCopy4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                copyUrl(binding.textViewFour.getText().toString(), v, getActivity());
-            }
-        });
-
         binding.buttonShare1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 shareUrl(binding.textViewFirst.getText().toString(), getActivity());
             }
         });
-        binding.buttonShare2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shareUrl(binding.textViewSecond.getText().toString(), getActivity());
-            }
-        });
-        binding.buttonShare3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shareUrl(binding.textViewThree.getText().toString(), getActivity());
-            }
-        });
-
-        binding.buttonShare4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shareUrl(binding.textViewFour.getText().toString(), getActivity());
-            }
-        });
 
         binding.buttonGoHistoric.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if(new DataBase(getContext()).readData().isEmpty()){
+                    Toast.makeText(getContext(),"Nothing to show",Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 cancelAsync();
                 NavHostFragment.findNavController(FirstFragment.this)
                         .navigate(R.id.action_FirstFragment_to_SecondFragment);
@@ -213,7 +203,7 @@ public class FirstFragment extends Fragment {
 
         binding.textViewTap.setVisibility(View.INVISIBLE);
 
-
+        loadAdmob();
 
     }
 
@@ -269,13 +259,10 @@ public class FirstFragment extends Fragment {
 
     public static void shareUrl(String url, Context context) {
 
-        if (url.contains("Short link"))
+        if(!Patterns.WEB_URL.matcher(url).matches())
             return;
 
-        if (url.equals("wait...") || url.equals("error"))
-            return;
-
-        if (!(url.contains("https://") || url.contains("https://"))) {
+        if (!(url.contains("https://"))) {
             url = "https://" + url;
         }
 
@@ -287,20 +274,19 @@ public class FirstFragment extends Fragment {
 
     }
 
-    public static void copyUrl(String shortUrl, View v, Context context) {
+    public static void copyUrl(String url, View v, Context context) {
 
-        if (shortUrl.contains("Short link"))
-            return;
-        if (shortUrl.equals("wait...") || shortUrl.equals("error"))
-            return;
+        if(!Patterns.WEB_URL.matcher(url).matches())
+             return;
 
-        if (!(shortUrl.contains("https://") || shortUrl.contains("https://"))) {
-            shortUrl = "https://" + shortUrl;
+
+        if (!(url.contains("https://"))) {
+            url = "https://" + url;
         }
 
         ClipboardManager clipboard = (ClipboardManager)
                 context.getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData clip = ClipData.newPlainText("Short url", shortUrl);
+        ClipData clip = ClipData.newPlainText("Short url", url);
         clipboard.setPrimaryClip(clip);
         Snackbar.make(context, v, "url was copied", Snackbar.LENGTH_LONG).show();
 
@@ -385,15 +371,9 @@ public class FirstFragment extends Fragment {
     }
 
     private void startProgress() {
-
-        binding.textViewFirst.setText("wait...");
-        binding.textViewSecond.setText("wait...");
-        binding.textViewThree.setText("wait...");
-        binding.textViewFour.setText("wait...");
-        binding.progressBar1.setVisibility(VISIBLE);
-        binding.progressBar2.setVisibility(VISIBLE);
-        binding.progressBar3.setVisibility(VISIBLE);
-        binding.progressBar4.setVisibility(VISIBLE);
+        binding.progressBar.setVisibility(VISIBLE);
+        binding.textViewPut.setVisibility(GONE);
+        binding.linearLayoutBox.setVisibility(GONE);
 
     }
 
@@ -402,6 +382,62 @@ public class FirstFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+
+    }
+
+    private AdSize getAdSize() {
+        // Step 2 - Determine the screen width (less decorations) to use for the ad width.
+        Display display = getActivity().getWindowManager().getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        display.getMetrics(outMetrics);
+
+        float widthPixels = outMetrics.widthPixels;
+        float density = outMetrics.density;
+
+        int adWidth = (int) (widthPixels / density);
+
+        // Step 3 - Get adaptive ad size and return for setting on the ad view.
+        return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(getActivity(), adWidth);
+    }
+
+    public void loadAdmob(){
+
+        AdView adView = binding.adViewLarge;
+       // adView.setAdSize(getAdSize());
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+
+        adView.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+            }
+
+            @Override
+            public void onAdFailedToLoad(LoadAdError adError) {
+                // Code to be executed when an ad request fails.
+                binding.linearLayoutAdFirst.removeAllViews();
+
+            }
+
+            @Override
+            public void onAdOpened() {
+                // Code to be executed when an ad opens an overlay that
+                // covers the screen.
+            }
+
+            @Override
+            public void onAdClicked() {
+                // Code to be executed when the user clicks on an ad.
+            }
+
+            @Override
+            public void onAdClosed() {
+                // Code to be executed when the user is about to return
+                // to the app after tapping on an ad.
+            }
+        });
 
     }
 
@@ -425,7 +461,7 @@ public class FirstFragment extends Fragment {
 
             try {
                 getShortLink = new GetShortLink();
-                getShortLink.requestShortlink(URLSHRTCO + params[0]);
+              //  getShortLink.requestShortlink(URLSHRTCO + params[0]);
 
                 if (!binding.textInputUrlCustomName.getText().toString().isEmpty()) {
 
@@ -440,6 +476,8 @@ public class FirstFragment extends Fragment {
                     getShortLink.requestShortlink(URLISGD + url + URLSTATS);
                 else if (!binding.checkBoxStatistic.isChecked() && binding.checkBoxISGD.isChecked())
                     getShortLink.requestShortlink(URLISGD + url);
+                else if (binding.checkBoxShrtco.isChecked())
+                    getShortLink.requestShortlink(URLSHRTCO + params[0]);
 
                 shortLink = getShortLink.getShortlink();
 
@@ -458,16 +496,14 @@ public class FirstFragment extends Fragment {
             try {
 
                 ShortLink shortlink = new ShortLink();
-
+              if(binding.checkBoxShrtco.isChecked())
                 if (result != null)
                     if (result.getIsOkUrl1()) {
 
                         binding.textViewFirst.setText("shrtco.de/" + result.getCode1());
                         binding.textViewFirst.setError(null);
-                        binding.textViewSecond.setText("9qr.de/" + result.getCode1());
-                        binding.textViewSecond.setError(null);
-                        binding.textViewThree.setText("shiny.link/" + result.getCode1());
-                        binding.textViewThree.setError(null);
+                        binding.linearLayout2.setVisibility(VISIBLE);
+                        binding.textInputUrlCustomName.setError(null);
 
                         DataBase dataBase = new DataBase(getActivity());
 
@@ -483,21 +519,18 @@ public class FirstFragment extends Fragment {
                     } else {
                         binding.textViewFirst.setText("error");
                         binding.textViewFirst.setError("");
-                        binding.textViewSecond.setText("error");
-                        binding.textViewSecond.setError("");
-                        binding.textViewThree.setText("error");
-                        binding.textViewThree.setError("");
                         binding.textInputUrl.setError(result.getErrorMensagem1());
                         binding.textViewTap.setVisibility(View.INVISIBLE);
                     }
 
+              if(binding.checkBoxVGD.isChecked() || binding.checkBoxISGD.isChecked())
                 if (result != null)
                     if (result.getIsOkUrl2()) {
-
-                        binding.textViewFour.setText(result.getCode2().replace("https://", ""));
+                        binding.textViewFirst.setText(result.getCode2().replace("https://", ""));
                         saveInDataBase2(result.getCode2(), date, urlToCompare);
                         binding.textInputUrlCustomName.setError(null);
-                        binding.textViewFour.setError(null);
+                        binding.textViewFirst.setError(null);
+                        binding.linearLayout2.setVisibility(VISIBLE);
 
                     } else if (result.getError_code2().equals("2")) {
                         //error 2 is reference for custom name exist
@@ -538,11 +571,11 @@ public class FirstFragment extends Fragment {
                                 temp = "v.gd/" + custom;
                             else
                                 temp = "is.gd/" + custom;
-                            binding.textViewFour.setText(temp);
+                            binding.textViewFirst.setText(temp);
                             saveInDataBase2(temp, date, urlToCompare);
                             shortlink.setIsOkUr2(true);
                             binding.textInputUrlCustomName.setError(null);
-                            binding.textViewFour.setError(null);
+                            binding.textViewFirst.setError(null);
                         } else {
                             showError(result);
                         }
@@ -574,10 +607,9 @@ public class FirstFragment extends Fragment {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    binding.progressBar1.setVisibility(View.GONE);
-                    binding.progressBar2.setVisibility(View.GONE);
-                    binding.progressBar3.setVisibility(View.GONE);
-                    binding.progressBar4.setVisibility(View.GONE);
+                    binding.progressBar.setVisibility(GONE);
+                    binding.linearLayoutBox.setVisibility(VISIBLE);
+                    binding.linearLayoutQrCode.setVisibility(VISIBLE);
                 }
             });
 
@@ -588,8 +620,8 @@ public class FirstFragment extends Fragment {
         private void showError(ShortLink shortlink) {
 
             binding.textInputUrlCustomName.setError(shortlink.getErrorMensagem2());
-            binding.textViewFour.setText("error");
-            binding.textViewFour.setError("");
+            binding.textViewFirst.setText("error");
+            binding.textViewFirst.setError("");
 
 
         }
@@ -597,17 +629,19 @@ public class FirstFragment extends Fragment {
         private void saveInDataBase2(String code, String date, String url) {
 
             DataBase dataBase = new DataBase(getActivity());
-
+            Log.e("original1",url);
             if (dataBase.selectUrlExists(url) > 0) {
                 dataBase.updateShortUrl2(code, date, url);
                 Log.e("code", code);
 
             } else {
-                dataBase.insertShortUrl2(code, date, url);
+                dataBase.insertShortUrl2(code, date, url.trim());
             }
 
         }
 
     }
+
+
 
 }

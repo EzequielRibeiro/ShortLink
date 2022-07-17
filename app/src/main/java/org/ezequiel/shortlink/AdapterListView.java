@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
@@ -30,6 +31,7 @@ public class AdapterListView extends ArrayAdapter<ShortLink> {
     private String statisticsUrl = "https://is.gd/stats.php?url=";
     private Context context;
     private View view;
+    private ImageButton buttonStatistics;
 
     public AdapterListView(Context context, ArrayList<ShortLink> urls) {
         super(context, 0, urls);
@@ -57,6 +59,24 @@ public class AdapterListView extends ArrayAdapter<ShortLink> {
         Button buttonShareQrCode = (Button) convertView.findViewById(R.id.buttonShareQrCodeHistoric);
         ImageView imageViewQrCode = (ImageView) convertView.findViewById(R.id.imageViewQrCodeHistoric);
 
+        LinearLayout linearLayoutHist1 = convertView.findViewById(R.id.linearLayoutHist1);
+        LinearLayout linearLayoutHist2 = convertView.findViewById(R.id.linearLayoutHist2);
+        LinearLayout linearLayoutHist3 = convertView.findViewById(R.id.linearLayoutHist3);
+        LinearLayout linearLayoutHist4 = convertView.findViewById(R.id.linearLayoutHist4);
+
+        Button buttonCopyHistoric1 = (Button) convertView.findViewById(R.id.buttonCopyHistoric1);
+        Button buttonCopyHistoric2 = (Button) convertView.findViewById(R.id.buttonCopyHistoric2);
+        Button buttonCopyHistoric3 = (Button) convertView.findViewById(R.id.buttonCopyHistoric3);
+        Button buttonCopyHistoric4 = (Button) convertView.findViewById(R.id.buttonCopyHistoric4);
+
+        Button buttonShareHistoric1 = (Button) convertView.findViewById(R.id.buttonShareHistoric1);
+        Button buttonShareHistoric2 = (Button) convertView.findViewById(R.id.buttonShareHistoric2);
+        Button buttonShareHistoric3 = (Button) convertView.findViewById(R.id.buttonShareHistoric3);
+        Button buttonShareHistoric4 = (Button) convertView.findViewById(R.id.buttonShareHistoric4);
+        buttonStatistics = (ImageButton) convertView.findViewById(R.id.imageButtonStatistics);
+        ImageButton buttonDeleteHistoric = (ImageButton) convertView.findViewById(R.id.imageButtonDeleteHistoric);
+        buttonDeleteHistoric.setTag(urls.getId());
+
         // Populate the data into the template view using the data object
         id.setText(String.valueOf(urls.getId()));
         date.setText(urls.getDate());
@@ -64,9 +84,21 @@ public class AdapterListView extends ArrayAdapter<ShortLink> {
             link1.setText("shrtco.de/" + urls.getCode1());
             link2.setText("9qr.de/" + urls.getCode1());
             link3.setText("shiny.link/" + urls.getCode1());
+        }else{
+            linearLayoutHist1.setVisibility(View.GONE);
+            linearLayoutHist2.setVisibility(View.GONE);
+            linearLayoutHist3.setVisibility(View.GONE);
         }
+
+
         if(!urls.getCode2().equals("error"))
             link4.setText(urls.getCode2().replace("https://", ""));
+        else {
+            linearLayoutHist4.setVisibility(View.GONE);
+            buttonStatistics.setVisibility(View.GONE);
+
+        }
+
 
         original_link.setText(urls.getOriginalLink());
 
@@ -81,21 +113,6 @@ public class AdapterListView extends ArrayAdapter<ShortLink> {
                 new ShareQrCode(urls.getOriginalLink(),activity);
             }
         });
-
-        Button buttonCopyHistoric1 = (Button) convertView.findViewById(R.id.buttonCopyHistoric1);
-        Button buttonCopyHistoric2 = (Button) convertView.findViewById(R.id.buttonCopyHistoric2);
-        Button buttonCopyHistoric3 = (Button) convertView.findViewById(R.id.buttonCopyHistoric3);
-        Button buttonCopyHistoric4 = (Button) convertView.findViewById(R.id.buttonCopyHistoric4);
-
-        Button buttonShareHistoric1 = (Button) convertView.findViewById(R.id.buttonShareHistoric1);
-        Button buttonShareHistoric2 = (Button) convertView.findViewById(R.id.buttonShareHistoric2);
-        Button buttonShareHistoric3 = (Button) convertView.findViewById(R.id.buttonShareHistoric3);
-        Button buttonShareHistoric4 = (Button) convertView.findViewById(R.id.buttonShareHistoric4);
-
-        ImageButton buttonDeleteHistoric = (ImageButton) convertView.findViewById(R.id.imageButtonDeleteHistoric);
-        buttonDeleteHistoric.setTag(urls.getId());
-
-        ImageButton buttonStatistics = (ImageButton) convertView.findViewById(R.id.imageButtonStatistics);
 
         buttonStatistics.setOnClickListener(new View.OnClickListener() {
             @Override

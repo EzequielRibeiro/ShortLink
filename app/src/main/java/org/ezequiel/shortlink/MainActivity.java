@@ -41,12 +41,16 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.RequestConfiguration;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import org.ezequiel.shortlink.databinding.ActivityMainBinding;
+
+import java.util.Arrays;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -56,9 +60,6 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAnalytics mFirebaseAnalytics;
     private TextView textInputUrl;
     private TextView textviewFirst;
-    private TextView textViewSecond;
-    private TextView textViewThree;
-    private TextView textviewFour;
     private ImageView imageViewQrCode;
 
     @Override
@@ -93,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                     channelName, NotificationManager.IMPORTANCE_LOW));
         }
 
-        /*List<String> testDeviceIds = Arrays.asList("DB530A1BBBDBFE8567328113528A19EF");
+        /*List<String> testDeviceIds = Arrays.asList("CA2976559C9489A7C3F8367D5C73ABE6");
         RequestConfiguration configuration =
                 new RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build();
         MobileAds.setRequestConfiguration(configuration);*/
@@ -110,9 +111,6 @@ public class MainActivity extends AppCompatActivity {
 
         textInputUrl = findViewById(R.id.textInputUrl);
         textviewFirst = findViewById(R.id.textView_first);
-        textViewSecond = findViewById(R.id.textView_second);
-        textViewThree = findViewById(R.id.textView_three);
-        textviewFour = findViewById(R.id.textView_four);
         imageViewQrCode = findViewById(R.id.imageViewQrCode);
 
     }
@@ -171,7 +169,31 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        // super.onBackPressed();
+        confirmExit();
+    }
+
+    public void confirmExit(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle(R.string.app_name);
+        builder.setIcon(R.mipmap.ic_launcher);
+        builder.setMessage("Close the application ?")
+                .setCancelable(false)
+                .setPositiveButton("Close", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        System.exit(1);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     @SuppressLint("ResourceType")
@@ -231,54 +253,9 @@ public class MainActivity extends AppCompatActivity {
     public void onResume(){
         super.onResume();
         receivedFromShare();
-        try{
-        loadAdmob();
-        }catch (NullPointerException exception){
-            exception.printStackTrace();
-        }
 
     }
 
-    public void loadAdmob(){
-
-        AdView adView = findViewById(R.id.adView);
-        LinearLayout linearLayoutAd = findViewById(R.id.linearLayoutAd);
-
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
-
-        adView.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                // Code to be executed when an ad finishes loading.
-            }
-
-            @Override
-            public void onAdFailedToLoad(LoadAdError adError) {
-                // Code to be executed when an ad request fails.
-                linearLayoutAd.removeAllViews();
-
-            }
-
-            @Override
-            public void onAdOpened() {
-                // Code to be executed when an ad opens an overlay that
-                // covers the screen.
-            }
-
-            @Override
-            public void onAdClicked() {
-                // Code to be executed when the user clicks on an ad.
-            }
-
-            @Override
-            public void onAdClosed() {
-                // Code to be executed when the user is about to return
-                // to the app after tapping on an ad.
-            }
-        });
-
-    }
 
     public void receivedFromShare() {
         Intent intent = getIntent();
@@ -298,9 +275,6 @@ public class MainActivity extends AppCompatActivity {
                         public void run() {
                             textInputUrl.setText(sharedText);
                             textviewFirst.setText("Short link 1");
-                            textViewSecond.setText("Short link 2");
-                            textViewThree.setText("Short link 3");
-                            textviewFour.setText("Short link 4");
                             imageViewQrCode.setImageBitmap(null);
 
                         }
@@ -313,9 +287,6 @@ public class MainActivity extends AppCompatActivity {
 
                         textInputUrl.setError("url is invalid");
                         textviewFirst.setError("error");
-                        textViewSecond.setError("error");
-                        textViewThree.setError("error");
-                        textviewFour.setError("error");
                         imageViewQrCode.setImageResource(R.drawable.icon150);
 
                     }
@@ -338,9 +309,6 @@ public class MainActivity extends AppCompatActivity {
       try {
           textInputUrl.setText(savedInstanceState.getString("longUrl"));
           textviewFirst.setText(savedInstanceState.getString("shortUrl1"));
-          textViewSecond.setText(savedInstanceState.getString("shortUrl2"));
-          textViewThree.setText(savedInstanceState.getString("shortUrl3"));
-          textviewFour.setText(savedInstanceState.getString("shortUrl4"));
           imageViewQrCode.setImageBitmap(generateQrCode(savedInstanceState.getString("longUrl"), getBaseContext()));
           super.onRestoreInstanceState(savedInstanceState);
       }catch (NullPointerException exception){
@@ -356,16 +324,7 @@ public class MainActivity extends AppCompatActivity {
             if (!textviewFirst.getText().equals("wait...") && !textviewFirst.getText().equals("error")) {
                 if (!textInputUrl.getText().toString().isEmpty())
                     outState.putString("longUrl", textInputUrl.getText().toString());
-                if (!textviewFirst.getText().toString().isEmpty())
-                    outState.putString("shortUrl1", textviewFirst.getText().toString());
-                if (!textViewSecond.getText().toString().isEmpty())
-                    outState.putString("shortUrl2", textViewSecond.getText().toString());
-                if (!textViewThree.getText().toString().isEmpty())
-                    outState.putString("shortUrl3", textViewThree.getText().toString());
-                if (!textviewFour.getText().toString().isEmpty())
-                    outState.putString("shortUrl4", textviewFour.getText().toString());
-
-            }
+           }
 
             super.onSaveInstanceState(outState);
         }catch (NullPointerException exception){

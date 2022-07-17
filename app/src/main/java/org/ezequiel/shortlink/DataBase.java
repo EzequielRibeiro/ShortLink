@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -99,8 +100,14 @@ public class DataBase extends SQLiteOpenHelper {
 
     public int selectUrlExists(String url){
 
+        if(url.contains("http://"))
+            url = url.replace("http://","");
+
+        if(url.contains("https://"))
+            url = url.replace("https://","");
+
         SQLiteDatabase db = getReadableDatabase();
-        Cursor c = db.rawQuery("SELECT * FROM "+TABLE_NAME+" WHERE long_url = '"+url.trim()+"'", null);
+        Cursor c = db.rawQuery("SELECT * FROM "+TABLE_NAME+" WHERE long_url LIKE '%"+url+"%'", null);
         c.moveToFirst();
         int count = c.getCount();
         c.close();
