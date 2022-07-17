@@ -77,6 +77,9 @@ public class FirstFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        //for test
+       // binding.textInputUrl.setText("www.google.com");
+
         binding.checkBoxShrtco.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -502,6 +505,7 @@ public class FirstFragment extends Fragment {
                         binding.textViewFirst.setText("shrtco.de/" + result.getCode1());
                         binding.textViewFirst.setError(null);
                         binding.linearLayout2.setVisibility(VISIBLE);
+                        binding.textViewTitle.setVisibility(VISIBLE);
                         binding.textInputUrlCustomName.setError(null);
 
                         DataBase dataBase = new DataBase(getActivity());
@@ -531,6 +535,7 @@ public class FirstFragment extends Fragment {
                         binding.textInputUrlCustomName.setError(null);
                         binding.textViewFirst.setError(null);
                         binding.linearLayout2.setVisibility(VISIBLE);
+                        binding.textViewTitle.setVisibility(VISIBLE);
 
 
                     } else if (result.getError_code2().equals("2")) {

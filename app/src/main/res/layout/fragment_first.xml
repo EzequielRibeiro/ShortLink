@@ -148,7 +148,9 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="put a long link and the App \nwill shorten it for you"
+            android:textColor="@color/purple_500"
             android:visibility="visible"
+            app:autoSizeTextType="uniform"
             app:fontFamily="sans-serif-medium"
             app:textAllCaps="true" />
 
@@ -189,8 +191,8 @@
                     android:layout_marginTop="8dp"
                     android:background="@drawable/border_view"
                     android:gravity="center"
-                    android:visibility="gone"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <TextView
                         android:id="@+id/textView_first"
@@ -236,8 +238,8 @@
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
                     android:text="Short Link"
-                    android:visibility="gone"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@android:color/white"
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <LinearLayout
@@ -279,7 +281,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nav_host_fragment_content_main">
+        >
 
         <com.google.android.gms.ads.AdView
             android:id="@+id/adViewLarge"

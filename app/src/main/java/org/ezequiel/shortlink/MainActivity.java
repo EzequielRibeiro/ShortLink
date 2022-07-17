@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                     channelName, NotificationManager.IMPORTANCE_LOW));
         }
 
-        /*List<String> testDeviceIds = Arrays.asList("CA2976559C9489A7C3F8367D5C73ABE6");
+        /*List<String> testDeviceIds = Arrays.asList("DCC149E7B5073595C57282BA5C473007");
         RequestConfiguration configuration =
                 new RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build();
         MobileAds.setRequestConfiguration(configuration);*/
