@@ -201,7 +201,7 @@
                         android:layout_gravity="center"
                         android:autoSizeMaxTextSize="100sp"
                         android:gravity="center"
-                        android:text="Short Link"
+                        android:text="is.gd/shortmylonglink"
                         android:textColor="@color/purple_500"
                         android:textSize="20sp"
                         android:textStyle="bold"
@@ -245,7 +245,7 @@
             <LinearLayout
                 android:id="@+id/linearLayoutQrCode"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:visibility="gone">
 
