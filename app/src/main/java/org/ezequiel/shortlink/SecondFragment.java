@@ -1,4 +1,7 @@
 package org.ezequiel.shortlink;
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +22,7 @@ import org.ezequiel.shortlink.databinding.FragmentSecondBinding;
 public class SecondFragment extends Fragment {
 
     private FragmentSecondBinding binding;
+    private SharedPreferences sharedPreferences;
 
     @Override
     public View onCreateView(
@@ -27,6 +31,9 @@ public class SecondFragment extends Fragment {
     ) {
 
         binding = FragmentSecondBinding.inflate(inflater, container, false);
+
+
+
         return binding.getRoot();
 
     }
@@ -34,11 +41,15 @@ public class SecondFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
+        sharedPreferences =  getActivity().getSharedPreferences("noad", MODE_PRIVATE);
         DataBase dataBase = new DataBase(getActivity());
 
         AdapterListView adapter = new AdapterListView(getActivity(), dataBase.readData());
         binding.listViewHistoric.setAdapter(adapter);
-        loadAdmob();
+
+        if(sharedPreferences.getBoolean("enableAd",true))
+            loadAdmob();
 
        /* binding.buttonSecond.setOnClickListener(new View.OnClickListener() {
             @Override

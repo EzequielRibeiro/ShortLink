@@ -1,9 +1,9 @@
 package org.ezequiel.shortlink;
 
+import static android.content.Context.MODE_PRIVATE;
 import static android.content.Context.WINDOW_SERVICE;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static org.ezequiel.shortlink.MainActivity.ENABLEAD;
 import static org.ezequiel.shortlink.MainActivity.hideKeybaord;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -25,7 +25,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.CompoundButton;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -60,6 +59,7 @@ public class FirstFragment extends Fragment {
     private final String URLSHORTNAME = "&shorturl=";
     public static final String URLSTATS = "&logstats=1";
     private View view;
+    private SharedPreferences sharedPreferences;
 
 
     @Override
@@ -71,7 +71,9 @@ public class FirstFragment extends Fragment {
         binding = FragmentFirstBinding.inflate(inflater, container, false);
         binding.textViewTap.setVisibility(View.INVISIBLE);
 
-        if(ENABLEAD)
+        sharedPreferences =  getActivity().getSharedPreferences("noad", MODE_PRIVATE);
+
+        if(sharedPreferences.getBoolean("enableAd",true))
             intersticiaisAdLoad();
 
         return binding.getRoot();
@@ -80,6 +82,7 @@ public class FirstFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        sharedPreferences =  getActivity().getSharedPreferences("noad", MODE_PRIVATE);
 
         //for test
        // binding.textInputUrl.setText("www.google.com");
@@ -210,7 +213,7 @@ public class FirstFragment extends Fragment {
 
         binding.textViewTap.setVisibility(View.INVISIBLE);
 
-       if(ENABLEAD)
+       if(sharedPreferences.getBoolean("enableAd",true))
            loadAdmob();
 
     }
@@ -627,7 +630,8 @@ public class FirstFragment extends Fragment {
                 }
             });
 
-            showInterstitial();
+           if(sharedPreferences.getBoolean("enableAd",true))
+               showInterstitial();
 
         }
 

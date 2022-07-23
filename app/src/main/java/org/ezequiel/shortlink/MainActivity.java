@@ -80,7 +80,6 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
     private BillingClient billingClient;
     private ProductDetails productDetails;
     private SharedPreferences sharedPreferences;
-    public static boolean ENABLEAD = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
                     channelName, NotificationManager.IMPORTANCE_LOW));
         }
 
-       /* List<String> testDeviceIds = Arrays.asList("D9AA814C0E496E3B75381AF8514DC61F");
+      /*  List<String> testDeviceIds = Arrays.asList("D9AA814C0E496E3B75381AF8514DC61F","DCC149E7B5073595C57282BA5C473007");
         RequestConfiguration configuration =
                 new RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build();
         MobileAds.setRequestConfiguration(configuration);*/
@@ -360,10 +359,9 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
         super.onResume();
 
         receivedFromShare();
-
         try {
             billingSetup();
-            ENABLEAD = sharedPreferences.getBoolean("enableAd",true);
+
         } catch (IllegalStateException e) {
             e.printStackTrace();
         }catch (NullPointerException e){
@@ -384,6 +382,8 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
                                           @Override
                                           public void onBillingSetupFinished(
                                                   @NonNull BillingResult billingResult) {
+
+                                              Log.i("ShortLink","Billing Code: "+billingResult.getResponseCode());
 
                                               if (billingResult.getResponseCode() ==
                                                       BillingClient.BillingResponseCode.OK) {
