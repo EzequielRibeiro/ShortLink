@@ -42,8 +42,6 @@ import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.android.billingclient.api.QueryProductDetailsParams;
 import com.google.android.gms.ads.RequestConfiguration;
-import com.google.android.gms.tasks.*;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -54,23 +52,18 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.common.collect.ImmutableList;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
-
 import org.ezequiel.shortlink.databinding.ActivityMainBinding;
-
 import com.google.android.play.core.review.ReviewInfo;
 import com.google.android.play.core.review.ReviewManager;
 import com.google.android.play.core.review.ReviewManagerFactory;
 import com.google.android.play.core.tasks.OnFailureListener;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -125,10 +118,10 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
                     channelName, NotificationManager.IMPORTANCE_LOW));
         }
 
-        List<String> testDeviceIds = Arrays.asList("D9AA814C0E496E3B75381AF8514DC61F");
+       /* List<String> testDeviceIds = Arrays.asList("D9AA814C0E496E3B75381AF8514DC61F");
         RequestConfiguration configuration =
                 new RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build();
-        MobileAds.setRequestConfiguration(configuration);
+        MobileAds.setRequestConfiguration(configuration);*/
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -380,7 +373,6 @@ public class MainActivity extends AppCompatActivity implements PurchasesUpdatedL
     }
 
     private void billingSetup() {
-
 
         billingClient = BillingClient.newBuilder(this)
                 .setListener(this)
