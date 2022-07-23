@@ -176,7 +176,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingStart="5dp"
-                android:paddingTop="16dp"
+                android:paddingTop="8dp"
                 android:paddingEnd="5dp"
 
                 >
@@ -203,7 +203,8 @@
                         android:gravity="center"
                         android:text="is.gd/shortmylonglink"
                         android:textColor="@color/purple_500"
-                        android:textSize="20sp"
+                        android:maxLines="1"
+                        android:textSize="16sp"
                         android:textStyle="bold"
                         app:autoSizeTextType="uniform" />
 

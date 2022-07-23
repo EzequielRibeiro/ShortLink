@@ -3,6 +3,7 @@ package org.ezequiel.shortlink;
 import static android.content.Context.WINDOW_SERVICE;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static org.ezequiel.shortlink.MainActivity.ENABLEAD;
 import static org.ezequiel.shortlink.MainActivity.hideKeybaord;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -69,7 +70,10 @@ public class FirstFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_first, container, false);
         binding = FragmentFirstBinding.inflate(inflater, container, false);
         binding.textViewTap.setVisibility(View.INVISIBLE);
-        intersticiaisAdLoad();
+
+        if(ENABLEAD)
+            intersticiaisAdLoad();
+
         return binding.getRoot();
 
     }
@@ -206,7 +210,8 @@ public class FirstFragment extends Fragment {
 
         binding.textViewTap.setVisibility(View.INVISIBLE);
 
-        loadAdmob();
+       if(ENABLEAD)
+           loadAdmob();
 
     }
 

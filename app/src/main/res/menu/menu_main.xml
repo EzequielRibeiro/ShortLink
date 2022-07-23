@@ -18,6 +18,11 @@
         android:title="Rate"
         app:showAsAction="never" />
     <item
+        android:id="@+id/action_remove"
+        android:orderInCategory="100"
+        android:title="Remove AD"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_about"
         android:orderInCategory="100"
         android:title="About"

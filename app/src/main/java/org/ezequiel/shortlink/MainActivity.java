@@ -10,6 +10,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -27,7 +28,20 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.billingclient.api.AcknowledgePurchaseParams;
+import com.android.billingclient.api.AcknowledgePurchaseResponseListener;
+import com.android.billingclient.api.BillingClient;
+import com.android.billingclient.api.BillingClientStateListener;
+import com.android.billingclient.api.BillingFlowParams;
+import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.ProductDetails;
+import com.android.billingclient.api.ProductDetailsResponseListener;
+import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.PurchasesUpdatedListener;
+import com.android.billingclient.api.QueryProductDetailsParams;
+import com.google.android.gms.ads.RequestConfiguration;
 import com.google.android.gms.tasks.*;
 
 import androidx.annotation.NonNull;
@@ -46,6 +60,7 @@ import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.common.collect.ImmutableList;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
@@ -56,9 +71,11 @@ import com.google.android.play.core.review.ReviewManager;
 import com.google.android.play.core.review.ReviewManagerFactory;
 import com.google.android.play.core.tasks.OnFailureListener;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements PurchasesUpdatedListener {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
@@ -67,6 +84,10 @@ public class MainActivity extends AppCompatActivity {
     private TextView textviewFirst;
     private ImageView imageViewQrCode;
     private NavController navController;
+    private BillingClient billingClient;
+    private ProductDetails productDetails;
+    private SharedPreferences sharedPreferences;
+    public static boolean ENABLEAD = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +97,11 @@ public class MainActivity extends AppCompatActivity {
         StrictMode.setThreadPolicy(policy);
         // Obtain the FirebaseAnalytics instance.
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        sharedPreferences = getSharedPreferences("noad", MODE_PRIVATE);
 
+        if (!sharedPreferences.contains("enableAd")) {
+            sharedPreferences.edit().putBoolean("enableAd", true).apply();
+        }
 
         try {
             MobileAds.initialize(this, new OnInitializationCompleteListener() {
@@ -100,10 +125,10 @@ public class MainActivity extends AppCompatActivity {
                     channelName, NotificationManager.IMPORTANCE_LOW));
         }
 
-        /*List<String> testDeviceIds = Arrays.asList("DCC149E7B5073595C57282BA5C473007");
+        List<String> testDeviceIds = Arrays.asList("D9AA814C0E496E3B75381AF8514DC61F");
         RequestConfiguration configuration =
                 new RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build();
-        MobileAds.setRequestConfiguration(configuration);*/
+        MobileAds.setRequestConfiguration(configuration);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -163,6 +188,16 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
 
+        if (id == R.id.action_remove) {
+            try {
+                makePurchase();
+            }catch (Exception e){
+                e.printStackTrace();
+                Toast.makeText(MainActivity.this,"an error has occurred.",Toast.LENGTH_LONG).show();
+            }
+            return true;
+        }
+
         if (id == R.id.action_rate) {
             rateApp();
             return true;
@@ -180,11 +215,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Log.e("name",navController.getCurrentDestination().getLabel().toString());
+
         if (Objects.requireNonNull(navController.getCurrentDestination()).getLabel().equals(getString(R.string.app_name))) {
-                confirmExit();
-            }else
-               super.onBackPressed();
+            confirmExit();
+        } else
+            super.onBackPressed();
 
     }
 
@@ -330,9 +365,166 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
+
         receivedFromShare();
 
+        try {
+            billingSetup();
+            ENABLEAD = sharedPreferences.getBoolean("enableAd",true);
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
+
     }
+
+    private void billingSetup() {
+
+
+        billingClient = BillingClient.newBuilder(this)
+                .setListener(this)
+                .enablePendingPurchases()
+                .build();
+
+        billingClient.startConnection(new BillingClientStateListener() {
+
+                                          @Override
+                                          public void onBillingSetupFinished(
+                                                  @NonNull BillingResult billingResult) {
+
+                                              if (billingResult.getResponseCode() ==
+                                                      BillingClient.BillingResponseCode.OK) {
+                                                  Log.i("ShortLink", "OnBillingSetupFinish connected");
+                                                  queryProduct();
+                                              } else {
+                                                  Log.i("ShortLink", "OnBillingSetupFinish failed");
+                                              }
+                                          }
+
+                                          @Override
+                                          public void onBillingServiceDisconnected() {
+                                              try {
+                                                  billingSetup();
+                                                  Log.i("ShortLink", "onBillingServiceDisconnected trying reconnection");
+                                              } catch (IllegalStateException e) {
+                                                  e.printStackTrace();
+                                                  Log.i("ShortLink", "onBillingServiceDisconnected fail connection lost");
+                                              }
+                                          }
+                                      }
+
+        );
+    }
+
+
+
+    private void queryProduct() {
+
+        QueryProductDetailsParams queryProductDetailsParams =
+                QueryProductDetailsParams.newBuilder()
+                        .setProductList(
+                                ImmutableList.of(
+                                        QueryProductDetailsParams.Product.newBuilder()
+                                                .setProductId("noadshort")
+                                                .setProductType(
+                                                        BillingClient.ProductType.INAPP)
+                                                .build()))
+                        .build();
+
+        billingClient.queryProductDetailsAsync(
+                queryProductDetailsParams,
+                new ProductDetailsResponseListener() {
+                    public void onProductDetailsResponse(
+                            @NonNull BillingResult billingResult,
+                            @NonNull List<ProductDetails> productDetailsList) {
+
+                        if (!productDetailsList.isEmpty()) {
+                            productDetails = productDetailsList.get(0);
+
+                        } else {
+                            Log.i("ShortLink", "onProductDetailsResponse: No products");
+                        }
+                    }
+                }
+        );
+    }
+
+    public void makePurchase() {
+
+        BillingFlowParams billingFlowParams =
+                BillingFlowParams.newBuilder()
+                        .setProductDetailsParamsList(
+                                ImmutableList.of(
+                                        BillingFlowParams.ProductDetailsParams.newBuilder()
+                                                .setProductDetails(productDetails)
+                                                .build()
+                                )
+                        )
+                        .build();
+
+        billingClient.launchBillingFlow(this, billingFlowParams);
+    }
+
+
+    @Override
+    public void onPurchasesUpdated(BillingResult billingResult,
+                                   List<Purchase> purchases) {
+
+        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK
+                && purchases != null) {
+            for (Purchase purchase : purchases) {
+                handlePurchase(purchase);
+            }
+        } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.USER_CANCELED) {
+            Log.i("billingResultCan", "canceled");
+            sharedPreferences.edit().putBoolean("enableAd", true).apply();
+        } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
+            Log.i("billingResultCan", "ITEM_ALREADY_OWNED");
+            sharedPreferences.edit().putBoolean("enableAd", false).apply();
+        }
+    }
+
+
+    private void handlePurchase(Purchase purchase) {
+
+        AcknowledgePurchaseResponseListener acknowledgePurchaseResponseListener = new AcknowledgePurchaseResponseListener() {
+            @Override
+            public void onAcknowledgePurchaseResponse(BillingResult billingResult) {
+
+                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+
+                    if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
+                        sharedPreferences.edit().putBoolean("enableAd", false).apply();
+                        Log.i("billingResult", "ITEM_OWNED PURCHASED");
+                    }
+                } else if (purchase.getPurchaseState() == Purchase.PurchaseState.UNSPECIFIED_STATE) {
+                    sharedPreferences.edit().putBoolean("enableAd", true).apply();
+                    Log.i("billingResult", "ITEM_NOT_OWNED UNSPECIFIED_STATE");
+
+                } else if (purchase.getPurchaseState() == Purchase.PurchaseState.PENDING) {
+                    sharedPreferences.edit().putBoolean("enableAd", true).apply();
+                    Log.i("billingResult", "ITEM_NOT_OWNED PurchaseState.PENDING");
+                }
+            }
+
+
+        };
+        if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
+            if (!purchase.isAcknowledged()) {
+                AcknowledgePurchaseParams acknowledgePurchaseParams =
+                        AcknowledgePurchaseParams.newBuilder()
+                                .setPurchaseToken(purchase.getPurchaseToken())
+                                .build();
+                billingClient.acknowledgePurchase(acknowledgePurchaseParams, acknowledgePurchaseResponseListener);
+            }
+        }else{
+            sharedPreferences.edit().putBoolean("enableAd", true).apply();
+            Log.i("billingResult", "ITEM_NOT_OWNED");
+        }
+    }
+
+
 
 
     public void receivedFromShare() {
